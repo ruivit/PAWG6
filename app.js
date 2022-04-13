@@ -10,7 +10,7 @@ var app = express();
 //Import the mongoose module
 var mongoose = require('mongoose');
 //Set up default mongoose connection
-var mongoDB = 'mongodb+srv://mongoadm:AxPAi0GHVVvhijYU@cluster.yharo.mongodb.net/pawm1';
+var mongoDB = 'mongodb+srv://mongoadm:<password>@cluster.yharo.mongodb.net/pawm1';
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 //Get the default connection
 var db = mongoose.connection;
