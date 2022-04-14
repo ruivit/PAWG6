@@ -42,6 +42,7 @@ exports.books_create_post = [
                 price: req.body.price,
                 stock: req.body.stock,
                 isbn: req.body.isbn,
+                added: req.body.added,
             }
         );
 
@@ -71,9 +72,27 @@ exports.books_create_post = [
 // List the books
 exports.books = async function (req, res) {  
     try {
-        var books = await Book.find();
+        var books = await Book.find().sort({ _id: -1 });
         res.render('admin/stock', { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
+    }
+};
+
+exports.new_books = async function (req, res) {
+    try {
+        var books = await Book.find().sort({ added: -1 }).limit(6);
+        res.render("indexs/newBooks", { books: books });
+    } catch (error) {
+        res.render("error", { message: "Error finding books", error: error });
+    }
+};
+
+exports.book_delete_post = async function (req, res) {
+    try {
+        await Book.findByIdAndRemove(req.params.id);
+        res.redirect('/admin/books');
+    } catch (error) {
+        res.render("error", { message: "Error deleting book", error: error });
     }
 };

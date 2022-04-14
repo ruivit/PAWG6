@@ -7,9 +7,11 @@ var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
 
 exports.admin_index = function (req, res) {
-    // Check if admin or employee is logged in - TODO
-    // IF yes - render admin or employee page
-    // ELSE - render login page (admin_login_get)
+    session = req.session;
+    // If the user is not logged in, redirect to the login page
+    if (!session.username) {
+        res.render('admin/adminLogin');
+    }
     res.render('admin/adminPortal');
 };
 
@@ -23,6 +25,10 @@ exports.admin_login_post = function (req, res) {
     data = req.body;
     var username = data.username;
     var password = data.password;
+
+    session = req.session;
+    session.username = username;
+    session.password = password;
 
     body('username').isLength({ min: 1 }).trim().withMessage('Username cannot be blank'),
     body('password').isLength({ min: 1 }).trim().withMessage('Password cannot be blank'),
@@ -41,6 +47,15 @@ exports.admin_login_post = function (req, res) {
     } else {
         res.redirect('/admin');
     }
+};
+
+exports.logout = function (req, res) {
+    session = req.session;
+    session.destroy(function (err) {
+        if (err) { console.log(err); }
+        res.writeHead(302, { 'Location': '/' });
+        res.end();
+    });
 };
 
 // List the employees

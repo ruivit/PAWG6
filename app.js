@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 
 var app = express();
 
@@ -31,8 +32,15 @@ app.use(express.json());
 // Get FORM DATA
 app.use(express.urlencoded({ extended: true }));
 
-
+// Session related
+app.use(session({
+  secret: 'dskma92847ya7wyd0awd',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(cookieParser());
+
+// Use the public folder to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 

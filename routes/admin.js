@@ -14,6 +14,8 @@ router.get('/login', adminController.admin_login_get);
 
 router.post('/login', multer().none(), adminController.admin_login_post);
 
+router.get('/logout', adminController.logout);
+
 router.get('/employees', adminController.employees);
 
 router.get('/clients', adminController.clients);
@@ -28,6 +30,8 @@ router.get('/books/create', bookController.books_create_get);
 router.post('/books/create', multer().none(), bookController.books_create_post);
 
 router.get('/books', bookController.books);
+
+router.post('/books/delete/:id', multer().none(), bookController.book_delete_post);
 
 module.exports = router;
 

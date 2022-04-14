@@ -87,7 +87,12 @@ body {
     line-height: 1.25;
 }
 
-i {
+.edit {
     font-style: normal;
-    color: #ffffff;
+    color: darkgoldenrod
+}
+
+.delete {
+    font-style: normal;
+    color: firebrick;
 }

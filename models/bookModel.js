@@ -11,6 +11,7 @@ var BookSchema = new Schema({
   price: { type: String, required: true },
   stock: { type: String, required: true },
   isbn: { type: String, required: true },
+  added: { type: Date, default: Date.now },
 }, {
   collection: 'books'
 });
