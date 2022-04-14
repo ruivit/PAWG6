@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
+  <link rel="stylesheet" href="/stylesheets/tableListing.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <title>Stock Management</title>
+</head>
+<body>
+  <ul>
+    <li><a href="/admin/">Home</a></li>
+    <li><a href="/admin/books/create">Create</a></li>
+    <li><a href="#">Search</a></li>
+    <li style="float:right">
+      <a class="logout"
+      href="/logout_admin">Logout</a>
+    </li>
+  </ul>
+  <br>
+    <% if(books.length>0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">Year</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Price</th>
+            <th scope="col">ISBN</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<books.length;i++) { %>
+            <tr>
+              <td data-label="ID"> <%=i%> </td>
+              <td data-label="Title"> <%=books[i].title%> </td>
+              <td data-label="Author"> <%=books[i].author%> </td>
+              <td data-label="Publisher"> <%=books[i].publisher%> </td>
+              <td data-label="Year"> <%=books[i].year%> </td>
+              <td data-label="Stock"> <%=books[i].stock%> </td>
+              <td data-label="Price"> <%=books[i].price%> </td>
+              <td data-label="ISBN"> <%=books[i].isbn%> </td>
+              <td data-label="operations">
+                <a href="/admin/books/<%=books[i].id%>/edit"><i class="material-icons">edit</i></a>
+                <a href="/admin/books/<%=books[i].id%>/delete"><i class="material-icons">delete</i></a>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No Books were found</th>
+          </tr>
+        </thead>
+      </table>
+    <% } %>
+</body>
+</html>

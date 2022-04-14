@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/stylesheets/admin-portal.css">
+  <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
+  <link rel="stylesheet" href="/stylesheets/tableListing.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <title>Employee Management</title>
 </head>
 <body>
@@ -17,5 +19,40 @@
       href="/logout_admin">Logout</a>
     </li>
   </ul>
+  <br>
+    <% if(employees.length>0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<employees.length;i++) { %>
+            <tr>
+              <td data-label="ID"> <%=i%> </td>
+              <td data-label="username"> <%=employees[i].username%></a></td>
+              <td data-label="email"> <%=employees[i].email%></a></td>
+              <td data-label="name"> <%=employees[i].name%></a></td>   
+              <td data-label="operations">
+                <a href="/admin/employees/<%=employees[i].id%>/edit"><i class="material-icons">edit</i></a>
+                <a href="/admin/employees/<%=employees[i].id%>/delete"><i class="material-icons">delete</i></a>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No Employees were found</th>
+          </tr>
+        </thead>
+      </table>
+    <% } %>
 </body>
 </html>

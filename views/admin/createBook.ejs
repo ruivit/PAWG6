@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Create Book</title>
+	<link rel="stylesheet" href="/stylesheets/create/createBook.css">
+  </head>
+  <body>
+	<form action="/admin/books/create" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">Create a new Book</div>
+			<div class="input-container ic1">
+				<input name="title" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="title" class="placeholder">Title</label>
+			</div>
+			<!-- Author depois devera ser uma tabela ??? -->
+			<div class="input-container ic2">
+				<input name="author" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="author" class="placeholder">Author</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="genre" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="genre" class="placeholder">Genre</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="publisher" class="input" type="text" placeholder=" " />
+				<div class="cut cut-long"></div>
+				<label for="publisher" class="placeholder">Publisher</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="year" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="year" class="placeholder">Year</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="price" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="price" class="placeholder">Price</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="stock" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="stock" class="placeholder">Stock</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="isbn" class="input" type="text" placeholder=" " />
+				<div class="cut"></div>
+				<label for="isbn" class="placeholder">ISBN</label>
+			</div>
+			<button type="text" class="submit">Create</button>
+		</div>
+	</form>
+  </body>
+</html>

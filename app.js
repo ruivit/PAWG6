@@ -6,11 +6,12 @@ var logger = require('morgan');
 
 var app = express();
 
+
 // MongoDB
 //Import the mongoose module
 var mongoose = require('mongoose');
 //Set up default mongoose connection
-var mongoDB = 'mongodb+srv://mongoadm:<password>@cluster.yharo.mongodb.net/pawm1';
+var mongoDB = 'mongodb+srv://mongoadm:AxPAi0GHVVvhijYU@cluster.yharo.mongodb.net/pawm1';
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 //Get the default connection
 var db = mongoose.connection;
@@ -23,10 +24,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+
+// Get JSON DATA
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
+// Get FORM DATA
+app.use(express.urlencoded({ extended: true }));
+
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // ----------------------- Routes -----------------------
 var indexRouter = require('./routes/index');

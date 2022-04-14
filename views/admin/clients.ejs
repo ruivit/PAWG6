@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
+  <link rel="stylesheet" href="/stylesheets/tableListing.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <title>Client Management</title>
+</head>
+<body>
+  <ul>
+    <li><a href="/admin/">Home</a></li>
+    <li><a href="/admin/clients/create">Create</a></li>
+    <li><a href="#">Search</a></li>
+    <li style="float:right">
+      <a class="logout"
+      href="/logout_admin">Logout</a>
+    </li>
+  </ul>
+  <br>
+    <% if(clients.length>0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<clients.length;i++) { %>
+            <tr>
+              <td data-label="ID"> <%=i%> </td>
+              <td data-label="username"> <%=clients[i].username%></a></td>
+              <td data-label="email"> <%=clients[i].email%></a></td>
+              <td data-label="name"> <%=clients[i].name%></a></td>   
+              <td data-label="operations">
+                <a href="/admin/clients/<%=clients[i].id%>/edit"><i class="material-icons">edit</i></a>
+                <a href="/admin/clients/<%=clients[i].id%>/delete"><i class="material-icons">delete</i></a>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No Clients were found</th>
+          </tr>
+        </thead>
+      </table>
+    <% } %>
+</body>
+</html>

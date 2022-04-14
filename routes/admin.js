@@ -6,6 +6,7 @@ var router = express.Router();
 var multer = require('multer');
 
 var adminController = require('../controllers/adminController');
+var bookController = require('../controllers/bookController');
 
 router.get('/', adminController.admin_index);
 
@@ -15,9 +16,18 @@ router.post('/login', multer().none(), adminController.admin_login_post);
 
 router.get('/employees', adminController.employees);
 
+router.get('/clients', adminController.clients);
+
 router.get('/employees/create', adminController.employees_create_get);
 
 router.post('/employees/create',  multer().none(), adminController.employees_create_post);
+
+// Book Related Routes
+router.get('/books/create', bookController.books_create_get);
+
+router.post('/books/create', multer().none(), bookController.books_create_post);
+
+router.get('/books', bookController.books);
 
 module.exports = router;
 
