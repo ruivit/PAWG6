@@ -5,11 +5,8 @@ var Client = require('../models/clientModel');
 
 // Get the home page (no client logged in)
 exports.client_index = function (req, res) {
-    if (req.session.username) {
-        res.render('indexs/index-user');
-    } else {
-        res.render('indexs/index');
-    }
+    // Auth process, check if user exists blablabla
+    res.render('index/index-user');
 };
 
 // Get the login page for the client
@@ -18,7 +15,7 @@ exports.client_login = function (req, res) {
 
     // If the user is logged in, redirect to the client portal
     if (session.username) {
-        res.redirect('/');
+        res.redirect('/client');
     } else {
         res.render('client/clientLogin');
     }
@@ -30,6 +27,7 @@ exports.client_login_post = function (req, res) {
     session.username = req.body.username;
     session.password = req.body.password;
 
+    console.log(session.username);
     // Find the client in the database
     Client.findOne({ username: session.username, password: session.password }, function (err, client) {
         if (err) { console.log(err); }
@@ -101,10 +99,23 @@ exports.client_create_post = [
                 if (err) { return next(err); }
             });
             console.log("Client: " + client);
-            res.redirect('/');
+            if (req.session.username === 'admin') {
+                res.redirect('/admin/clients');
+            } else {
+                res.redirect('/client');
+            }
         }
     }
 ];
+
+exports.client_delete_post = function (req, res) {
+    Client.findByIdAndRemove(req.params.id, function (err) {
+        if (err) { return next(err); }
+        
+        res.redirect('/admin/clients');
+    });
+};
+
 
 // TODO - Authentication and stuff
 

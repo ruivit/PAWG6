@@ -4,7 +4,6 @@ var router = express.Router();
 var multer = require('multer');
 
 var clientController = require('../controllers/clientController');
-var bookController = require('../controllers/bookController');
 
 // Get the index page for the client
 router.get('/', clientController.client_index);
@@ -19,7 +18,7 @@ router.post('/create', multer().none(), clientController.client_create_post);
 
 router.get('/logout', clientController.client_logout);
 
-router.get('/new', bookController.new_books);
+router.post('/delete/:id', clientController.client_delete_post);
 
 module.exports = router;
 

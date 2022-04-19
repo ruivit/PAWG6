@@ -7,6 +7,7 @@ var session = require('express-session');
 
 var app = express();
 
+app.use('/favicon.ico', express.static('public/images/favicon.ico'));
 
 // MongoDB
 //Import the mongoose module
@@ -48,10 +49,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var clientRouter = require('./routes/client');
+var bookRouter = require('./routes/book');
 
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/client', clientRouter);
+app.use('/book', bookRouter);
 // -----------------------------------------------------
 
 // catch 404 and forward to error handler
@@ -67,7 +70,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error/404');
 });
 
 module.exports = app;

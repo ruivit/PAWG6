@@ -42,10 +42,11 @@ exports.admin_login_post = function (req, res) {
 
     // check if the username and password match (admin)
     // TODO - check in the database, and if its admin or employee
-    if (username === 'admin' && password === 'admin') {
+    if (session.username == "admin" && session.password == "admin") {
         res.redirect('/admin');
     } else {
-        res.redirect('/admin');
+        session.destroy();
+        res.redirect('/admin/login');
     }
 };
 
@@ -62,7 +63,7 @@ exports.logout = function (req, res) {
 exports.employees = async function (req, res) {  
     try {
         var employees = await Employee.find().populate('username'); //popular o campo type com informação
-        res.render("admin/employees", { employees: employees });
+        res.render("employees/employees", { employees: employees });
     } catch (error) {
         res.render("error", { message: "Error finding employees", error: error });
     }
@@ -72,7 +73,7 @@ exports.employees = async function (req, res) {
 exports.clients = async function (req, res) {  
     try {
         var clients = await Client.find().populate('username'); //popular o campo type com informação
-        res.render("admin/clients", { clients: clients });
+        res.render("client/clients", { clients: clients });
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
     }
@@ -81,7 +82,7 @@ exports.clients = async function (req, res) {
 
 // Form to create a employee
 exports.employees_create_get = function (req, res) {
-    res.render('admin/createEmployee');
+    res.render('employees/createEmployee');
 };
 
 // Create a new employee

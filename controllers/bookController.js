@@ -9,7 +9,7 @@ var Client = require('../models/clientModel');
 
 // Form to create a book
 exports.books_create_get = function (req, res) {
-    res.render('admin/createBook');
+    res.render('books/createBook');
 };
 
 // Create the book
@@ -73,7 +73,7 @@ exports.books_create_post = [
 exports.books = async function (req, res) {  
     try {
         var books = await Book.find().sort({ _id: -1 });
-        res.render('admin/stock', { books: books });
+        res.render('books/books', { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
     }
@@ -82,7 +82,7 @@ exports.books = async function (req, res) {
 exports.new_books = async function (req, res) {
     try {
         var books = await Book.find().sort({ added: -1 }).limit(6);
-        res.render("indexs/newBooks", { books: books });
+        res.render("index/newBooks", { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
     }
@@ -91,8 +91,17 @@ exports.new_books = async function (req, res) {
 exports.book_delete_post = async function (req, res) {
     try {
         await Book.findByIdAndRemove(req.params.id);
-        res.redirect('/admin/books');
+        res.redirect('book/books');
     } catch (error) {
         res.render("error", { message: "Error deleting book", error: error });
+    }
+};
+
+exports.book_update_get = async function (req, res) {
+    try {
+        var book = await Book.findById(req.params.id);
+        res.render('books/updateBook', { book: book });
+    } catch (error) {
+        res.render("error", { message: "Error finding book", error: error });
     }
 };

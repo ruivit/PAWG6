@@ -1,7 +1,6 @@
 body {
     align-items: center;
-    /*background-color: #000;*/
-    background-image: url("/images/user.png");
+    background-image: url("/images/admin-background.png");
     background-size: 100%;
     display: flex;
     justify-content: center;
@@ -14,7 +13,7 @@ body {
     box-sizing: border-box;
     height: auto;
     padding: 20px;
-    width: 400px;
+    width: 320px;
 }
 
 .title {
@@ -106,11 +105,11 @@ body {
 }
 
 .input:focus~.placeholder {
-    color: #ffb413;
+    color: #dc2f55;
 }
 
 .submit {
-    background-color: orange;
+    background-color: #08d;
     border-radius: 12px;
     border: 0;
     box-sizing: border-box;

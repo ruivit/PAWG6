@@ -6,7 +6,6 @@ var router = express.Router();
 var multer = require('multer');
 
 var adminController = require('../controllers/adminController');
-var bookController = require('../controllers/bookController');
 
 router.get('/', adminController.admin_index);
 
@@ -23,15 +22,6 @@ router.get('/clients', adminController.clients);
 router.get('/employees/create', adminController.employees_create_get);
 
 router.post('/employees/create',  multer().none(), adminController.employees_create_post);
-
-// Book Related Routes
-router.get('/books/create', bookController.books_create_get);
-
-router.post('/books/create', multer().none(), bookController.books_create_post);
-
-router.get('/books', bookController.books);
-
-router.post('/books/delete/:id', multer().none(), bookController.book_delete_post);
 
 module.exports = router;
 

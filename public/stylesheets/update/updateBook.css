@@ -2,10 +2,10 @@ body {
     align-items: center;
     /*background-color: #000;*/
     background-image: url("/images/user.png");
-    background-size: 100%;
+    background-size: 120%;
     display: flex;
     justify-content: center;
-    height: 100vh;
+    height: 125vh;
 }
 
 .form {
@@ -14,7 +14,7 @@ body {
     box-sizing: border-box;
     height: auto;
     padding: 20px;
-    width: 400px;
+    width: 320px;
 }
 
 .title {
@@ -69,14 +69,14 @@ body {
     top: -20px;
     transform: translateY(0);
     transition: transform 200ms;
-    width: 76px;
+    width: 55px;
 }
 
 .cut-short {
     width: 50px;
 }
 .cut-long {
-    width: 115px;
+    width: 75px;
 }
 
 .input:focus~.cut,
