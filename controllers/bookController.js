@@ -1,16 +1,50 @@
 const { redirect } = require('express/lib/response');
 const { body, validationResult } = require("express-validator");
 
-// Models
+// ----------------------- Models ------------------------------
 var Book = require('../models/bookModel');
-
 var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
+
+
+// -------------------- GET Requests ---------------------------
 
 // Form to create a book
 exports.books_create_get = function (req, res) {
     res.render('books/createBook');
 };
+
+// List the books
+exports.books = async function (req, res) {  
+    try {
+        var books = await Book.find().sort({ _id: -1 });
+        res.render('books/books', { books: books });
+    } catch (error) {
+        res.render("error", { message: "Error finding books", error: error });
+    }
+};
+
+// List the newest books
+exports.new_books = async function (req, res) {
+    try {
+        var books = await Book.find().sort({ added: -1 }).limit(6);
+        res.render("index/newBooks", { books: books });
+    } catch (error) {
+        res.render("error", { message: "Error finding books", error: error });
+    }
+};
+
+exports.book_update_get = async function (req, res) {
+    try {
+        var book = await Book.findById(req.params.id);
+        res.render('books/updateBook', { book: book });
+    } catch (error) {
+        res.render("error", { message: "Error finding book", error: error });
+    }
+};
+
+
+// -------------------- POST Requests ---------------------------
 
 // Create the book
 exports.books_create_post = [
@@ -68,26 +102,7 @@ exports.books_create_post = [
     }
 ];
 
-
-// List the books
-exports.books = async function (req, res) {  
-    try {
-        var books = await Book.find().sort({ _id: -1 });
-        res.render('books/books', { books: books });
-    } catch (error) {
-        res.render("error", { message: "Error finding books", error: error });
-    }
-};
-
-exports.new_books = async function (req, res) {
-    try {
-        var books = await Book.find().sort({ added: -1 }).limit(6);
-        res.render("index/newBooks", { books: books });
-    } catch (error) {
-        res.render("error", { message: "Error finding books", error: error });
-    }
-};
-
+// Delete the book 
 exports.book_delete_post = async function (req, res) {
     try {
         await Book.findByIdAndRemove(req.params.id);
@@ -97,11 +112,4 @@ exports.book_delete_post = async function (req, res) {
     }
 };
 
-exports.book_update_get = async function (req, res) {
-    try {
-        var book = await Book.findById(req.params.id);
-        res.render('books/updateBook', { book: book });
-    } catch (error) {
-        res.render("error", { message: "Error finding book", error: error });
-    }
-};
+// --------------------------------------------------------------

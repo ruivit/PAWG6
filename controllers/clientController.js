@@ -1,7 +1,11 @@
 const { redirect } = require('express/lib/response');
 const { body, validationResult } = require("express-validator");
 
+// ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
+
+
+// -------------------- GET Requests ---------------------------
 
 // Get the home page (no client logged in)
 exports.client_index = function (req, res) {
@@ -21,6 +25,15 @@ exports.client_login = function (req, res) {
     }
 };
 
+// Form to create a client
+exports.client_create_get = function (req, res) {
+    res.render('client/createClient');
+};
+
+
+// -------------------- POST Requests ---------------------------
+
+// Create the client
 exports.client_login_post = function (req, res) {
     session = req.session;
 
@@ -39,20 +52,6 @@ exports.client_login_post = function (req, res) {
             res.redirect('/client/login');
         }
     });
-};
-
-exports.client_logout = function (req, res) {
-    session = req.session;
-    session.destroy(function (err) {
-        if (err) { console.log(err); }
-        res.writeHead(302, { 'Location': '/' });
-        res.end();
-    });
-};
-
-// Form to create a client
-exports.client_create_get = function (req, res) {
-    res.render('client/createClient');
 };
 
 // Create a new client
@@ -116,6 +115,11 @@ exports.client_delete_post = function (req, res) {
     });
 };
 
-
-// TODO - Authentication and stuff
-
+exports.client_logout = function (req, res) {
+    session = req.session;
+    session.destroy(function (err) {
+        if (err) { console.log(err); }
+        res.writeHead(302, { 'Location': '/' });
+        res.end();
+    });
+};

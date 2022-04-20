@@ -3,6 +3,7 @@
   <head>
 	<title>Update Book</title>
 	<link rel="stylesheet" href="/stylesheets/update/updateBook.css">
+	<script defer src="/javascripts/updateBook.js"></script>
   </head>
   <body>
 	<form action="/book/update" method="post" enctype="multipart/form-data">
@@ -11,50 +12,50 @@
 			<div class="subtitle">Editing <%=book.title%></div>
 			<div class="input-container ic1">
 				<input name="title" class="input" type="text" value="<%=book.title%>" 
-				onkeydown="updatedValue()" />
+				oninput="updatedValue()" />
 				<div class="cut"></div>
 				<label id="title" class="placeholder">Title</label>
 			</div>
 			<!-- Author depois devera ser uma tabela ??? -->
 			<div class="input-container ic2">
 				<input name="author" class="input" type="text" placeholder=" " 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="author" class="placeholder">Author</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="genre" class="input" type="text" placeholder=" " 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="genre" class="placeholder">Genre</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="publisher" class="input" type="text" value="<%=book.publisher%>" 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut cut-long"></div>
 				<label for="publisher" class="placeholder">Publisher</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="year" class="input" type="text" value="<%=book.year%>" 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="year" class="placeholder">Year</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="price" class="input" type="text" value="<%=book.price%>" 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="price" class="placeholder">Price</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="stock" class="input" type="text" value="<%=book.stock%>" 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="stock" class="placeholder">Stock</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="isbn" class="input" type="text" value="<%=book.isbn%>" 
-				onkeydown="updatedValue()"/>
+				oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="isbn" class="placeholder">ISBN</label>
 			</div>
@@ -63,14 +64,4 @@
 		<% } %>
 	</form>
   </body>
-  <script>
-	function updatedValue() {
-		// Find which input is being updated
-		var activeInput = document.activeElement.name;
-
-		// Change the text color to orange only if the value is updated		
-		var inputText = document.getElementsByName(activeInput);
-		inputText[0].style.color = "orange";
-	}
-  </script>
 </html>
