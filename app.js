@@ -13,7 +13,7 @@ app.use('/favicon.ico', express.static('public/images/favicon.ico'));
 //Import the mongoose module
 var mongoose = require('mongoose');
 //Set up default mongoose connection
-var mongoDB = 'mongodb+srv://mongoadm:AxPAi0GHVVvhijYU@cluster.yharo.mongodb.net/pawm1';
+var mongoDB = 'mongodb+srv://mongoadm:AxPAi0GHVVvhijYU@paw.yharo.mongodb.net/pawm1?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 //Get the default connection
 var db = mongoose.connection;

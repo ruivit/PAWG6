@@ -25,9 +25,9 @@ exports.admin_login_get = function (req, res) {
 };
 
 // List the employees
-exports.employees = async function (req, res) {  
+exports.employees = async function (req, res) {
     try {
-        var employees = await Employee.find().populate('username'); //popular o campo type com informação
+        var employees = await Employee.find().populate('username');
         res.render("employees/employees", { employees: employees });
     } catch (error) {
         res.render("error", { message: "Error finding employees", error: error });
@@ -35,9 +35,9 @@ exports.employees = async function (req, res) {
 };
 
 // List all clients
-exports.clients = async function (req, res) {  
+exports.clients = async function (req, res) {
     try {
-        var clients = await Client.find().populate('username'); //popular o campo type com informação
+        var clients = await Client.find().populate('username');
         res.render("client/clients", { clients: clients });
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
@@ -53,52 +53,53 @@ exports.employees_create_get = function (req, res) {
 // -------------------- POST Requests ---------------------------
 
 // Create a new employee
-exports.employees_create_post = [
+exports.employees_create_post = (req, res) => {
+
+    /* Validations - text based were already made in HTML
+    - Check if username and/or email already exist */
     
-    // Validations
-    body('username', 'Username must not be blank').trim().isLength({ min: 1 }).escape(),
-    body('password', 'Password must not be blank').trim().isLength({ min: 1 }).escape(),
-    body('email', 'Must be a valid email address').isEmail().escape(),
-    body('name', 'Name must not be blank').trim().isLength({ min: 1 }).escape(),
+    // Using promises to validate the data
+    var usernamePromise = Employee.findOne({ username: req.body.username });
+    var emailPromise = Employee.findOne({ email: req.body.email });
 
-    // Process request after validation and sanitization.
-    (req, res, next) => {
-
-        // Extract the validation errors from a request.
-        const errors = validationResult(req);
-
-        // Create Author object with escaped and trimmed data (and the old id!)
-        var employee = new Employee (
-            {
-                username: req.body.username,
-                password: req.body.password,
-                email: req.body.email,
-                name: req.body.name
+    // Wait for the promises to resolve
+    Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
+        // If the username or email already exists, redirect to the create page
+        if (promisesToDo[0]) {
+            res.render('employees/createEmployee', { oldata: req.body, message: "Username already exists" });
+        } else if (promisesToDo[1]) {
+            res.render('employees/createEmployee', { oldata: req.body, message: "Email already exists" });
+        }
+    }).then(function () {
+        // Create the employee
+        var employee = new Employee(
+        {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+            name: req.body.name
+        });
+        employee.save(function (err) {
+            if (err) {
+                res.render('error', { message: "Error creating employee", error: err });
+            } else {
+                res.render('admin/adminPortal', { message: "Employee created successfully" });
             }
-        );
+        });
+    });
+};
 
-        if (!errors.isEmpty()) {
-            // There are errors. 
-            // TODO - Add alert or something
-            res.redirect('/');
-            return;
+// Delete an employee
+exports.employees_delete_post = (req, res) => {
+    Employee.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            res.render('error', { message: "Error deleting employee", error: err });
+        } else {
+            res.render('admin/adminPortal', { message: "Employee deleted successfully" });
         }
-        else {
-            // Data from form is valid.
-            // Check if employee with same username already exists.
-            Employee.findOne({ 'username': req.body.username }).
-            exec(function (err, found_employee) {
-                if (err) { return next(err); }
-            });
-            
-            employee.save(function (err) {
-                if (err) { return next(err); }
-            });
-            console.log(employee);
-            res.redirect('/');
-        }
-    }
-];
+    });
+};
+
 
 exports.admin_login_post = function (req, res) {
     data = req.body;
@@ -110,14 +111,15 @@ exports.admin_login_post = function (req, res) {
     session.password = password;
 
     body('username').isLength({ min: 1 }).trim().withMessage('Username cannot be blank'),
-    body('password').isLength({ min: 1 }).trim().withMessage('Password cannot be blank'),
+        body('password').isLength({ min: 1 }).trim().withMessage('Password cannot be blank'),
 
-    (req, res) => {
-    // Finds the validation errors in this request and wraps them in an object with handy functions
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }};
+        (req, res) => {
+            // Finds the validation errors in this request and wraps them in an object with handy functions
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+        };
 
     // check if the username and password match (admin)
     // TODO - check in the database, and if its admin or employee

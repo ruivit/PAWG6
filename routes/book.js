@@ -21,9 +21,10 @@ router.get('/books', bookController.books);
 router.post('/delete/:id', multer().none(), bookController.book_delete_post);
 
 // Form to update a book
-router.get('/update/:id', bookController.book_update_get);
+router.get('/update/:id', multer().none(), bookController.book_update_get);
 
-//router.post('/books/update/:id', multer().none(), bookController.book_update_post);
+// POST request to update a book
+router.post('/update', multer().none(), bookController.book_update_post);
 
 module.exports = router;
 

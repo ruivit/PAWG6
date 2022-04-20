@@ -39,7 +39,7 @@ exports.client_login_post = function (req, res) {
 
     session.username = req.body.username;
     session.password = req.body.password;
-
+    
     console.log(session.username);
     // Find the client in the database
     Client.findOne({ username: session.username, password: session.password }, function (err, client) {
@@ -55,57 +55,43 @@ exports.client_login_post = function (req, res) {
 };
 
 // Create a new client
-exports.client_create_post = [
+exports.client_create_post = (req, res) => {
+    
+    /* Validations - text based were already made in HTML
+    - Check if username and/or email already exist */
+    
+    // Using promises to validate the data
+    var usernamePromise = Client.findOne({ username: req.body.username });
+    var emailPromise = Client.findOne({ email: req.body.email });
 
-    // Validations
-    body('username', 'Username must not be blank').trim().isLength({ min: 1 }).escape(),
-    body('password', 'Password must not be blank').trim().isLength({ min: 1 }).escape(),
-    body('email', 'Must be a valid email address').isEmail().escape(),
-    body('name', 'Name must not be blank').trim().isLength({ min: 1 }).escape(),
-
-    // Process request after validation and sanitization.
-    (req, res, next) => {
-
-        // Extract the validation errors from a request.
-        const errors = validationResult(req);
-
-        // Create Author object with escaped and trimmed data (and the old id!)
+    // Wait for the promises to resolve
+    Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
+        // If the username or email already exists, redirect to the create page
+        if (promisesToDo[0]) {
+            res.render('client/createClient', { oldata: req.body, message: "Username already exists" });
+        } else if (promisesToDo[1]) {
+            res.render('client/createClient', { oldata: req.body, message: "Email already exists" });
+        }
+    }).then(function () {
+        // Create the employee
         var client = new Client(
-            {
-                username: req.body.username,
-                password: req.body.password,
-                email: req.body.email,
-                name: req.body.name
-            }
-        );
+        {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+            name: req.body.name
+        });
 
-        if (!errors.isEmpty()) {
-            // There are errors. 
-            // TODO - Add alert or something
-            console.log("E" + errors);
-            res.redirect('/');
-            return;
-        }
-        else {
-            /* Data from form is valid.
-            // Check if employee with same username already exists.
-            Client.findOne({ 'username': req.body.username }).
-            exec(function (err, found_employee) {
-                if (err) { return next(err); }
-            });*/
-
-            client.save(function (err) {
-                if (err) { return next(err); }
-            });
-            console.log("Client: " + client);
-            if (req.session.username === 'admin') {
-                res.redirect('/admin/clients');
+        client.save(function (err) {
+            if (err) {
+                res.render('error', { message: "Error creating client", error: err });
             } else {
-                res.redirect('/client');
+                res.render('index/index');
             }
-        }
-    }
-];
+        });
+    });
+};
+
 
 exports.client_delete_post = function (req, res) {
     Client.findByIdAndRemove(req.params.id, function (err) {

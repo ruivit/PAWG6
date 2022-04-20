@@ -96,3 +96,8 @@ body {
     font-style: normal;
     color: firebrick;
 }
+
+.successmessage {
+    color: white;
+    font-weight: bold;
+}

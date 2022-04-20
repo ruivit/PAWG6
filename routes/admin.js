@@ -29,5 +29,7 @@ router.get('/employees/create', adminController.employees_create_get);
 // POST request to create a employee
 router.post('/employees/create',  multer().none(), adminController.employees_create_post);
 
+router.post('/employees/delete/:id', multer().none(), adminController.employees_delete_post);
+
 module.exports = router;
 
