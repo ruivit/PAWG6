@@ -100,6 +100,35 @@ exports.employees_create_post = [
     }
 ];
 
+exports.admin_login_post = function (req, res) {
+    data = req.body;
+    var username = data.username;
+    var password = data.password;
+
+    session = req.session;
+    session.username = username;
+    session.password = password;
+
+    body('username').isLength({ min: 1 }).trim().withMessage('Username cannot be blank'),
+    body('password').isLength({ min: 1 }).trim().withMessage('Password cannot be blank'),
+
+    (req, res) => {
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }};
+
+    // check if the username and password match (admin)
+    // TODO - check in the database, and if its admin or employee
+    if (session.username == "admin" && session.password == "admin") {
+        res.redirect('/admin');
+    } else {
+        session.destroy();
+        res.redirect('/admin/login');
+    }
+};
+
 exports.logout = function (req, res) {
     session = req.session;
     session.destroy(function (err) {
