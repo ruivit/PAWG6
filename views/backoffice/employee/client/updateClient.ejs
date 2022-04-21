@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Update Client</title>
+	<link rel="stylesheet" href="/stylesheets/update/updateBook.css">
+	<script defer src="/javascripts/updateBook.js"></script>
+  </head>
+  <body>
+	<form action="/backoffice/employee/client/update" method="post" enctype="multipart/form-data">
+		<% if(client) { %>
+		<div class="form">
+			<div class="subtitle">Editing <%=book.title%></div>
+			<div class="input-container ic1">
+				<input name="title" class="input" type="text" value="<%=book.title%>" 
+				oninput="updatedValue()" />
+				<div class="cut"></div>
+				<label id="title" class="placeholder">Title</label>
+			</div>
+			<!-- Author depois devera ser uma tabela ??? -->
+			<div class="input-container ic2">
+				<input name="author" class="input" type="text" placeholder=" " 
+				oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="author" class="placeholder">Author</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="genre" class="input" type="text" placeholder=" " 
+				oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="genre" class="placeholder">Genre</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="publisher" class="input" type="text" value="<%=book.publisher%>" 
+				oninput="updatedValue()"/>
+				<div class="cut cut-long"></div>
+				<label for="publisher" class="placeholder">Publisher</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="year" class="input" type="text" value="<%=book.year%>" 
+				oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="year" class="placeholder">Year</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="price" class="input" type="text" value="<%=book.price%>" 
+				oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="price" class="placeholder">Price</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="stock" class="input" type="text" value="<%=book.stock%>" 
+				oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="stock" class="placeholder">Stock</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="isbn" class="input" type="text" value="<%=book.isbn%>" 
+				oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="isbn" class="placeholder">ISBN</label>
+			</div>
+			<button type="text" class="submit">Submit changes</button>
+		</div>
+		<% } %>
+	</form>
+  </body>
+</html>
