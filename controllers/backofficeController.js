@@ -39,9 +39,15 @@ exports.backoffice_admin_get = function (req, res) {
 
 // --------------------- Backoffice/Admin/Employee ---------------------------
 
-exports.backoffice_admin_employee_get = function (req, res) {
-    res.render('backoffice/admin/employee/listEmployees');
-}; // Need to parse old data
+exports.backoffice_admin_employee_get = async function (req, res) {
+    try {
+        var employees = await Employee.find().populate('username');
+        res.render('backoffice/admin/employee/listEmployee', { employees: employees });
+    }
+    catch (error) {
+        res.render("error", { message: "Error finding employees", error: error });
+    }
+}; // Need the model
 
 exports.backoffice_admin_employee_create_get = function (req, res) {
     res.render('backoffice/admin/employee/createEmployee');
@@ -95,8 +101,13 @@ exports.backoffice_admin_client_delete_post = function (req, res) {
 
 // --------------------- Backoffice/Admin/Book ---------------------------
 
-exports.backoffice_admin_book_get = function (req, res) {
-    res.render('backoffice/admin/book/listBook');
+exports.backoffice_admin_book_get = async function (req, res) {
+    try {
+        var books = await Book.find();
+        res.render('backoffice/admin/book/listBook', { books: books });
+    } catch (error) {
+        res.render("error", { message: "Error finding books", error: error });
+    }
 };
 
 exports.backoffice_admin_book_create_get = function (req, res) {
@@ -127,7 +138,7 @@ exports.backoffice_admin_sale_get = function (req, res) {
 };
 
 exports.backoffice_admin_sale_get = function (req, res) {
-    res.render('backoffice/admin/sale/createSale');
+    res.render('backoffice/admin/sale/makeSale');
 };
 
 exports.backoffice_admin_sale_post = function (req, res) {

@@ -7,16 +7,16 @@
   <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingAdmin.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Stock Management</title>
+  <title>Book Listing</title>
 </head>
 <body>
   <ul>
-    <li><a class="importantbutton" href="/admin/">Back</a></li>
-    <li><a href="/book/create">Create</a></li>
-    <li><a href="#">Search</a></li>
+    <li><a class="importantbutton" href="/backoffice/admin/">Back</a></li>
+    <li><a href="/backoffice/admin/book/create">Create</a></li>
+    <li><a href="/backoffice/admin/book/search">Search</a></li>
     <li style="float:right">
       <a class="importantbutton"
-      href="/logout_admin">Logout</a>
+      href="/backoffice/logout">Logout</a>
     </li>
   </ul>
   <br>
@@ -47,10 +47,10 @@
               <td data-label="Price"> <%=books[i].price%> </td>
               <td data-label="ISBN"> <%=books[i].isbn%> </td>
               <td data-label="operations">
-                <form action="/book/update/<%=books[i].id%>" method="get">
+                <form action="/backoffice//book/update/<%=books[i].id%>" method="get">
                   <input type="image" class="material-icons edit" name="_method" value="edit">
                 </form>
-                <form action="/book/delete/<%=books[i].id%>" method="post" enctype="multipart/form-data"
+                <form action="/backoffice/book/delete/<%=books[i].id%>" method="post" enctype="multipart/form-data"
                   onsubmit="return confirm('Are you sure you want to delete this book?')">
                   <input type="image" class="material-icons delete" name="_method" value="delete">
                 </form>

@@ -7,42 +7,30 @@
   <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingAdmin.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Client Listing</title>
+  <title>Sales</title>
 </head>
 <body>
   <ul>
     <li><a class="importantbutton" href="/backoffice/admin/">Back</a></li>
-    <li><a href="/backoffice/admin/client/create">Create</a></li>
-    <li><a href="/backoffice/admin/client/search">Search</a></li>
+    <li><a href="/backoffice/admin/sale/makeSale">Create</a></li>
+    <li><a href="/backoffice/admin/sale/searchSale">Search</a></li>
     <li style="float:right">
       <a class="importantbutton"
       href="/backoffice/logout">Logout</a>
     </li>
   </ul>
   <br>
-    <% if(clients.length>0) { %>
+    <% if(sales.length>0) { %>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Username</th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <% for(var i=0; i<clients.length;i++) { %>
+          <% for(var i=0; i<sales.length;i++) { %>
             <tr>
               <td data-label="ID"> <%=i%> </td>
-              <td data-label="username"> <%=clients[i].username%></a></td>
-              <td data-label="operations">
-                <form action="/backoffice/book/update/<%=books[i].id%>" method="get">
-                  <input type="image" class="material-icons edit" name="_method" value="edit">
-                </form>
-                <form action="/backoffie/book/delete/<%=books[i].id%>" method="post" enctype="multipart/form-data"
-                  onsubmit="return confirm('Are you sure you want to delete this book?')">
-                  <input type="image" class="material-icons delete" name="_method" value="delete">
-                </form>
-              </td>
             </tr>
           <% } %>
         </tbody>
@@ -51,7 +39,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">No Clients were found</th>
+            <th scope="col">No Sales were found</th>
           </tr>
         </thead>
       </table>

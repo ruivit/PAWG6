@@ -6,7 +6,7 @@
   </head>
   <body>
 	<% if(locals.oldata) { %>
-	<form action="/client/create" method="post" enctype="multipart/form-data">
+	<form action="/backoffice/admin/client/create" method="post" enctype="multipart/form-data">
 		<div class="form">
 			<div class="subtitle">Create your new account</div>
 			<div class="errormessage"><%= locals.message %></div>
@@ -44,7 +44,7 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 		</div>
 	</form>
 	<% } else { %>
-	<form action="/client/create" method="post" enctype="multipart/form-data">
+	<form action="/backoffice/admin/client/create" method="post" enctype="multipart/form-data">
 		<div class="form">
 			<div class="subtitle">Create your new account</div>
 			<div class="input-container ic1">

@@ -1,64 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
-  <link rel="stylesheet" href="/stylesheets/listing/tableListingAdmin.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Employee Management</title>
-</head>
-<body>
-  <ul>
-    <li><a class="importantbutton" href="/admin/">Back</a></li>
-    <li><a href="/admin/employees/create">Create</a></li>
-    <li><a href="#">Search</a></li>
-    <li style="float:right">
-      <a class="importantbutton"
-      href="/logout_admin">Logout</a>
-    </li>
-  </ul>
-  <br>
-    <% if(employees.length>0) { %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">Name</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i=0; i<employees.length;i++) { %>
-            <tr>
-              <td data-label="ID"> <%=i%> </td>
-              <td data-label="username"> <%=employees[i].username%></a></td>
-              <td data-label="email"> <%=employees[i].email%></a></td>
-              <td data-label="name"> <%=employees[i].name%></a></td>   
-              <td data-label="operations">
-                <form action="/admin/employees/update/<%=employees[i].id%>" method="get">
-                  <input type="image" class="material-icons edit" name="_method" value="edit">
-                </form>
-                <form action="/admin/employees/delete/<%=employees[i].id%>" method="post"
-                  onclick="return confirm('Are you sure you want to delete this employee?')">
-                  <input type="image" class="material-icons delete" name="_method" value="delete">
-                </form>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    <% } else { %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">No Employees were found</th>
-          </tr>
-        </thead>
-      </table>
-    <% } %>
-</body>
+<html>
+  <head>
+	<title>Make Sale</title>
+	<link rel="stylesheet" href="/stylesheets/sale/makeSale.css">
+  </head>
+  <body>
+	<% if(locals.oldata) { %>
+	<form action="/backoffice/admin/sale/makeSale" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">Register a new sale</div>
+			<div class="errormessage"><%= locals.message %></div>
+			<div class="input-container ic1">
+				<input name="username" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.username %>"
+				required minlength="2" maxlength="10" pattern="[a-zA-Z0-9]+" />
+				<div class="cut"></div>
+				<label for="username" class="placeholder">Username</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="email" class="input" type="email" placeholder=" "
+				value="<%= locals.oldata.email %>" required 
+				minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				<div class="cut cut-short"></div>
+				<label for="email" class="placeholder">Email</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="name" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.name %>" required
+				minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+\s[a-zA-Z0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="name" class="placeholder">Name (First/Last)</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="password" class="input" type="password" placeholder="" id="password" required
+				minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" />
+				<div class="cut passwordpolicy"></div>
+				<label for="password" class="placeholder">Password</label>
+				<span class="passwordpolicy">
+Minimum 8 characters, at least 1 letter, 1 number and 1 special character
+				</span>
+			</div>
+			<p></p>
+			<button type="text" class="submit">Create</button>
+		</div>
+	</form>
+	<% } else { %>
+	<form action="/backoffice/admin/sale/makeSale" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">Create a new Employee</div>
+			<div class="input-container ic1">
+				<input name="username" class="input" type="text" placeholder=" "
+				required minlength="2" maxlength="10" pattern="[a-zA-Z0-9]+" />
+				<div class="cut"></div>
+				<label for="username" class="placeholder">Username</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="email" class="input" type="email" placeholder=" "
+				required minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				<div class="cut cut-short"></div>
+				<label for="email" class="placeholder">Email</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="name" class="input" type="text" placeholder=" "
+				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+\s[a-zA-Z0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="name" class="placeholder">Name (First/Last)</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="password" class="input" type="password" placeholder="" id="password" required
+				minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" />
+				<div class="cut passwordpolicy"></div>
+				<label for="password" class="placeholder">Password</label>
+				<span class="passwordpolicy">
+Minimum 8 characters, at least 1 letter, 1 number and 1 special character
+				</span>
+			</div>
+			<p></p>
+			<button type="text" class="submit">Create</button>
+		</div>
+	</form>
+	<% } %>
+  </body>
 </html>
