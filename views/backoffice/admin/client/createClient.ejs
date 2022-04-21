@@ -63,11 +63,28 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 				<input name="name" class="input" type="text" placeholder=" " required
 				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
 				<div class="cut cut-long"></div>
-				<label for="name" class="placeholder">Name (First/Last)</label>
+				<label for="name" class="placeholder">Name</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="phonenumber" class="input" type="text" placeholder=" " required
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="phonenumber" class="placeholder">Phone Number</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="points" class="input" type="text" placeholder=" "
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="points" class="placeholder">Points</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="birthDate" class="input" type="date" placeholder=" " required/>
+				<div class="cut cut-long"></div>
+				<label for="birthDate" class="placeholder">Date</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="password" class="input" type="password" placeholder=" " id="password" required
-				minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" />
+				minlength="1" maxlength="200" />
 				<div class="cut"></div>
 				<label for="password" class="placeholder">Password</>
 			</div>
@@ -80,3 +97,4 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 	<% } %>
   </body>
 </html>
+<!-- minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" /> -->

@@ -4,9 +4,9 @@ var Schema = mongoose.Schema;
 
 var BookSchema = new Schema({
   title: { type: String, required: true },
-  autor:{ type: String, required: true },
+  author:{ type: String, required: true },
   isbn: { type: Number, required: true },
-  genero:{ type: String, required: true },
+  genre:{ type: String, required: true },
   editor:{ type: String, required: true },
   stock: { type: Number, required: true },
   dataAdd: { type: Date, default: Date.now },

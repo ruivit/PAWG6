@@ -50,14 +50,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 var indexRouter = require('./routes/index');
 var backofficeRouter = require('./routes/backoffice');
 var backofficeAdminRouter = require('./routes/backofficeAdmin');
-//var backofficeEmployeeRouter = require('./routes/backofficeEmployee');
+var backofficeEmployeeRouter = require('./routes/backofficeEmployee');
 
 //var clientRouter = require('./routes/client');
 
 app.use('/', indexRouter);
 app.use('/backoffice', backofficeRouter);
 app.use('/backoffice/admin', backofficeAdminRouter);
-//app.use('/backoffice/employee', backofficeEmployeeRouter);
+app.use('/backoffice/employee', backofficeEmployeeRouter);
 //app.use('/client', clientRouter);
 // -----------------------------------------------------
 

@@ -12,7 +12,7 @@ var Sale = require('../models/saleModel');
 // --------------------- Backoffice/Admin/ ---------------------------
 
 exports.backoffice_admin_get = function (req, res) {
-    res.render('backoffice/admin/adminIndex');
+    res.render('backoffice/backofficeIndex', { admin: true });
 };
 
 

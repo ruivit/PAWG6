@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/portals/backoffice-portal.css">
+  <link rel="stylesheet" href="/stylesheets/listing/tableListing.css">
+  <title>Admin Portal</title>
+</head>
+<body>
+  <% if(locals.admin) { %>
+  <ul>
+    <li><a class="importantbutton" href="/">Go to Store</a></li>
+    <li><a href="/backoffice/admin/employee">Employees</a></li>
+    <li><a href="/backoffice/admin/client">Clients</a></li>
+    <li><a href="/backoffice/admin/book">Books</a></li>
+    <li><a href="/backoffice/admin/sales">Sales</a></li>
+    <li style="float:right">
+      <a class="importantbutton"
+      href="/backoffice/logout">Logout</a>
+    </li>
+  </ul>
+  <% } else { %>
+    <ul>
+      <li><a class="importantbutton" href="/">Go to Store</a></li>
+      <li><a href="/backoffice/employee/client">Clients</a></li>
+      <li><a href="/backoffice/employee/book">Books</a></li>
+      <li><a href="/backoffice/employee/sales">Sales</a></li>
+      <li style="float:right">
+        <a class="importantbutton"
+        href="/backoffice/logout">Logout</a>
+      </li>
+    </ul>
+  <% } %>
+</body>
+</html>
