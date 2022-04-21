@@ -5,15 +5,15 @@ var Schema = mongoose.Schema;
 var BookSchema = new Schema({
   title: { type: String, required: true },
   author:{ type: String, required: true },
-  isbn: { type: Number, required: true },
   genre:{ type: String, required: true },
   editor:{ type: String, required: true },
-  stock: { type: Number, required: true },
-  dataAdd: { type: Date, default: Date.now },
-  condition: { type: Number, required: true },
-  provider: { type: Number, required: true },
-  resume: { type: Number, required: true },
+  resume: { type: String, required: true },
   avaliation: { type: Number, required: true },
+  isbn: { type: Number, required: true },
+  dateAdded: { type: Date, default: Date.now },
+  condition: { type: String, required: true },
+  provider: { type: String, required: true },
+  stock: { type: Number, required: true },
   price: { type: Number, required: true },
   
 }, {

@@ -12,7 +12,8 @@ body {
     background-color: #15172b;
     border-radius: 20px;
     box-sizing: border-box;
-    height: auto;
+    height: 100%;
+    scale: 0.8;
     padding: 20px;
     width: 400px;
 }

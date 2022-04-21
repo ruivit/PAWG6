@@ -8,15 +8,7 @@ var EmployeeSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     category: { type: String, required: true },
-    admin: { type: Boolean, required: true, default: false },
-});
-
-// Virtual for this Employee instance URL.
-// I dont know wtf is this
-EmployeeSchema
-.virtual('url')
-.get(function () {
-  return '/admin/employee/'+this._id;
+    admin: { type: Boolean, required: false, default: false },
 });
 
 // Export model.

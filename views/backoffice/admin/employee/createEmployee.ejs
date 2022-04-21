@@ -13,7 +13,7 @@
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
 				value="<%= locals.oldata.username %>"
-				required minlength="2" maxlength="10" pattern="[a-zA-Z0-9]+" />
+				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
 				<div class="cut"></div>
 				<label for="username" class="placeholder">Username</label>
 			</div>
@@ -27,9 +27,9 @@
 			<div class="input-container ic2">
 				<input name="name" class="input" type="text" placeholder=" "
 				value="<%= locals.oldata.name %>" required
-				minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+\s[a-zA-Z0-9]+" />
+				minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
 				<div class="cut cut-long"></div>
-				<label for="name" class="placeholder">Name (First/Last)</label>
+				<label for="name" class="placeholder">Name</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="category" class="input" type="text" placeholder=" "
@@ -39,8 +39,7 @@
 				<label for="category" class="placeholder">Category</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="password" class="input" type="password" placeholder="" id="password" required
-				minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" />
+				<input name="password" class="input" type="password" placeholder="" id="password" required/>
 				<div class="cut passwordpolicy"></div>
 				<label for="password" class="placeholder">Password</label>
 				<span class="passwordpolicy">
@@ -57,7 +56,7 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			<div class="subtitle">Create a new Employee</div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
-				required minlength="2" maxlength="10" pattern="[a-zA-Z0-9]+" />
+				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
 				<div class="cut"></div>
 				<label for="username" class="placeholder">Username</label>
 			</div>
@@ -69,9 +68,9 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			</div>
 			<div class="input-container ic2">
 				<input name="name" class="input" type="text" placeholder=" "
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+\s[a-zA-Z0-9]+" />
+				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
 				<div class="cut cut-long"></div>
-				<label for="name" class="placeholder">Name (First/Last)</label>
+				<label for="name" class="placeholder">Name</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="category" class="input" type="text" placeholder=" "
@@ -80,8 +79,7 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 				<label for="category" class="placeholder">Category</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="password" class="input" type="password" placeholder="" id="password" required
-				minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" />
+				<input name="password" class="input" type="password" placeholder="" id="password" required/>
 				<div class="cut passwordpolicy"></div>
 				<label for="password" class="placeholder">Password</label>
 				<span class="passwordpolicy">
@@ -95,3 +93,4 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 	<% } %>
   </body>
 </html>
+<!-- minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" /> -->

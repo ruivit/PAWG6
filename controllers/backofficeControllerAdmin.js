@@ -13,7 +13,7 @@ var Sale = require('../models/saleModel');
 
 exports.backoffice_admin_get = function (req, res) {
     res.render('backoffice/backofficeIndex', { admin: true });
-};
+}; // Done
 
 
 // --------------------- Backoffice/Admin/Employee ---------------------------
@@ -26,11 +26,11 @@ exports.backoffice_admin_employee_get = async function (req, res) {
     catch (error) {
         res.render("error", { message: "Error finding employees", error: error });
     }
-};
+}; // Done
 
 exports.backoffice_admin_employee_create_get = function (req, res) {
     res.render('backoffice/admin/employee/createEmployee');
-};
+}; // Done
 
 exports.backoffice_admin_employee_create_post = (req, res) => {
     // Using promises to validate the data
@@ -41,49 +41,65 @@ exports.backoffice_admin_employee_create_post = (req, res) => {
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
         // If the username or email already exists, redirect to the create page
         if (promisesToDo[0]) {
-            res.render('backoffice/admin/employee/createEmployee', 
+            return res.render('backoffice/admin/employee/createEmployee', 
             { oldata: req.body, message: "Username already exists" });
         } else if (promisesToDo[1]) {
-            res.render('backoffice/admin/employee/createEmployee', 
+            return res.render('backoffice/admin/employee/createEmployee', 
             { oldata: req.body, message: "Email already exists" });
+        } else {
+            // If the username and email are unique, create the employee
+            var employee = new Employee({
+                username: req.body.username,
+                password: req.body.password,
+                name: req.body.name,
+                email: req.body.email,
+                category: req.body.category,
+                admin: false,
+            });
+
+            employee.save(function (err) {
+                if (err) {
+                    res.render('error/error', { message: "Error creating employee", error: err });
+                } else {
+                    res.redirect('/backoffice/admin/employee');
+                }
+            });
         }
-    }).then(function () {
-        // If the username and email are not already in use, create the employee
-        var employee = new Employee({
-            username: req.body.username,
-            password: req.body.password,
-            name: req.body.name,
-            email: req.body.email,
-            category: req.body.category
-        });
-        employee.save(function (err) {
-            if (err) {
-                res.render('backoffice/admin/employee/createEmployee',
-                { oldata: req.body, message: err });
-            } else {
-                res.redirect('/backoffice/admin/employee');
-            }
-        });
     });
-};
+}; // Done
 
-exports.backoffice_admin_employee_update_get = function (req, res) {
-    res.render('NotImplemented');
-};
 
-exports.backoffice_admin_employee_update_post = function (req, res) {
-    res.render('NotImplemented');
-};
+exports.backoffice_admin_employee_update_get = async function (req, res) {
+    try {
+        var employee = await Employee.findById(req.params.id);
+        res.render('backoffice/admin/employee/updateEmployee', { employee: employee });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating employee", error: error });
+    }
+}; // Done
 
-exports.backoffice_admin_employee_delete_post = (req, res) => {
+exports.backoffice_admin_employee_update_post = async function (req, res) {
+    Employee.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
+        function (err, employee) {
+        if (err) {
+            res.render('error/error', { message: "Error updating employee", error: err });
+        } else {
+            res.redirect('/backoffice/admin/employee');
+        }
+    });
+}; // Done
+
+    
+
+exports.backoffice_admin_employee_delete_post = (req, res) => {   
     Employee.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.render('error', { message: "Error deleting employee", error: err });
         } else {
-            res.render('backoffice/admin/adminIndex', { message: "Employee removed successfully" });
+            res.redirect('/backoffice/admin/employee'); // Need to add success message
         }
     });
-};
+}; // Done
 
 
 // --------------------- Backoffice/Admin/Client ---------------------------
@@ -95,79 +111,186 @@ exports.backoffice_admin_client_get = async function (req, res) {
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
     }
-};
-
-exports.backoffice_admin_client_post = function (req, res) {
-    res.render('NotImplemented');
-};
+}; // Done
 
 exports.backoffice_admin_client_create_get = function (req, res) {
     res.render('backoffice/admin/client/createClient');
-};
+}; // Done, CSS bugado
 
-exports.backoffice_admin_client_create_post = function (req, res) {
-    res.render('NotImplemented');
-};
+exports.backoffice_admin_client_create_post = (req, res) => {
+    function calculatePoints(points) {
+        var totalPoints = 0;
+        if (points == "" || points == null) {
+            return 10;
+        } else {
+            return totalPoints;
+        }// else, logica de negocio
+    }
+
+    // Using promises to validate the data
+    var usernamePromise = Client.findOne({ username: req.body.username });
+    var emailPromise = Client.findOne({ email: req.body.email });
+    
+    // Wait for the promises to resolve
+    Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
+        // If the username or email already exists, redirect to the create page
+        if (promisesToDo[0]) {
+            res.render('backoffice/admin/client/createClient', 
+            { oldata: req.body, message: "Username already exists" });
+        } else if (promisesToDo[1]) {
+            res.render('backoffice/admin/client/createClient', 
+            { oldata: req.body, message: "Email already exists" });
+        } else {
+        // If the username and email are not already in use, create the client
+        var client = new Client({
+            username: req.body.username,
+            password: req.body.password,
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            phone: req.body.phone,
+            points: calculatePoints(req.body.points),
+            birthDate: req.body.birthDate,
+            ageType: 21, // falta calcular
+        });
+
+        client.save(function (err) {
+            if (err) {
+                res.render('error/error', { message: "Error creating client", error: err });
+            } else {
+                res.redirect('/backoffice/admin/client');
+            }
+        });
+        }
+    });
+}; // Done, CSS bugado
 
 
-exports.backoffice_admin_client_update_get = function (req, res) {
-    res.render('NotImplemented');
-};
+exports.backoffice_admin_client_update_get = async function (req, res) {
+    try {
+        var client = await Client.findById(req.params.id);
+        res.render('backoffice/admin/client/updateClient', { client: client });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating client", error: error });
+    }
+}; // Done, CSS bugado
 
-exports.backoffice_admin_client_update_post = function (req, res) {
-    res.render('NotImplemented');
-};
+exports.backoffice_admin_client_update_post = async function (req, res) {
+    Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
+        function (err, client) {
+        if (err) {
+            res.render('error/error', { message: "Error updating client", error: err });
+        } else {
+            res.redirect('/backoffice/admin/client');
+        }
+    });
+}; // Done
+
+
 
 exports.backoffice_admin_client_delete_post = (req, res) => {
     Client.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
-            res.render('error', { message: "Error deleting client", error: err });
+            res.render('error', { message: "Error deleting employee", error: err });
         } else {
-            res.render('backoffice/admin/adminIndex', { message: "Client removed successfully" });
+            res.redirect('/backoffice/admin/client'); // Need to add success message
         }
     });
-};
+}; // Done
 
 
 // --------------------- Backoffice/Admin/Book ---------------------------
 
 exports.backoffice_admin_book_get = async function (req, res) {
     try {
-        var books = await Book.find().populate('title');
-        res.render('backoffice/admin/books/listBooks', { books: books });
+        var books = await Book.find();
+        res.render('backoffice/admin/book/listBooks', { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
     }
-};
+}; // Done
 
 exports.backoffice_admin_book_create_get = function (req, res) {
-    res.render('backoffice/admin/books/createBook');
-};
+    res.render('backoffice/admin/book/createBook');
+}; // Done, CSS MARAVILHA
 
-exports.backoffice_admin_book_create_post = function (req, res) {
-    res.render('NotImplemented');
-};
+exports.backoffice_admin_book_create_post = (req, res) => {
+    
+    var isbnPromise = Book.findOne({ isbn: req.body.isbn });
+    
+    // Wait for the promises to resolve
+    Promise.all([isbnPromise]).then(function (promisesToDo) {
+        // If the isbn already exists, increate the stock of that book
+        if (promisesToDo[0]) {
+            Book.findOneAndUpdate({ isbn: req.body.isbn }, { $inc: { stock: req.body.stock } }, { new: true },
+                function (err, book) {
+                if (err) {
+                    res.render('error/error', { message: "Error creating book", error: err });
+                }
+            });
+        } else {
+        // If the isbn is not already in use, create the book
+        var book = new Book({
+            title: req.body.title,
+            author: req.body.author,
+            genre: req.body.genre,
+            editor: req.body.editor,
+            resume: req.body.resume,
+            avaliation: req.body.avaliation,
+            isbn: req.body.isbn,
+            dateAdded: req.body.dateAdded,
+            condition: req.body.condition,
+            provider: req.body.provider,
+            stock: req.body.stock,
+            price: req.body.price,
+        });
 
-exports.backoffice_admin_book_update_get = function (req, res) {
-    res.render('NotImplemented');
-};
+        book.save(function (err) {
+            if (err) {
+                res.render('error/error', { message: "Error creating book", error: err });
+            } else {
+                res.redirect('/backoffice/admin/book');
+            }
+        });
+        }
+    });
+}; // Semi, nao incrementa o stock, CSS scaled o que nao deve
 
-exports.backoffice_admin_book_update_post = function (req, res) {
-    res.render('NotImplemented');
-};
+
+exports.backoffice_admin_book_update_get = async function (req, res) {
+    try {
+        var book = await Book.findById(req.params.id);
+        res.render('backoffice/admin/book/updateBook', { book: book });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating book", error: error });
+    }
+}; // Done, CSS bugado
+
+exports.backoffice_admin_book_update_post = async function (req, res) {
+    Book.findOneAndUpdate({ isbn: req.body.username }, req.body, { new: true }, 
+        function (err, client) {
+        if (err) {
+            res.render('error/error', { message: "Error updating book", error: err });
+        } else {
+            res.redirect('/backoffice/admin/book');
+        }
+    });
+}; // Todo, vai ter de ser pelo ID
+
 
 exports.backoffice_admin_book_delete_post = (req, res) => {
     Book.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.render('error', { message: "Error deleting book", error: err });
         } else {
-            res.render('backoffice/admin/adminIndex', { message: "Book removed successfully" });
+            res.redirect('/backoffice/admin/book'); // Need to add success message
         }
     });
-};
+}; // Igual ao update post, vai ter de ser pelo ID, todo
 
 
 // --------------------- Backoffice/Admin/Sale ---------------------------
+// Everything Todo
 
 exports.backoffice_admin_sale_get = function (req, res) {
     res.render('backoffice/admin/sale/listSale');

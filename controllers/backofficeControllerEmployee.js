@@ -60,8 +60,7 @@ exports.backoffice_employee_client_create_get = (req, res) => {
         });
         client.save(function (err) {
             if (err) {
-                console.log(err);
-                res.render('error', { message: "Error creating client", error: err });
+                res.render('error/error', { message: "Error creating client", error: err });
             } else {
                 res.redirect('/backoffice/employee/client');
             }

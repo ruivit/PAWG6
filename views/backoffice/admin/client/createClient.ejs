@@ -32,8 +32,35 @@
 				<label for="name" class="placeholder">Name (First/Last)</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="password" class="input" type="password" placeholder=" " id="password" required
-				minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" />
+				<input name="address" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.address %>" required
+				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut cut-long"></div>
+				<label for="address" class="placeholder">Address</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="phone" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.phone %>" required
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="phone" class="placeholder">Phone Number</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="points" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.points %>"
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="points" class="placeholder">Points</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="birthDate" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.birthDate %>" required
+				required pattern="\d{4}-\d{2}-\d{2}"/>
+				<div class="cut cut-long"></div>
+				<label for="birthDate" class="placeholder">Birth Date (YYYY-MM-DD)</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="password" class="input" type="password" placeholder=" " id="password" required/>
 				<div class="cut"></div>
 				<label for="password" class="placeholder">Password</>
 			</div>
@@ -66,10 +93,16 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 				<label for="name" class="placeholder">Name</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="phonenumber" class="input" type="text" placeholder=" " required
+				<input name="address" class="input" type="text" placeholder=" " required
+				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut cut-long"></div>
+				<label for="address" class="placeholder">Address</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="phone" class="input" type="text" placeholder=" " required
 				minlength="2" maxlength="20" pattern="[0-9]+" />
 				<div class="cut cut-long"></div>
-				<label for="phonenumber" class="placeholder">Phone Number</label>
+				<label for="phone" class="placeholder">Phone Number</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="points" class="input" type="text" placeholder=" "
@@ -78,9 +111,10 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 				<label for="points" class="placeholder">Points</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="birthDate" class="input" type="date" placeholder=" " required/>
+				<input name="birthDate" class="input" type="text" placeholder=" "
+				required pattern="\d{4}-\d{2}-\d{2}"/>
 				<div class="cut cut-long"></div>
-				<label for="birthDate" class="placeholder">Date</label>
+				<label for="birthDate" class="placeholder">Birth Date (YYYY-MM-DD)</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="password" class="input" type="password" placeholder=" " id="password" required

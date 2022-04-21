@@ -8,7 +8,7 @@ var controller = require('../controllers/backofficeControllerAdmin');
 // Admin Index
 router.get('/', controller.backoffice_admin_get);
 
-// ------------------------------ Admin/Employee URL
+// ------------------------------ /Backoffice/Admin/Employee URL
 
 // Admin Employee Index
 router.get('/employee', controller.backoffice_admin_employee_get);
@@ -19,13 +19,13 @@ router.post('/employee/create', multer().none(), controller.backoffice_admin_emp
 
 // Admin Employee Update
 router.get('/employee/update/:id', multer().none(), controller.backoffice_admin_employee_update_get);
-router.post('/employee/update/:id', multer().none(), controller.backoffice_admin_employee_update_post);
+router.post('/employee/update', multer().none(), controller.backoffice_admin_employee_update_post);
 
 // Admin Employee Delete
 router.post('/employee/delete/:id', multer().none(), controller.backoffice_admin_employee_delete_post);
 
 
-// ------------------------------ Admin/Client URL
+// ------------------------------ /Backoffice/Admin/Client URL
 
 // Admin Client Index
 router.get('/client', controller.backoffice_admin_client_get);
@@ -36,7 +36,7 @@ router.post('/client/create', multer().none(), controller.backoffice_admin_clien
 
 // Admin Client Update
 router.get('/client/update/:id', multer().none(), controller.backoffice_admin_client_update_get);
-router.post('/client/update/:id', multer().none(), controller.backoffice_admin_client_update_post);
+router.post('/client/update', multer().none(), controller.backoffice_admin_client_update_post);
 
 // Admin Client Delete
 router.post('/client/delete/:id', multer().none(), controller.backoffice_admin_client_delete_post);
@@ -53,7 +53,7 @@ router.post('/book/create', multer().none(), controller.backoffice_admin_book_cr
 
 // Admin Book Update
 router.get('/book/update/:id', multer().none(), controller.backoffice_admin_book_update_get);
-router.post('/book/update/:id', multer().none(), controller.backoffice_admin_book_update_post);
+router.post('/book/update', multer().none(), controller.backoffice_admin_book_update_post);
 
 // Admin Book Delete
 router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_book_delete_post);
