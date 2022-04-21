@@ -30,6 +30,14 @@ exports.client_create_get = function (req, res) {
     res.render('client/createClient');
 };
 
+exports.client_update_get = async function (req, res) {
+    try {
+        var clientOld = await Client.findById(req.params.id);
+        res.render('client/updateClient', { oldata: clientOld });
+    } catch (error) {
+        res.render("error", { message: "Error finding client", error: error });
+    }
+};
 
 // -------------------- POST Requests ---------------------------
 

@@ -39,7 +39,7 @@
               <td data-label="email"> <%=clients[i].email%></a></td>
               <td data-label="name"> <%=clients[i].name%></a></td>   
               <td data-label="operations">
-                <form action="/client/update/<%=clients[i].id%>/edit" method="get">
+                <form action="/client/update/<%=clients[i].id%>" method="get">
                   <input type="image" class="material-icons edit" name="_method" value="edit">
                 </form>
                 <form action="/client/delete/<%=clients[i].id%>" method="post"

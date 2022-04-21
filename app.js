@@ -48,14 +48,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ----------------------- Routes -----------------------
 var indexRouter = require('./routes/index');
-var adminRouter = require('./routes/admin');
+var backofficeRouter = require('./routes/backoffice');
+
 var clientRouter = require('./routes/client');
-var bookRouter = require('./routes/book');
 
 app.use('/', indexRouter);
-app.use('/admin', adminRouter);
+app.use('/backoffice', backofficeRouter);
 app.use('/client', clientRouter);
-app.use('/book', bookRouter);
 // -----------------------------------------------------
 
 // catch 404 and forward to error handler

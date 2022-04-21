@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Create Book</title>
+	<link rel="stylesheet" href="/stylesheets/create/createBook.css">
+  </head>
+  <body>
+	<% if(locals.oldata) { %>
+	<form action="/book/create" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">Create a new Book</div>
+			<div class="errormessage"><%= locals.message %></div>
+			<div class="input-container ic1">
+				<input name="title" class="input" type="text" placeholder=" " 
+				value="<%= locals.oldata.title %>" required
+				pattern="[a-zA-Z0-9\s]{1,50}" minlength="5" maxlength="50">
+				<div class="cut"></div>
+				<label for="title" class="placeholder">Title</label>
+			</div>
+			<!-- Author depois devera ser uma tabela ??? -->
+			<div class="input-container ic2">
+				<input name="author" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.author %>" required
+				pattern="[a-zA-Z0-9\s]{1,50}" minlength="5" maxlength="50">
+				<div class="cut"></div>
+				<label for="author" class="placeholder">Author</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="genre" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.genre %>" required
+				pattern="[a-zA-Z0-9]{1,50}" minlength="5" maxlength="50">
+				<div class="cut"></div>
+				<label for="genre" class="placeholder">Genre</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="publisher" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.publisher %>" required
+				pattern="[a-zA-Z0-9]{1,50}" minlength="5" maxlength="50">
+				<div class="cut cut-long"></div>
+				<label for="publisher" class="placeholder">Publisher</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="year" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.year %>" required
+				pattern="[0-9]{4}" minlength="4" maxlength="4">
+				<div class="cut"></div>
+				<label for="year" class="placeholder">Year</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="price" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.price %>" required
+				pattern="^\d+(.\d{1,2})?$" minlength="1" maxlength="10">
+				<div class="cut"></div>
+				<label for="price" class="placeholder">Price</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="stock" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.stock %>" required
+				pattern="[0-9]{1,4}" minlength="1" maxlength="4">
+				<div class="cut"></div>
+				<label for="stock" class="placeholder">Stock</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="isbn" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.isbn %>" required
+				pattern="[0-9]{13,13}" minlength="1" maxlength="13">
+				<div class="cut"></div>
+				<label for="isbn" class="placeholder">ISBN</label>
+			</div>
+			<button type="text" class="submit">Create</button>
+		</div>
+	</form>
+	<% } else { %>
+		<form action="/book/create" method="post" enctype="multipart/form-data">
+			<div class="form">
+				<div class="subtitle">Create a new Book</div>
+				<div class="errormessage"><%= locals.message %></div>
+				<div class="input-container ic1">
+					<input name="title" class="input" type="text" placeholder=" " required
+					pattern="[a-zA-Z0-9\s]{1,50}" minlength="5" maxlength="50">
+					<div class="cut"></div>
+					<label for="title" class="placeholder">Title</label>
+				</div>
+				<!-- Author depois devera ser uma tabela ??? -->
+				<div class="input-container ic2">
+					<input name="author" class="input" type="text" placeholder=" " required
+					pattern="[a-zA-Z0-9\s]{1,50}" minlength="5" maxlength="50">
+					<div class="cut"></div>
+					<label for="author" class="placeholder">Author</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="genre" class="input" type="text" placeholder=" " required
+					pattern="[a-zA-Z0-9]{1,50}" minlength="5" maxlength="50">
+					<div class="cut"></div>
+					<label for="genre" class="placeholder">Genre</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="publisher" class="input" type="text" placeholder=" " required
+					pattern="[a-zA-Z0-9]{1,50}" minlength="5" maxlength="50">
+					<div class="cut cut-long"></div>
+					<label for="publisher" class="placeholder">Publisher</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="year" class="input" type="text" placeholder=" " required
+					pattern="[0-9]{4}" minlength="4" maxlength="4">
+					<div class="cut"></div>
+					<label for="year" class="placeholder">Year</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="price" class="input" type="text" placeholder=" " required
+					pattern="^\d+(.\d{1,2})?$" minlength="1" maxlength="10">
+					<div class="cut"></div>
+					<label for="price" class="placeholder">Price</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="stock" class="input" type="text" placeholder=" " required
+					pattern="[0-9]{1,4}" minlength="1" maxlength="4">
+					<div class="cut"></div>
+					<label for="stock" class="placeholder">Stock</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="isbn" class="input" type="text" placeholder=" " required
+					pattern="[0-9]{13,13}" minlength="1" maxlength="13">
+					<div class="cut"></div>
+					<label for="isbn" class="placeholder">ISBN</label>
+				</div>
+				<button type="text" class="submit">Create</button>
+			</div>
+		</form>
+	<% } %>
+  </body>
+</html>

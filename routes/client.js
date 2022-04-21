@@ -26,5 +26,9 @@ router.get('/logout', clientController.client_logout);
 // Delete a client POST request
 router.post('/delete/:id', clientController.client_delete_post);
 
+router.get('/update/:id', clientController.client_update_get);
+
+//router.post('/update/:id', multer().none(), clientController.client_update_post);
+
 module.exports = router;
 

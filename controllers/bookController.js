@@ -29,7 +29,7 @@ exports.new_books = async function (req, res) {
         var books = await Book.find().sort({ added: -1 }).limit(6);
         res.render("index/newBooks", { books: books });
     } catch (error) {
-        res.render("error", { message: "Error finding books", error: error });
+        res.render("error/error", { message: "Error finding books", error: error });
     }
 };
 

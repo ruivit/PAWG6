@@ -2,29 +2,144 @@ const { redirect } = require('express/lib/response');
 const { body, validationResult } = require("express-validator");
 
 // ----------------------- Models ------------------------------
-var Admin = require('../models/adminModel');
-var Employee = require('../models/employeeModel');
-var Client = require('../models/clientModel');
+
+const { session } = require('passport/lib');
 
 
-// -------------------- GET Requests ---------------------------
+// -------------------- Backoffice/ ---------------------------
 
-// Get the admin page, or redirect to login
-exports.admin_index = function (req, res) {
-    session = req.session;
-    // If the user is not logged in, redirect to the login page
-    if (!session.username) {
-        res.render('admin/adminLogin');
+// Login Portal
+exports.backoffice_login_get = function (req, res) {
+    res.render('backoffice/backofficeLogin');
+};
+
+// Login Process
+exports.backoffice_login_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+// Logout Process
+exports.backoffice_logout = function (req, res) {
+    session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('index/index');
+        }
+    });
+};
+
+
+// --------------------- Backoffice/Admin/ ---------------------------
+
+exports.backoffice_admin_get = function (req, res) {
+    res.render('backoffice/admin/adminIndex');
+};
+
+
+// --------------------- Backoffice/Admin/Employee ---------------------------
+
+exports.backoffice_admin_employee_get = function (req, res) {
+    res.render('backoffice/admin/employee/listEmployees');
+}; // Need to parse old data
+
+exports.backoffice_admin_employee_create_get = function (req, res) {
+    res.render('backoffice/admin/employee/createEmployee');
+};
+
+exports.backoffice_admin_employee_create_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_employee_update_get = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_employee_update_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_employee_delete_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+
+// --------------------- Backoffice/Admin/Client ---------------------------
+
+exports.backoffice_admin_client_get = async function (req, res) {
+    try {
+        var employees = await Employee.find().populate('username');
+        res.render('backoffice/admin/client/listClient', { employees: employees });
+    } catch (error) {
+        res.render("error", { message: "Error finding employees", error: error });
     }
-    res.render('admin/adminPortal');
+    res.render('backoffice/admin/client/listClient');
+}; // Need to create model
+
+exports.backoffice_admin_client_post = function (req, res) {
+    res.render('NotImplemented');
 };
 
-// Render the login page for admin/employees
-exports.admin_login_get = function (req, res) {
-    res.render('admin/adminLogin');
+exports.backoffice_admin_client_update_get = function (req, res) {
+    res.render('NotImplemented');
 };
 
-// List the employees
+exports.backoffice_admin_client_update_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_client_delete_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+
+// --------------------- Backoffice/Admin/Book ---------------------------
+
+exports.backoffice_admin_book_get = function (req, res) {
+    res.render('backoffice/admin/book/listBook');
+};
+
+exports.backoffice_admin_book_create_get = function (req, res) {
+    res.render('backoffice/admin/book/createBook');
+};
+
+exports.backoffice_admin_book_create_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_book_update_get = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_book_update_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+exports.backoffice_admin_book_delete_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+
+// --------------------- Backoffice/Admin/Sale ---------------------------
+
+exports.backoffice_admin_sale_get = function (req, res) {
+    res.render('backoffice/admin/sale/listSale');
+};
+
+exports.backoffice_admin_sale_get = function (req, res) {
+    res.render('backoffice/admin/sale/createSale');
+};
+
+exports.backoffice_admin_sale_post = function (req, res) {
+    res.render('NotImplemented');
+};
+
+
+
+
+
+
+/* List the employees
 exports.employees = async function (req, res) {
     try {
         var employees = await Employee.find().populate('username');
@@ -55,8 +170,6 @@ exports.employees_create_get = function (req, res) {
 // Create a new employee
 exports.employees_create_post = (req, res) => {
 
-    /* Validations - text based were already made in HTML
-    - Check if username and/or email already exist */
     
     // Using promises to validate the data
     var usernamePromise = Employee.findOne({ username: req.body.username });
@@ -139,3 +252,5 @@ exports.logout = function (req, res) {
         res.end();
     });
 };
+
+*/

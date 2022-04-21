@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/portals/admin-portal.css">
+  <link rel="stylesheet" href="/stylesheets/listing/tableListingAdmin.css">
+  <title>Admin Portal</title>
+</head>
+<body>
+  <ul>
+    <li><a class="importantbutton" href="/">Home</a></li>
+    <li><a href="/admin/employees">Employees</a></li>
+    <li><a href="/admin/clients">Clients</a></li>
+    <li><a href="/book/books">Books</a></li>
+    <li style="float:right">
+      <a class="importantbutton"
+      href="/admin/logout">Logout</a>
+    </li>
+  </ul>
+  <% if(locals.message) { %>
+    <p></p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" class="successmessage"><%=locals.message%></th>
+        </tr>
+      </thead>
+    </table>
+  <% } %>
+</body>
+</html>
