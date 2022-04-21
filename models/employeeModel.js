@@ -7,7 +7,8 @@ var EmployeeSchema = new Schema({
     password: {type: String, required: true},
     name: {type: String, required: true},
     email: {type: String, required: true},
-    category: {type: String, required: true},
+    category: { type: String, required: true },
+    admin: { type: Boolean, required: true, default: false },
 });
 
 // Virtual for this Employee instance URL.
