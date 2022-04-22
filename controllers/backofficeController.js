@@ -38,6 +38,7 @@ exports.backoffice_login_post = function (req, res) {
                     } else {
                         req.session.admin = false;
                         req.session.username = employee.username;
+                        req.session.employeeID = employee._id;
                         res.redirect('/backoffice/employee');
                     }
                 } else {
