@@ -1,17 +1,18 @@
 body {
     align-items: center;
-    background-image: url("/images/backoffice.png");
-    background-size: cover;
+    /*background-color: #000;*/
+    background-image: url("/images/backofficeLogin.png");
+    background-size: 100%;
     display: flex;
     justify-content: center;
-    height: auto;
+    height: 100vh;
 }
 
 .form {
     background-color: #15172b;
     border-radius: 20px;
     box-sizing: border-box;
-    height: auto;
+    height: 500px;
     padding: 20px;
     width: 320px;
 }
@@ -74,9 +75,6 @@ body {
 .cut-short {
     width: 50px;
 }
-.cut-long {
-    width: 115px;
-}
 
 .input:focus~.cut,
 .input:not(:placeholder-shown)~.cut {
@@ -105,11 +103,11 @@ body {
 }
 
 .input:focus~.placeholder {
-    color: #ffb413;
+    color: #dc2f55;
 }
 
 .submit {
-    background-color: orange;
+    background-color: #08d;
     border-radius: 12px;
     border: 0;
     box-sizing: border-box;
@@ -125,23 +123,4 @@ body {
 
 .submit:active {
     background-color: #06b;
-}
-
-.input:invalid {
-    border-bottom: 2px solid #dc2f55;
-}
-
-.passwordpolicy {
-    color: rgb(142, 142, 142);
-    font-size: 10px;
-    font-family: sans-serif;
-}
-
-.errormessage {
-    color: rgb(210, 0, 0);
-    font-family: sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin-top: 10px;
-    text-align: center;
 }

@@ -1,11 +1,10 @@
 body {
     align-items: center;
-    /*background-color: #000;*/
-    background-image: url("/images/user.png");
-    background-size: 120%;
+    background-image: url("/images/backoffice.png");
+    background-size: cover;
     display: flex;
     justify-content: center;
-    height: 125vh;
+    height: auto;
 }
 
 .form {

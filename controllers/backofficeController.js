@@ -13,7 +13,7 @@ var Sale = require('../models/saleModel');
 
 // Login Portal
 exports.backoffice_login_get = function (req, res) {
-    res.render('backoffice/admin/backofficeLogin');
+    res.render('backoffice/backofficeLogin');
 };
 
 // Login Process

@@ -1,5 +1,6 @@
 body {
     align-items: center;
+    /*background-color: #000;*/
     background-image: url("/images/backoffice.png");
     background-size: cover;
     display: flex;
@@ -13,7 +14,7 @@ body {
     box-sizing: border-box;
     height: auto;
     padding: 20px;
-    width: 320px;
+    width: 400px;
 }
 
 .title {

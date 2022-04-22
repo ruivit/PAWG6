@@ -21,7 +21,7 @@ exports.backoffice_admin_get = function (req, res) {
 exports.backoffice_admin_employee_get = async function (req, res) {
     try {
         var employees = await Employee.find().populate('username');
-        res.render('backoffice/admin/employee/listEmployees', { employees: employees });
+        res.render('backoffice/admin/employee/manageEmployees', { employees: employees });
     }
     catch (error) {
         res.render("error", { message: "Error finding employees", error: error });
@@ -106,7 +106,7 @@ exports.backoffice_admin_employee_delete_post = (req, res) => {
 exports.backoffice_admin_client_get = async function (req, res) {
     try {
         var clients = await Client.find().populate('username');
-        res.render('backoffice/admin/client/listClients', { clients: clients });
+        res.render('backoffice/admin/client/manageClients', { clients: clients });
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
     }
@@ -202,7 +202,7 @@ exports.backoffice_admin_client_delete_post = (req, res) => {
 exports.backoffice_admin_book_get = async function (req, res) {
     try {
         var books = await Book.find();
-        res.render('backoffice/admin/book/listBooks', { books: books });
+        res.render('backoffice/admin/book/manageBooks', { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
     }
@@ -210,7 +210,7 @@ exports.backoffice_admin_book_get = async function (req, res) {
 
 exports.backoffice_admin_book_create_get = function (req, res) {
     res.render('backoffice/admin/book/createBook');
-}; // Done, CSS MARAVILHA
+}; // Done
 
 exports.backoffice_admin_book_create_post = (req, res) => {
     
@@ -254,7 +254,7 @@ exports.backoffice_admin_book_create_post = (req, res) => {
         });
         }
     });
-}; // Done, CSS bugado
+}; // Done
 
 
 exports.backoffice_admin_book_update_get = async function (req, res) {
@@ -264,7 +264,7 @@ exports.backoffice_admin_book_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating book", error: error });
     }
-}; // Done, CSS bugado
+}; // Done
 
 exports.backoffice_admin_book_update_post = async function (req, res) {
     await Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
@@ -293,7 +293,7 @@ exports.backoffice_admin_book_delete_post = (req, res) => {
 // Everything Todo
 
 exports.backoffice_admin_sale_get = function (req, res) {
-    res.render('backoffice/admin/sale/listSale');
+    res.render('backoffice/admin/sale/listSales');
 };
 
 exports.backoffice_admin_make_sale_get = function (req, res) {
