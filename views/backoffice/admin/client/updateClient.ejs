@@ -9,7 +9,7 @@
 	<% if(locals.client) { %>
 	<form action="/backoffice/admin/client/update" method="post" enctype="multipart/form-data">
 		<div class="form">
-			<div class="subtitle">Create your new account</div>
+			<div class="subtitle">Updating the client <%=locals.client.name%></div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
@@ -28,14 +28,14 @@
 				<input name="name" class="input" type="text" placeholder=" "
 				value="<%= locals.client.name %>" required
 				minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
-				<div class="cut cut-long"></div>
-				<label for="name" class="placeholder">Name (First/Last)</label>
+				<div class="cut"></div>
+				<label for="name" class="placeholder">Name</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="address" class="input" type="text" placeholder=" "
 				value="<%= locals.client.address %>" required
 				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
-				<div class="cut cut-long"></div>
+				<div class="cut"></div>
 				<label for="address" class="placeholder">Address</label>
 			</div>
 			<div class="input-container ic2">
@@ -49,14 +49,14 @@
 				<input name="points" class="input" type="text" placeholder=" "
 				value="<%= locals.client.points %>"
 				minlength="2" maxlength="20" pattern="[0-9]+" />
-				<div class="cut cut-long"></div>
+				<div class="cut"></div>
 				<label for="points" class="placeholder">Points</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="birthDate" class="input" type="text" placeholder=" "
 				value="<%= locals.client.birthDate %>" required
 				required pattern="\d{4}-\d{2}-\d{2}"/>
-				<div class="cut cut-long"></div>
+				<div class="cut cut-superlong"></div>
 				<label for="birthDate" class="placeholder">Birth Date (YYYY-MM-DD)</label>
 			</div>
 			<div class="input-container ic2">

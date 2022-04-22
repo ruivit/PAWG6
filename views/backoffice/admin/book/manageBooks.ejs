@@ -7,11 +7,10 @@
   <link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Book Listing</title>
+  <title>Book Management</title>
 </head>
 <body>
   <ul>
-    <!-- add logic of admin or employee -->
     <li><a class="importantbutton" href="/backoffice/admin">Back</a></li>
     <li><a href="/backoffice/admin/book/create">Create</a></li>
     <li><a href="/backoffice/admin/book/search">Search</a></li>
@@ -36,7 +35,7 @@
             <th scope="col">Condition</th>
             <th scope="col">Provider</th>
             <th scope="col">Stock</th>
-            <th scope="col">Price</th>
+            <th scope="col">Prices</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -54,7 +53,7 @@
               <td data-label="Condition"> <%=books[i].condition%> </td>
               <td data-label="Provider"> <%=books[i].provider%> </td>
               <td data-label="Stock"> <%=books[i].stock%> </td>
-              <td data-label="Price"> <%=books[i].price%> </td>
+              <td data-label="Sell/Buy Price"> <%=books[i].sellPrice%>€ / <%=books[i].buyPrice%>€ </td>
               <td data-label="operations">
                 <form action="/backoffice/admin/book/update/<%=books[i].id%>" method="get">
                   <input type="image" class="material-icons edit" name="_method" value="edit">

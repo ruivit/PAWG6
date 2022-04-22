@@ -77,6 +77,9 @@ body {
 .cut-long {
     width: 75px;
 }
+.cut-superlong {
+    width: 200px;
+}
 
 .input:focus~.cut,
 .input:not(:placeholder-shown)~.cut {

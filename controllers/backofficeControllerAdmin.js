@@ -7,6 +7,8 @@ var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
+var Author = require('../models/authorModel');
+var Editor = require('../models/editorModel');
 
 
 // --------------------- Backoffice/Admin/ ---------------------------
@@ -230,31 +232,55 @@ exports.backoffice_admin_book_create_post = (req, res) => {
             });
         } else {
         // If the isbn is not already in use, create the book
+        console.log(req.body);
         var book = new Book({
             title: req.body.title,
             author: req.body.author,
             genre: req.body.genre,
             editor: req.body.editor,
             resume: req.body.resume,
-            avaliation: req.body.avaliation,
             isbn: req.body.isbn,
-            dateAdded: req.body.dateAdded,
             condition: req.body.condition,
             provider: req.body.provider,
-            stock: req.body.stock,
-            price: req.body.price,
+            sellPrice: req.body.sellPrice,
+            buyPrice: req.body.buyPrice,
         });
 
         book.save(function (err) {
             if (err) {
                 res.render('error/error', { message: "Error creating book", error: err });
             } else {
-                res.redirect('/backoffice/admin/book');
+                // create the author
+                var author = new Author({
+                    name: req.body.author,
+                    books: [book]
+                });
+
+                author.save(function (err) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating author", error: err });
+                    }
+                });
+
+                // create the editor
+                var editor = new Editor({
+                    name: req.body.editor,
+                    books: [book]
+                });
+
+                editor.save(function (err) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating editor", error: err });
+                    } else {
+                        // If everything ok return to the list of books
+                        res.redirect('/backoffice/admin/book');
+                    }
+                });
             }
         });
         }
     });
-}; // Done
+}; // Done     
 
 
 exports.backoffice_admin_book_update_get = async function (req, res) {
@@ -266,8 +292,8 @@ exports.backoffice_admin_book_update_get = async function (req, res) {
     }
 }; // Done
 
-exports.backoffice_admin_book_update_post = async function (req, res) {
-    await Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
+exports.backoffice_admin_book_update_post = function (req, res) {
+    Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
         function (err, client) {
         if (err) {
             res.render('error/error', { message: "Error updating book", error: err });

@@ -8,14 +8,14 @@ var BookSchema = new Schema({
   genre:{ type: String, required: true },
   editor:{ type: String, required: true },
   resume: { type: String, required: true },
-  avaliation: { type: Number, required: true },
+  avaliation: { type: Number, required: false, default: 0 },
   isbn: { type: Number, required: true },
-  dateAdded: { type: Date, default: Date.now },
+  dateAdded: { type: Date, required: false, default: Date.now },
   condition: { type: String, required: true },
   provider: { type: String, required: true },
-  stock: { type: Number, required: true },
-  price: { type: Number, required: true },
-  
+  stock: { type: Number, required: false, defeault: 0 },
+  sellPrice: { type: Number, required: true },
+  buyPrice: { type: Number, required: true},
 }, {
   collection: 'books'
 });
