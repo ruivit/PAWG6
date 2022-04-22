@@ -1,12 +1,3 @@
 - Quando se cria cliente via portal de admin, mudar o text para "criar novo cliente"
 
 - Erro 404, para onde volta
-
-/backoffice/login
-  Se for admin > admin/adminPortal
-  Se for empregado > employee/employeePortal
-
-- Mudar texto do Home (adminPortal) para Go To Store
-
-- Quando se cria cliente na pagina admin/empregado, voltar para a pagina admin/empregado
-- Quando se cria cliente na pagina cliente, voltar para a pagina cliente

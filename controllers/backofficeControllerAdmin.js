@@ -88,7 +88,6 @@ exports.backoffice_admin_employee_update_post = async function (req, res) {
         }
     });
 }; // Done
-
     
 
 exports.backoffice_admin_employee_delete_post = (req, res) => {   
@@ -187,7 +186,6 @@ exports.backoffice_admin_client_update_post = async function (req, res) {
 }; // Done
 
 
-
 exports.backoffice_admin_client_delete_post = (req, res) => {
     Client.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
@@ -220,12 +218,14 @@ exports.backoffice_admin_book_create_post = (req, res) => {
     
     // Wait for the promises to resolve
     Promise.all([isbnPromise]).then(function (promisesToDo) {
-        // If the isbn already exists, increate the stock of that book
+        // If the isbn already exists, increate the stock of that book by 1
         if (promisesToDo[0]) {
-            Book.findOneAndUpdate({ isbn: req.body.isbn }, { $inc: { stock: req.body.stock } }, { new: true },
+            Book.findOneAndUpdate({ isbn: req.body.isbn }, { $inc: { stock: 1 } }, { new: true }, 
                 function (err, book) {
                 if (err) {
                     res.render('error/error', { message: "Error creating book", error: err });
+                } else {
+                    res.redirect('/backoffice/admin/book'); // Need to add error message
                 }
             });
         } else {
@@ -254,7 +254,7 @@ exports.backoffice_admin_book_create_post = (req, res) => {
         });
         }
     });
-}; // Semi, nao incrementa o stock, CSS scaled o que nao deve
+}; // Done, CSS bugado
 
 
 exports.backoffice_admin_book_update_get = async function (req, res) {
@@ -267,7 +267,7 @@ exports.backoffice_admin_book_update_get = async function (req, res) {
 }; // Done, CSS bugado
 
 exports.backoffice_admin_book_update_post = async function (req, res) {
-    Book.findOneAndUpdate({ isbn: req.body.username }, req.body, { new: true }, 
+    await Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
         function (err, client) {
         if (err) {
             res.render('error/error', { message: "Error updating book", error: err });
@@ -275,7 +275,7 @@ exports.backoffice_admin_book_update_post = async function (req, res) {
             res.redirect('/backoffice/admin/book');
         }
     });
-}; // Todo, vai ter de ser pelo ID
+}; // Done
 
 
 exports.backoffice_admin_book_delete_post = (req, res) => {
@@ -286,7 +286,7 @@ exports.backoffice_admin_book_delete_post = (req, res) => {
             res.redirect('/backoffice/admin/book'); // Need to add success message
         }
     });
-}; // Igual ao update post, vai ter de ser pelo ID, todo
+}; // Done
 
 
 // --------------------- Backoffice/Admin/Sale ---------------------------
@@ -296,11 +296,11 @@ exports.backoffice_admin_sale_get = function (req, res) {
     res.render('backoffice/admin/sale/listSale');
 };
 
-exports.backoffice_admin_sale_get = function (req, res) {
+exports.backoffice_admin_make_sale_get = function (req, res) {
     res.render('backoffice/admin/sale/makeSale');
 };
 
-exports.backoffice_admin_sale_post = function (req, res) {
+exports.backoffice_admin_make_sale_post = function (req, res) {
     res.render('NotImplemented');
 };
 

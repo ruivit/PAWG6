@@ -12,33 +12,33 @@
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.username %>"
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
+				value="<%= locals.oldata.username %>" required
+				minlength="2" maxlength="50" pattern="[a-zA-Z0-9]+" />
 				<div class="cut"></div>
 				<label for="username" class="placeholder">Username</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="email" class="input" type="email" placeholder=" "
 				value="<%= locals.oldata.email %>" required 
-				minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				minlength="2" maxlength="100" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
 				<div class="cut cut-short"></div>
 				<label for="email" class="placeholder">Email</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="name" class="input" type="text" placeholder=" "
 				value="<%= locals.oldata.name %>" required
-				minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
+				minlength="2" maxlength="50" pattern="[a-zA-Z0-9].+" />
 				<div class="cut cut-long"></div>
 				<label for="name" class="placeholder">Name</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="category" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.category %>" required
+				value="<%= locals.oldata.category %>" readonly
 				minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
 				<div class="cut cut-long"></div>
 				<label for="category" class="placeholder">Category</label>
 			</div>
-			<div class="input-container ic2">
+			<div class="input-container ic2"> <!-- enforce the policy -->
 				<input name="password" class="input" type="password" placeholder="" id="password" required/>
 				<div class="cut passwordpolicy"></div>
 				<label for="password" class="placeholder">Password</label>
@@ -56,29 +56,31 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			<div class="subtitle">Create a new Employee</div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
+				required minlength="2" maxlength="50" pattern="[a-zA-Z0-9]+" />
 				<div class="cut"></div>
 				<label for="username" class="placeholder">Username</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="email" class="input" type="email" placeholder=" "
-				required minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				required minlength="2" maxlength="100" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
 				<div class="cut cut-short"></div>
 				<label for="email" class="placeholder">Email</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="name" class="input" type="text" placeholder=" "
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
-				<div class="cut cut-long"></div>
+				required minlength="2" maxlength="50" pattern="[a-zA-Z0-9].+" />
+				<div class="cut cut-short"></div>
 				<label for="name" class="placeholder">Name</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="category" class="input" type="text" placeholder=" "
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
-				<div class="cut cut-long"></div>
+				<select class="input">
+					<option value="admin">Admin</option>
+					<option value="employee">Employee</option>
+				</select>
+				<div class="cut"></div>
 				<label for="category" class="placeholder">Category</label>
 			</div>
-			<div class="input-container ic2">
+			<div class="input-container ic2"> <!-- enforce the policy -->
 				<input name="password" class="input" type="password" placeholder="" id="password" required/>
 				<div class="cut passwordpolicy"></div>
 				<label for="password" class="placeholder">Password</label>

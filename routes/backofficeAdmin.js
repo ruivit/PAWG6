@@ -65,8 +65,8 @@ router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_boo
 router.get('/sale', controller.backoffice_admin_sale_get);
 
 // Admin Sale Create
-router.get('/sale/create', controller.backoffice_admin_sale_get);
-router.post('/sale/create', multer().none(), controller.backoffice_admin_sale_post);
+router.get('/sale/create', controller.backoffice_admin_make_sale_get);
+router.post('/sale/create', multer().none(), controller.backoffice_admin_make_sale_post);
 
 
 module.exports = router;
