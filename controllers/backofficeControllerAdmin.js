@@ -118,7 +118,7 @@ exports.backoffice_admin_client_create_get = function (req, res) {
     res.render('backoffice/admin/client/createClient');
 }; // Done
 
-exports.backoffice_admin_client_create_post = (req, res) => {
+exports.backoffice_admin_client_create_post = function (req, res) {
     function calculatePoints(points) {
         var totalPoints = 0;
         if (points == "" || points == null) {
@@ -214,7 +214,7 @@ exports.backoffice_admin_book_create_get = function (req, res) {
     res.render('backoffice/admin/book/createBook');
 }; // Done
 
-exports.backoffice_admin_book_create_post = (req, res) => {
+exports.backoffice_admin_book_create_post = function (req, res) {
     
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
@@ -343,7 +343,7 @@ exports.backoffice_admin_book_search_post = async function (req, res) {
 }; // Done
 
 
-exports.backoffice_admin_book_delete_post = (req, res) => {
+exports.backoffice_admin_book_delete_post = function (req, res) {
     Book.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.render('error', { message: "Error deleting book", error: err });

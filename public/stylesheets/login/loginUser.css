@@ -1,11 +1,12 @@
 body {
   align-items: center;
   /*background-color: #000;*/
-  background-image: url("/images/user.png");
-  background-size: 100%;
+  background-image: url("/images/client.png");
+  background-size: cover;
   display: flex;
   justify-content: center;
-  height: 100vh;
+  padding-top: 6vh;
+  height: 80vh;
 }
 
 .form {

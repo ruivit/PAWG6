@@ -1,5 +1,4 @@
 const { redirect } = require('express/lib/response');
-const { body, validationResult } = require("express-validator");
 const { session } = require('passport/lib');
 
 // ----------------------- Models ------------------------------
@@ -31,7 +30,7 @@ exports.backoffice_employee_client_create_get = function (req, res) {
     res.render('backoffice/employee/client/createClient');
 }; // Done
 
-exports.backoffice_employee_client_create_post = (req, res) => {
+exports.backoffice_employee_client_create_post = function (req, res) {
     function calculatePoints(points) {
         var totalPoints = 0;
         if (points == "" || points == null) {
@@ -101,7 +100,7 @@ exports.backoffice_employee_client_update_post = async function (req, res) {
 }; // Done
 
 
-exports.backoffice_employee_client_delete_post = (req, res) => {
+exports.backoffice_employee_client_delete_post = function (req, res) {
     Client.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.render('error', { message: "Error deleting employee", error: err });
@@ -127,7 +126,7 @@ exports.backoffice_employee_book_create_get = function (req, res) {
     res.render('backoffice/employee/book/createBook');
 }; // Done, CSS MARAVILHA
 
-exports.backoffice_employee_book_create_post = (req, res) => {
+exports.backoffice_employee_book_create_post = function (req, res) {
     
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
@@ -193,7 +192,7 @@ exports.backoffice_employee_book_update_post = async function (req, res) {
 }; // Done
 
 
-exports.backoffice_employee_book_delete_post = (req, res) => {
+exports.backoffice_employee_book_delete_post = function (req, res) {
     Book.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.render('error', { message: "Error deleting book", error: err });

@@ -1,0 +1,162 @@
+const { redirect } = require('express/lib/response');
+const { session } = require('passport/lib');
+
+// ----------------------- Models ------------------------------
+var Client = require('../models/clientModel');
+var Book = require('../models/bookModel');
+var BookSell = require('../models/bookSellModel');
+var Sale = require('../models/saleModel');
+
+
+// -------------------- Client/ ---------------------------
+
+// Login Portal
+exports.client_login_get = function (req, res) {
+    res.render('client/loginClient');
+};
+
+// Login Process
+exports.client_login_post = function (req, res) {
+    data = req.body;
+    var username = data.username;
+    var password = data.password;
+
+    // search the username in the database
+    Client.findOne({ username: username }, function (err, client) {
+        if (err) {
+            res.redirect('error', { error: err });
+        } else {
+            if (client) {
+                // check if the password is correct
+                if (client.password == password) {
+                    // save the client in the session
+                    req.session.client = client;
+                    req.session.client._id = client._id;
+                    req.session.save();
+                    console.log(req.session.client);
+                    res.redirect('/client');
+                } else {
+                    res.render('client/loginClient', { message: 'Wrong password' });
+                }
+            } else {
+                res.render('client/loginClient', { message: 'Wrong username' });
+            }
+        }
+    });
+};
+
+exports.client_index_get = function (req, res) {
+    // check if the client is logged in
+    if (req.session.client) {
+        // get the client from the session
+        var client = req.session.client;
+        res.render('client/indexClient');
+        /* get the client's books
+        Book.find({ client: client._id }, function (err, books) {
+            if (err) {
+                res.redirect('error', { error: err });
+            } else {
+                // get the client's sales
+                Sale.find({ client: client._id }, function (err, sales) {
+                    if (err) {
+                        res.redirect('error', { error: err });
+                    } else {
+                        // render the client's page
+                        res.render('client/client', { client: client, books: books, sales: sales });
+                    }
+                });
+            }
+        });*/
+    } else {
+        res.redirect('/client/login');
+    }
+};
+
+// Logout Process
+exports.client_logout = function (req, res) {
+    req.session.destroy();
+    res.redirect('/');
+}; 
+
+
+exports.client_create_get = function (req, res) {
+    res.render('client/createClient');
+}; // Done
+
+exports.client_create_post = function (req, res) {
+    function calculatePoints(points) {
+        var totalPoints = 0;
+        if (points == "" || points == null) {
+            return 10;
+        } else {
+            return totalPoints;
+        }// else, logica de negocio
+    }
+
+    // Using promises to validate the data
+    console.log(req.body);
+    var usernamePromise = Client.findOne({ username: req.body.username });
+    var emailPromise = Client.findOne({ email: req.body.email });
+    
+    // Wait for the promises to resolve
+    Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
+        // If the username or email already exists, redirect to the create page
+        if (promisesToDo[0]) {
+            res.render('client/createClient', 
+            { oldata: req.body, message: "Username already exists" });
+        } else if (promisesToDo[1]) {
+            res.render('client/createClient', 
+            { oldata: req.body, message: "Email already exists" });
+        } else {
+        // If the username and email are not already in use, create the client
+        var client = new Client({
+            username: req.body.username,
+            password: req.body.password,
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            phone: req.body.phone,
+            points: calculatePoints(req.body.points),
+            birthDate: req.body.birthDate,
+            ageType: 21, // falta calcular
+        });
+
+        client.save(function (err) {
+            if (err) {
+                res.render('error/error', { message: "Error creating client", error: err });
+            } else {
+                res.redirect('/client');
+            }
+        });
+        }
+    });
+}; // Done
+
+// Get the form to sell a book
+exports.client_sell_get = function (req, res) {
+    console.log(req.session.client);
+    res.render('client/sellBookClient');
+}; // Done
+
+exports.client_sell_post = function (req, res) {
+    console.log(req.session.client);
+    var book = new BookSell({
+        title: req.body.title,
+        author: req.body.author,
+        genre: req.body.genre,
+        editor: req.body.editor,
+        resume: req.body.resume,
+        isbn: req.body.isbn,
+        dateAdded: req.body.dateAdded,
+        price: req.body.price,
+        client: req.session.client._id,
+    });
+
+    book.save(function (err) {
+        if (err) {
+            res.render('error/error', { message: "Error creating book", error: err });
+        } else {
+            res.redirect('/client');
+        }
+    });
+}; // Done
