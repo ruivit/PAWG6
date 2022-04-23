@@ -11,7 +11,7 @@ router.get('/', controller.backoffice_login_get);
 router.post('/login', multer().none(), controller.backoffice_login_post);
 
 // Logout
-router.post('/logout', controller.backoffice_logout);
+router.get('/logout', controller.backoffice_logout);
 
 
 module.exports = router;

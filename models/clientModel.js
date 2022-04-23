@@ -12,9 +12,7 @@ var ClientSchema = new Schema({
   points: { type: Number, required: false, default: 10 },
   birthDate: { type: Date, required: true, default: Date.now },
   ageType: { type: Number, required: true },
-}, {
-  collection: 'clients'
-});
+}, { collection: 'Clients' });
   
 // Export model.
 module.exports = mongoose.model('Client', ClientSchema);

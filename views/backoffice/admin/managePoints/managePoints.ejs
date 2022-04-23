@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Manage Points</title>
+	<link rel="stylesheet" href="/stylesheets/managePoints/managePoints.css">
+	<script defer src="/javascripts/update.js"></script>
+  </head>
+  <body>
+	<% if(locals.points) { %>
+	<form action="/backoffice/admin/managePoints" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">Points Management</div>
+			<div class="input-container ic1">
+				<input name="pointsPerPrice" class="input" type="pointsPerPrice" placeholder=" "
+				value="<%= locals.points.pointsPerPrice %>" oninput="updatedValue()"/>
+				<div class="cut"></div>
+				<label for="pointsPerPrice" class="placeholder">Points Per Price</label>
+			</div>
+			<button type="text" class="submit">Update</button>
+		</div>
+	</form>
+	<% } %>
+  </body>
+</html>

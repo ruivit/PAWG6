@@ -3,7 +3,7 @@
   <head>
 	<title>Update Book</title>
 	<link rel="stylesheet" href="/stylesheets/update/updateBook.css">
-	<script defer src="/javascripts/updateBook.js"></script>
+	<script defer src="/javascripts/update.js"></script>
   </head>
   <body>
 	<% if(locals.book) { %>
@@ -12,18 +12,20 @@
 			<div class="subtitle">Updating the book <%= locals.book.title %></div>
 			<div class="input-container ic1">
 				<input type="text" name="title" id="title" value="<%= locals.book.title %>"
-				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
+				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50"
+				oninput="updatedValue()">
 				<div class="cut"></div>
 				<label for="title" class="placeholder">Title</label>
 			</div>
 			<div class="input-container ic2">
 				<input type="text" name="author" id="author" value="<%= locals.book.author %>"
-				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
+				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50"
+				oninput="updatedValue()">
 				<div class="cut"></div>
 				<label for="author" class="placeholder">Author</label>
 			</div>
 			<div class="input-container ic2">
-				<select class="input" name="genre" required>
+				<select class="input" name="genre" required oninput="updatedValue()">
 					<option value="Action/Adventure">Action/Adventure</option>
 					<option value="Comedy">Comedy</option>
 					<option value="Drama">Drama</option>
@@ -39,18 +41,20 @@
 			</div>
 			<div class="input-container ic2">
 				<input type="text" name="editor" id="editor" value="<%= locals.book.editor %>"
-				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
+				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50"
+				oninput="updatedValue()">
 				<div class="cut"></div>
 				<label for="editor" class="placeholder">Editor</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="resume" id="resume" value="<%= locals.book.resume %>"
-				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
+				class="input" required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50"
+				oninput="updatedValue()">
 				<div class="cut"></div>
 				<label for="resume" class="placeholder">Resume</label>
 			</div>
 			<div class="input-container ic2">
-				<select class="input" name="condition">
+				<select class="input" name="condition" oninput="updatedValue()">
 					<option value="New">New</option>
 					<option value="Used">Used</option>
 				</select>
@@ -59,25 +63,29 @@
 			</div>
 			<div class="input-container ic2">
 				<input name="provider" class="input" type="text" placeholder=" " required
-				value="<%= locals.book.provider %>" pattern="[a-zA-Z].+" minlength="2" maxlength="50">
+				value="<%= locals.book.provider %>" pattern="[a-zA-Z].+" minlength="2" maxlength="50"
+				oninput="updatedValue()">
 				<div class="cut cut-long"></div>
 				<label for="provider" class="placeholder">Provider</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="stock" class="input" type="text" placeholder=" "
-				value="<%= locals.book.stock %>" pattern="[0-9]+" minlength="1" maxlength="3">
+				value="<%= locals.book.stock %>" pattern="[0-9]+" minlength="1" maxlength="3"
+				oninput="updatedValue()">
 				<div class="cut cut-long"></div>
 				<label for="stock" class="placeholder">Stock</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="sellPrice" class="input" type="text" placeholder=" "
-				value="<%= locals.book.sellPrice %>" pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="10">
+				value="<%= locals.book.sellPrice %>" pattern="^[1-9]{1}[0-9]{0,9}" 
+				minlength="1" maxlength="10" oninput="updatedValue()">
 				<div class="cut cut-long"></div>
 				<label for="sellPrice" class="placeholder">Sell Price</label>
 			</div>
 			<div class="input-container ic2">
 				<input name="buyPrice" class="input" type="text" placeholder=" "
-				value="<%= locals.book.buyPrice %>" pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="10">
+				value="<%= locals.book.buyPrice %>" pattern="^[1-9]{1}[0-9]{0,9}"
+				minlength="1" maxlength="10" oninput="updatedValue()">
 				<div class="cut cut-long"></div>
 				<label for="buyPrice" class="placeholder">Buy Price</label>
 			</div>

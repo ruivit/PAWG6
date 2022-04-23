@@ -29,7 +29,7 @@ exports.backoffice_employee_client_get = async function (req, res) {
 
 exports.backoffice_employee_client_create_get = function (req, res) {
     res.render('backoffice/employee/client/createClient');
-}; // Done, CSS bugado
+}; // Done
 
 exports.backoffice_employee_client_create_post = (req, res) => {
     function calculatePoints(points) {
@@ -77,7 +77,7 @@ exports.backoffice_employee_client_create_post = (req, res) => {
         });
         }
     });
-}; // Done, CSS bugado
+}; // Done
 
 
 exports.backoffice_employee_client_update_get = async function (req, res) {
@@ -87,7 +87,7 @@ exports.backoffice_employee_client_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating client", error: error });
     }
-}; // Done, CSS bugado
+}; // Done
 
 exports.backoffice_employee_client_update_post = async function (req, res) {
     Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
@@ -169,7 +169,7 @@ exports.backoffice_employee_book_create_post = (req, res) => {
         });
         }
     });
-}; // Done, CSS bugado
+}; // Done
 
 
 exports.backoffice_employee_book_update_get = async function (req, res) {
@@ -179,7 +179,7 @@ exports.backoffice_employee_book_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating book", error: error });
     }
-}; // Done, CSS bugado
+}; // Done
 
 exports.backoffice_employee_book_update_post = async function (req, res) {
     await Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 

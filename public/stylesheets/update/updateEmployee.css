@@ -13,7 +13,7 @@ body {
     box-sizing: border-box;
     height: auto;
     padding: 20px;
-    width: 320px;
+    width: 420px;
 }
 
 .title {
@@ -130,6 +130,10 @@ body {
 .input:invalid {
     border-bottom: 2px solid #dc2f55;
 }
+
+.input:read-only {
+    color: #8b8b8f;
+ }
 
 .passwordpolicy {
     color: rgb(142, 142, 142);

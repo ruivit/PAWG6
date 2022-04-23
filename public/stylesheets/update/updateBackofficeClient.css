@@ -132,6 +132,10 @@ body {
     border-bottom: 2px solid #dc2f55;
 }
 
+.input:read-only {
+    color: #8b8b8f;
+ }
+
 .passwordpolicy {
     color: rgb(142, 142, 142);
     font-size: 10px;

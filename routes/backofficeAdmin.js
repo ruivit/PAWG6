@@ -58,6 +58,7 @@ router.post('/book/update', multer().none(), controller.backoffice_admin_book_up
 // Admin Book Delete
 router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_book_delete_post);
 
+router.post('/book/search', multer().none(), controller.backoffice_admin_book_search_post);
 
 // ------------------------------ Admin/Sale URL
 
@@ -68,6 +69,11 @@ router.get('/sale', controller.backoffice_admin_sale_get);
 router.get('/sale/create', controller.backoffice_admin_make_sale_get);
 router.post('/sale/create', multer().none(), controller.backoffice_admin_make_sale_post);
 
+// ------------------------------ Admin/Points URL
+
+router.get('/managePoints', controller.backoffice_admin_managepoints_get);
+
+router.post('/managePoints', multer().none(), controller.backoffice_admin_managepoints_post);
 
 module.exports = router;
 

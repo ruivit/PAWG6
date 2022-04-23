@@ -9,7 +9,7 @@ var EmployeeSchema = new Schema({
     email: {type: String, required: true},
     category: { type: String, required: true },
     admin: { type: Boolean, required: false, default: false },
-});
+}, { collection: 'Employees' });
 
 // Export model.
 module.exports = mongoose.model('Employee', EmployeeSchema);

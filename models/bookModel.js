@@ -16,9 +16,7 @@ var BookSchema = new Schema({
   stock: { type: Number, required: false, defeault: 0 },
   sellPrice: { type: Number, required: true },
   buyPrice: { type: Number, required: true},
-}, {
-  collection: 'books'
-});
+}, { collection: 'Books' });
 
 // Export model.
 module.exports = mongoose.model('Book', BookSchema);

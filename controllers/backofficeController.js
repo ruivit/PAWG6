@@ -1,12 +1,8 @@
 const { redirect } = require('express/lib/response');
-const { body, validationResult } = require("express-validator");
 const { session } = require('passport/lib');
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
-var Client = require('../models/clientModel');
-var Book = require('../models/bookModel');
-var Sale = require('../models/saleModel');
 
 
 // -------------------- Backoffice/ ---------------------------
@@ -53,11 +49,6 @@ exports.backoffice_login_post = function (req, res) {
 
 // Logout Process
 exports.backoffice_logout = function (req, res) {
-    session.destroy(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.redirect('/');
-        }
-    });
-};
+    req.session.destroy();
+    res.redirect('/backoffice');
+}; 

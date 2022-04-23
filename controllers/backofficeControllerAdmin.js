@@ -1,5 +1,4 @@
 const { redirect } = require('express/lib/response');
-const { body, validationResult } = require("express-validator");
 const { session } = require('passport/lib');
 
 // ----------------------- Models ------------------------------
@@ -9,6 +8,7 @@ var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
+var Points = require('../models/pointsModel');
 
 
 // --------------------- Backoffice/Admin/ ---------------------------
@@ -116,7 +116,7 @@ exports.backoffice_admin_client_get = async function (req, res) {
 
 exports.backoffice_admin_client_create_get = function (req, res) {
     res.render('backoffice/admin/client/createClient');
-}; // Done, CSS bugado
+}; // Done
 
 exports.backoffice_admin_client_create_post = (req, res) => {
     function calculatePoints(points) {
@@ -164,7 +164,7 @@ exports.backoffice_admin_client_create_post = (req, res) => {
         });
         }
     });
-}; // Done, CSS bugado
+}; // Done
 
 
 exports.backoffice_admin_client_update_get = async function (req, res) {
@@ -174,7 +174,7 @@ exports.backoffice_admin_client_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating client", error: error });
     }
-}; // Done, CSS bugado
+}; // Done
 
 exports.backoffice_admin_client_update_post = async function (req, res) {
     Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
@@ -232,7 +232,6 @@ exports.backoffice_admin_book_create_post = (req, res) => {
             });
         } else {
         // If the isbn is not already in use, create the book
-        console.log(req.body);
         var book = new Book({
             title: req.body.title,
             author: req.body.author,
@@ -250,30 +249,59 @@ exports.backoffice_admin_book_create_post = (req, res) => {
             if (err) {
                 res.render('error/error', { message: "Error creating book", error: err });
             } else {
-                // create the author
-                var author = new Author({
-                    name: req.body.author,
-                    books: [book]
-                });
-
-                author.save(function (err) {
+                // find or create the author
+                Author.findOne({ name: req.body.author }, function (err, author) {
                     if (err) {
-                        res.render('error/error', { message: "Error creating author", error: err });
+                        res.render('error/error', { message: "Error creating book", error: err });
+                    } else {
+                        if (!author) {
+                            var author = new Author({
+                                name: req.body.author,
+                                books: [book]
+                            });
+
+                            author.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating author", error: err });
+                                }
+                            });
+                        } else {
+                            author.books.push(book);
+                            author.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating author", error: err });
+                                }
+                            });
+                        }
                     }
                 });
 
-                // create the editor
-                var editor = new Editor({
-                    name: req.body.editor,
-                    books: [book]
-                });
-
-                editor.save(function (err) {
+                // find or create the editor
+                Editor.findOne({ name: req.body.editor }, function (err, editor) {
                     if (err) {
-                        res.render('error/error', { message: "Error creating editor", error: err });
+                        res.render('error/error', { message: "Error creating book", error: err });
                     } else {
-                        // If everything ok return to the list of books
-                        res.redirect('/backoffice/admin/book');
+                        if (!editor) {
+                            var editor = new Editor({
+                                name: req.body.editor,
+                                books: [book]
+                            });
+
+                            editor.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating editor", error: err });
+                                }
+                            });
+                        } else {
+                            editor.books.push(book);
+                            editor.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating editor", error: err });
+                                } else {
+                                    res.redirect('/backoffice/admin/book');
+                                }
+                            });
+                        }
                     }
                 });
             }
@@ -303,6 +331,17 @@ exports.backoffice_admin_book_update_post = function (req, res) {
     });
 }; // Done
 
+exports.backoffice_admin_book_search_post = async function (req, res) {
+    try {
+        // find using the index $**
+        console.log(req.body.search);
+        var books = await Book.find({ $text: { $search: req.body.search } });
+        res.render('backoffice/admin/book/manageBooks', { books: books });
+    } catch (error) {
+        res.render("error/error", { message: "Error searching books", error: error });
+    }
+}; // Done
+
 
 exports.backoffice_admin_book_delete_post = (req, res) => {
     Book.findByIdAndRemove(req.params.id, function (err) {
@@ -328,5 +367,27 @@ exports.backoffice_admin_make_sale_get = function (req, res) {
 
 exports.backoffice_admin_make_sale_post = function (req, res) {
     res.render('NotImplemented');
+};
+
+
+// --------------------- Backoffice/Admin/Manage Points ---------------------------
+exports.backoffice_admin_managepoints_get = async function (req, res) {
+    try {
+        var points = await Points.find();
+        res.render('backoffice/admin/managePoints/managePoints', { points: points });
+    } catch (error) {
+        res.render("error/error", { message: "Error managing points", error: error });
+    }
+}; 
+
+exports.backoffice_admin_managepoints_post = function (req, res) {
+    Points.findByIdAndUpdate("6263cd56c237f33c33e987b7", req.body, { new: true },
+        function (err, points) {
+        if (err) {
+            res.render('error/error', { message: "Error managing points", error: err });
+        } else {
+            res.redirect('/backoffice/admin/managePoints');
+        }
+    });
 };
 

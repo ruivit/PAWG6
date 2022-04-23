@@ -11,7 +11,7 @@ var SaleSchema = new Schema({
   online: { type: Boolean, default: false },
   employee_id: { type: Schema.Types.ObjectId, ref: 'Employee' },
   shipping: { type: Number, default: 0 }
-});
+}, { collection: 'Sales' });
 
 // Export model.
 module.exports = mongoose.model('Sale', SaleSchema);
