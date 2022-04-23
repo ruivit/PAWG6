@@ -38,10 +38,10 @@ exports.backoffice_login_post = function (req, res) {
                         res.redirect('/backoffice/employee');
                     }
                 } else {
-                    res.redirect('/backoffice'); // dizer que password errada
+                    res.render('backoffice/backofficeLogin', { message: 'Invalid password' });
                 }
             } else {
-                res.redirect('/backoffice'); // dizer que username nao existe
+                res.render('backoffice/backofficeLogin', { message: 'Invalid username' });
             }
         }
     });

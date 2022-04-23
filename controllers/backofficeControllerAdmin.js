@@ -357,9 +357,21 @@ exports.backoffice_admin_book_delete_post = function (req, res) {
 // --------------------- Backoffice/Admin/Sale ---------------------------
 // Everything Todo
 
-exports.backoffice_admin_sale_get = function (req, res) {
-    res.render('backoffice/admin/sale/listSales');
+exports.backoffice_admin_sale_get = async function (req, res) {
+    if (req.body.filter) {
+        // if filter is set to 'all', aka show all sales
+        // if filter is set to 'pending', aka show only pending sales
+        var sales = await Sale.find({ status: req.body.filter });
+    } else {
+        try {
+            var sales = await Sale.find();
+            res.render('backoffice/employee/sales/manageSales', { sales: sales });
+        } catch (error) {
+            res.render("error/error", { message: "Error getting sales", error: error });
+        }
+    }
 };
+
 
 exports.backoffice_admin_make_sale_get = function (req, res) {
     res.render('backoffice/admin/sale/makeSale');
@@ -371,6 +383,7 @@ exports.backoffice_admin_make_sale_post = function (req, res) {
 
 
 // --------------------- Backoffice/Admin/Manage Points ---------------------------
+
 exports.backoffice_admin_managepoints_get = async function (req, res) {
     try {
         var points = await Points.find();
@@ -378,7 +391,7 @@ exports.backoffice_admin_managepoints_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error managing points", error: error });
     }
-}; 
+}; // Done
 
 exports.backoffice_admin_managepoints_post = function (req, res) {
     Points.findByIdAndUpdate("6263cd56c237f33c33e987b7", req.body, { new: true },
@@ -389,5 +402,5 @@ exports.backoffice_admin_managepoints_post = function (req, res) {
             res.redirect('/backoffice/admin/managePoints');
         }
     });
-};
+}; // Done
 

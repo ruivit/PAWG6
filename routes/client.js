@@ -25,4 +25,8 @@ router.post('/create', multer().none(), clientController.client_create_post);
 router.get('/sellbook', clientController.client_sell_get);
 router.post('/sellbook', multer().none(), clientController.client_sell_post);
 
+// Profile
+router.get('/profile', clientController.client_profile_get);
+router.post('/profile', multer().none(), clientController.client_profile_post);
+
 module.exports = router;

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-	<title>Create Client</title>
+	<title>Creating Client</title>
 	<link rel="stylesheet" href="/stylesheets/create/createBackofficeClient.css">
   </head>
   <body>
 	<% if(locals.oldata) { %>
-	<form action="/backoffice/admin/client/create" method="post" enctype="multipart/form-data">
+	<form action="/backoffice/employee/client/create" method="post" enctype="multipart/form-data">
 		<div class="form">
-			<div class="subtitle">Create your new account</div>
+			<div class="subtitle">Create a new client account</div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
@@ -73,7 +73,7 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 	<% } else { %>
 	<form action="/backoffice/admin/client/create" method="post" enctype="multipart/form-data">
 		<div class="form">
-			<div class="subtitle">Create your new account</div>
+			<div class="subtitle">Create a new client account</div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
 				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+">

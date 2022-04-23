@@ -33,7 +33,6 @@ exports.client_login_post = function (req, res) {
                     req.session.client = client;
                     req.session.client._id = client._id;
                     req.session.save();
-                    console.log(req.session.client);
                     res.redirect('/client');
                 } else {
                     res.render('client/loginClient', { message: 'Wrong password' });
@@ -94,8 +93,7 @@ exports.client_create_post = function (req, res) {
     }
 
     // Using promises to validate the data
-    console.log(req.body);
-    var usernamePromise = Client.findOne({ username: req.body.username });
+   var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
     
     // Wait for the promises to resolve
@@ -128,9 +126,10 @@ exports.client_create_post = function (req, res) {
                 res.redirect('/client');
             }
         });
-        }
+    }
     });
 }; // Done
+
 
 // Get the form to sell a book
 exports.client_sell_get = function (req, res) {
@@ -139,7 +138,6 @@ exports.client_sell_get = function (req, res) {
 }; // Done
 
 exports.client_sell_post = function (req, res) {
-    console.log(req.session.client);
     var book = new BookSell({
         title: req.body.title,
         author: req.body.author,
@@ -159,4 +157,47 @@ exports.client_sell_post = function (req, res) {
             res.redirect('/client');
         }
     });
+}; // Done
+
+
+// Profile
+exports.client_profile_get = function (req, res) {
+    var client = Client.findById(req.session.client._id, function (err, client) {
+        if (err) {
+            res.redirect('error', { error: err });
+        } else {
+            res.render('client/profileClient', { client: client });
+        }
+    });
+}; // Done
+
+exports.client_profile_post = function (req, res) {
+    // Check if the password is correct
+    if (req.body.password == req.session.client.password) {
+        // Update the client
+        Client.findByIdAndUpdate(req.session.client._id, {
+            username: req.body.username,
+            password: req.body.password,
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            phone: req.body.phone,
+            points: req.body.points,
+            birthDate: req.body.birthDate,
+        }, function (err, client) {
+            if (err) {
+                res.redirect('error', { error: err });
+            } else {
+                res.redirect('/client');
+            }
+        });
+    } else {
+        var client = Client.findById(req.session.client._id, function (err, client) {
+        if (err) {
+            res.redirect('error', { error: err });
+        } else {
+            res.render('client/profileClient', { client: client, message: "Wrong password" });
+        }
+        });
+    }
 }; // Done

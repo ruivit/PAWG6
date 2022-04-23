@@ -1,22 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/stylesheets/portals/index.css">
-  <title>My Library</title>
-</head>
-<body>
-  <header id="header">
-    <nav class="links" style="--items: 5;">
-      <a href="/client/buy">Buy a Book</a>
-      <a href="/book/new">New Books</a>
-      <a href="/book/search">Search Books</a>
-      <a href="/client/purchases">My Purchases</a>
-      <a class="loginbtn" href="/client/logout">Logout</a>
-      <span class="line"></span>
-    </nav>
-  </header>
-</body>
+<html>
+  <head>
+	<title>My Profile</title>
+	<link rel="stylesheet" href="/stylesheets/client/profileClient.css">
+  </head>
+  <body>
+	<% if(locals.client) { %>
+	<form action="/client/profile" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">My Profile</div>
+			<div class="errormessage"><%= locals.message %></div>
+			<div class="input-container ic1">
+				<input name="username" class="input" type="text" placeholder=" "
+				value="<%= locals.client.username %>" readonly>
+				<div class="cut"></div>
+				<label for="username" class="placeholder">Username</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="email" class="input" type="text" placeholder=" "
+				value="<%= locals.client.email %>" required
+				minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				<div class="cut cut-short"></div>
+				<label for="email" class="placeholder">Email</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="name" class="input" type="text" placeholder=" "
+				value="<%= locals.client.name %>" required
+				minlength="2" maxlength="100" pattern="[a-zA-Z].+" />
+				<div class="cut cut-long"></div>
+				<label for="name" class="placeholder">Name</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="address" class="input" type="text" placeholder=" "
+				value="<%= locals.client.address %>" required
+				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut cut-long"></div>
+				<label for="address" class="placeholder">Address</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="phone" class="input" type="text" placeholder=" "
+				value="<%= locals.client.phone %>"
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="phone" class="placeholder">Phone Number</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="points" class="input" type="text" placeholder=" "
+				value="<%= locals.client.points %>"
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="points" class="placeholder">Points</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="birthDate" class="input" type="text" placeholder=" "
+				value="<%= locals.client.birthDate %>" required
+				required pattern="\d{4}-\d{2}-\d{2}"/>
+				<div class="cut cut-long"></div>
+				<label for="birthDate" class="placeholder">Birth Date (YYYY-MM-DD)</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="password" class="input" type="password" placeholder=" "
+        id="password" required value="<%= locals.client.password %>" />
+				<div class="cut"></div>
+				<label for="password" class="placeholder">Password</>
+			</div>
+			<span class="passwordpolicy">
+Minimum 8 characters, at least 1 letter, 1 number and 1 special character
+			</span>
+			<button type="text" class="submit">Update</button>
+		</div>
+	</form>
+	</form>
+	<% } else { %>
+	<form action="/client/profile" method="post" enctype="multipart/form-data">
+		<div class="form">
+			<div class="subtitle">My Profile</div>
+			<div class="input-container ic1">
+				<input name="username" class="input" type="text" placeholder=" " readonly>
+				<div class="cut"></div>
+				<label for="username" class="placeholder">Username</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="email" class="input" type="text" placeholder=" " required
+				minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				<div class="cut cut-short"></div>
+				<label for="email" class="placeholder">Email</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="name" class="input" type="text" placeholder=" " required
+				minlength="2" maxlength="100" pattern="[a-zA-Z].+" />
+				<div class="cut cut-long"></div>
+				<label for="name" class="placeholder">Name</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="address" class="input" type="text" placeholder=" " required
+				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut cut-long"></div>
+				<label for="address" class="placeholder">Address</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="phone" class="input" type="text" placeholder=" "
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="phone" class="placeholder">Phone Number</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="points" class="input" type="text" placeholder=" "
+				minlength="2" maxlength="20" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
+				<label for="points" class="placeholder">Points</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="birthDate" class="input" type="text" placeholder=" "
+				required pattern="\d{4}-\d{2}-\d{2}"/>
+				<div class="cut cut-long"></div>
+				<label for="birthDate" class="placeholder">Birth Date (YYYY-MM-DD)</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="password" class="input" type="password" placeholder=" " id="password" required
+				minlength="1" maxlength="200" />
+				<div class="cut"></div>
+				<label for="password" class="placeholder">Password</>
+			</div>
+			<span class="passwordpolicy">
+Minimum 8 characters, at least 1 letter, 1 number and 1 special character
+			</span>
+			<button type="text" class="submit">Update</button>
+		</div>
+	</form>
+	<% } %>
+  </body>
 </html>
+<!-- minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" /> -->

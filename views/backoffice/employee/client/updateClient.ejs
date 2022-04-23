@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-	<title>Update Client</title>
+	<title>Updating Client</title>
 	<link rel="stylesheet" href="/stylesheets/update/updateBook.css">
 	<script defer src="/javascripts/updateBook.js"></script>
   </head>
   <body>
 	<% if(locals.client) { %>
-	<form action="/backoffice/admin/client/update" method="post" enctype="multipart/form-data">
+	<form action="/backoffice/employee/client/update" method="post" enctype="multipart/form-data">
 		<div class="form">
-			<div class="subtitle">Create your new account</div>
+			<div class="subtitle">Updating the client <%= locals.client.username %></div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "

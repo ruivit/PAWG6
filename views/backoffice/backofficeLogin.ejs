@@ -9,6 +9,9 @@
 		<div class="form">
 			<div class="title">Welcome</div>
 			<div class="subtitle">Login into your account</div>
+			<% if(locals.message) { %>
+				<div class="errormessage"><%= locals.message %></div>
+			<% } %>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" " required/>
 				<div class="cut"></div>
