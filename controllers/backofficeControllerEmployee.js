@@ -208,8 +208,8 @@ exports.backoffice_employee_book_delete_post = function (req, res) {
 
 exports.backoffice_employee_sale_get = async function (req, res) {
     try {
-        var sales = await Sale.find();
-        res.render('backoffice/employee/sales/manageSales', { sales: sales });
+        var books = await Book.find();
+        res.render('backoffice/employee/sales/manageSales', { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding sales", error: error });
     }

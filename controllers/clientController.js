@@ -4,7 +4,6 @@ const { session } = require('passport/lib');
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
-var BookSell = require('../models/bookSellModel');
 var Sale = require('../models/saleModel');
 
 
@@ -78,6 +77,8 @@ exports.client_logout = function (req, res) {
 }; 
 
 
+// -------------------- Client/Create ---------------------------
+
 exports.client_create_get = function (req, res) {
     res.render('client/createClient');
 }; // Done
@@ -131,34 +132,25 @@ exports.client_create_post = function (req, res) {
 }; // Done
 
 
+// -------------------- Client/Sell Book ---------------------------
+
 // Get the form to sell a book
 exports.client_sell_get = function (req, res) {
-    console.log(req.session.client);
     res.render('client/sellBookClient');
 }; // Done
 
 exports.client_sell_post = function (req, res) {
-    var book = new BookSell({
-        title: req.body.title,
-        author: req.body.author,
-        genre: req.body.genre,
-        editor: req.body.editor,
-        resume: req.body.resume,
-        isbn: req.body.isbn,
-        dateAdded: req.body.dateAdded,
-        price: req.body.price,
-        client: req.session.client._id,
-    });
+    /* Ver se ISBN existe
+    Se sim, criar livro USADO
+    Se nao, criar livro USADO E NOVO com stock a 0 
+    Alterar estado forSale para false 
+    
+    No admin, fazer filtragem de books com forSale false
+    Se aceitar, mudar para true e mudar preco etc */
+};
 
-    book.save(function (err) {
-        if (err) {
-            res.render('error/error', { message: "Error creating book", error: err });
-        } else {
-            res.redirect('/client');
-        }
-    });
-}; // Done
 
+// -------------------- Client/Profile ---------------------------
 
 // Profile
 exports.client_profile_get = function (req, res) {

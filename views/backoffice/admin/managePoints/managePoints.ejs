@@ -11,14 +11,17 @@
 		<div class="form">
 			<div class="subtitle">Points Management</div>
 			<div class="input-container ic1">
-				<input name="pointsPerPrice" class="input" type="pointsPerPrice" placeholder=" "
-				value="<%= locals.points.pointsPerPrice %>" oninput="updatedValue()"/>
-				<div class="cut"></div>
+				<input name="pointsPerPrice" class="input" type="text" placeholder=" "
+				value="<%= locals.points.pointsPerPrice %>" oninput="updatedValue()"
+				minlength="1" maxlength="50" pattern="[0-9]+" />
+				<div class="cut cut-long"></div>
 				<label for="pointsPerPrice" class="placeholder">Points Per Price</label>
 			</div>
 			<button type="text" class="submit">Update</button>
 		</div>
 	</form>
+	<% } else { %>
+		<h1>Some error occured, could not load point management</h1>
 	<% } %>
   </body>
 </html>

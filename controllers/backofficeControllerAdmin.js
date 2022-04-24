@@ -215,21 +215,14 @@ exports.backoffice_admin_book_create_get = function (req, res) {
 }; // Done
 
 exports.backoffice_admin_book_create_post = function (req, res) {
-    
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
     // Wait for the promises to resolve
     Promise.all([isbnPromise]).then(function (promisesToDo) {
-        // If the isbn already exists, increate the stock of that book by 1
+        // If the isbn already exists
         if (promisesToDo[0]) {
-            Book.findOneAndUpdate({ isbn: req.body.isbn }, { $inc: { stock: 1 } }, { new: true }, 
-                function (err, book) {
-                if (err) {
-                    res.render('error/error', { message: "Error creating book", error: err });
-                } else {
-                    res.redirect('/backoffice/admin/book'); // Need to add error message
-                }
-            });
+            oldata = req.body;
+            res.render('backoffice/admin/book/createBook', { oldata: oldata, message: "ISBN already exists" });
         } else {
         // If the isbn is not already in use, create the book
         var book = new Book({
@@ -333,9 +326,15 @@ exports.backoffice_admin_book_update_post = function (req, res) {
 
 exports.backoffice_admin_book_search_post = async function (req, res) {
     try {
-        // find using the index $**
         console.log(req.body.search);
-        var books = await Book.find({ $text: { $search: req.body.search } });
+        // find everything that matches the text, by title or author
+        var books = await Book.find({ $or: [
+        { title: { $regex: req.body.search, $options: 'i' } }, 
+        { author: { $regex: req.body.search, $options: 'i' } },
+        { editor: { $regex: req.body.search, $options: 'i' } },
+        { isbn: { $regex: req.body.search, $options: 'i' } },
+        { providor: { $regex: req.body.search, $options: 'i' } }
+        ] });
         res.render('backoffice/admin/book/manageBooks', { books: books });
     } catch (error) {
         res.render("error/error", { message: "Error searching books", error: error });
@@ -386,12 +385,13 @@ exports.backoffice_admin_make_sale_post = function (req, res) {
 
 exports.backoffice_admin_managepoints_get = async function (req, res) {
     try {
-        var points = await Points.find();
+        var points = await Points.findById("62650c0098b8a1abe1af3bdc");
+        console.log(points);
         res.render('backoffice/admin/managePoints/managePoints', { points: points });
     } catch (error) {
-        res.render("error/error", { message: "Error managing points", error: error });
+        res.render("error/error", { message: "Error getting points", error: error });
     }
-}; // Done
+};
 
 exports.backoffice_admin_managepoints_post = function (req, res) {
     Points.findByIdAndUpdate("6263cd56c237f33c33e987b7", req.body, { new: true },

@@ -1,55 +1,81 @@
 <!DOCTYPE html>
-<html>
-  <head>
-	<title>Make Sale</title>
-	<link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
-  	<link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
-  </head>
-  <body>
-	<% if(locals.oldata) { %>
-	<form action="/backoffice/employee/sales/makeSale" method="post" enctype="multipart/form-data">
-		<div class="form">
-			<div class="subtitle">Register a new sale</div>
-			<div class="errormessage"><%= locals.message %></div>
-			<div class="input-container ic1">
-				<input name="clientUsername" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.clientUsername %>"
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
-				<div class="cut"></div>
-				<label for="clientUsername" class="placeholder">Client Username</label>
-			</div>
-			<div class="input-container ic2">
-				<input name="livros" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.livros %>" required 
-				minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
-				<div class="cut cut-short"></div>
-				<label for="livros" class="placeholder">Livros</label>
-			</div>
-					
-			<button type="text" class="submit">Create</button>
-		</div>
-	</form>
-	<% } else { %>
-	<form action="/backoffice/employee/sales/makeSale" method="post" enctype="multipart/form-data">
-		<div class="form">
-			<div class="subtitle">Register a new Sale</div>
-			<div class="input-container ic1">
-				<input name="clientUsername" class="input" type="text" placeholder=" "
-				required minlength="2" maxlength="20" pattern="[a-zA-Z0-9]+" />
-				<div class="cut"></div>
-				<label for="clientUsername" class="placeholder">Client Username</label>
-			</div>
-			<div class="input-container ic2">
-				<input name="livros" class="input" type="text" placeholder=" "
-				required 
-				minlength="2" maxlength="20" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
-				<div class="cut cut-short"></div>
-				<label for="livros" class="placeholder">Livros</label>
-			</div>
-			
-			<button type="text" class="submit">Submit New Sale</button>
-		</div>
-	</form>
-	<% } %>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
+  <link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <title>Book Listing</title>
+</head>
+<body>
+  <ul>
+    <!-- add logic of admin or employee -->
+    <li><a class="importantbutton" href="/backoffice/employee">Back</a></li>
+    <li><a href="/backoffice/employee/book/create">Create</a></li>
+    <li><a href="/backoffice/employee/book/search">Search</a></li>
+    <li style="float:right">
+      <a class="importantbutton"
+      href="/backoffice/logout">Logout</a>
+    </li>
+  </ul>
+  <br>
+    <% if(books.length>0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Editor</th>
+            <th scope="col">Resume</th>
+            <th scope="col">Avaliation</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Date</th>
+            <th scope="col">Condition</th>
+            <th scope="col">Provider</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<books.length;i++) { %>
+            <tr>
+              <td data-label="Title"> <%=books[i].title%> </td>
+              <td data-label="Author"> <%=books[i].author%> </td>
+              <td data-label="Genre"> <%=books[i].genre%> </td>
+              <td data-label="Editor"> <%=books[i].editor%> </td>
+              <td data-label="Resume"> <%=books[i].resume%> </td>
+              <td data-label="Avaliation"> <%=books[i].avaliation%> </td>
+              <td data-label="ISBN"> <%=books[i].isbn%> </td>
+              <td data-label="Date"> <%=books[i].dateAdded%> </td>
+              <td data-label="Condition"> <%=books[i].condition%> </td>
+              <td data-label="Provider"> <%=books[i].provider%> </td>
+              <td data-label="Stock"> <%=books[i].stock%> </td>
+              <td data-label="Price"> <%=books[i].price%> </td>
+              <td data-label="operations">
+                <form action="/backoffice/admin/book/update/<%=books[i].id%>" method="get">
+                  <input type="image" class="material-icons edit" name="_method" value="edit">
+                </form>
+                <form action="/backoffice/admin/book/delete/<%=books[i].id%>" method="post" enctype="multipart/form-data"
+                  onsubmit="return confirm('Are you sure you want to delete this book?')">
+                  <input type="image" class="material-icons delete" name="_method" value="delete">
+                </form>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No Books were found</th>
+          </tr>
+        </thead>
+      </table>
+    <% } %>
+</body>
 </html>
