@@ -7,6 +7,10 @@ var PointsSchema = new Schema({
   // 1 x percentagePerPurchase, so vai ser usado quando
   // o cliente quiser comprar livros
 
+  percentagePerPurschase : { type: Number, required: true, default: 5 },
+  // Quando o cliente compra um livro, pe, 5% do valor da 
+  // compra é transformado em pontos
+
   bonusPoints : { type: Number, required: true, default: 10 },
   /* Quando o cliente tiver 100 pontos atribuir este bonus
   Propor substituir quantidade de aquisicoes realizadas (enunciado),
@@ -14,10 +18,6 @@ var PointsSchema = new Schema({
 
   shippingPoints : { type: Number, required: true, default: 1000 },
   // Quando o cliente tiver 1000 pontos, os portes sao gratis
-
-  percentagePerPurschase : { type: Number, required: true, default: 5 },
-  // Quando o cliente compra um livro, pe, 5% do valor da 
-  // compra é transformado em pontos
 
   newClientRegister : { type: Number, required: true, default: 10 },
   // Quando o cliente se registra, recebe 10 pontos

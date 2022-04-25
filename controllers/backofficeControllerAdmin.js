@@ -8,7 +8,9 @@ var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
+
 var Points = require('../models/pointsModel');
+var Discount = require('../models/discountModel');
 
 
 // --------------------- Backoffice/Admin/ ---------------------------
@@ -328,20 +330,25 @@ exports.backoffice_admin_book_update_post = function (req, res) {
 
 exports.backoffice_admin_book_search_post = async function (req, res) {
     try {
-        console.log(req.body.search);
-        // find everything that matches the text, by title or author
-        var books = await Book.find({ $or: [
-        { title: { $regex: req.body.search, $options: 'i' } }, 
-        { author: { $regex: req.body.search, $options: 'i' } },
-        { editor: { $regex: req.body.search, $options: 'i' } },
-        { isbn: { $regex: req.body.search, $options: 'i' } },
-        { providor: { $regex: req.body.search, $options: 'i' } }
-        ] });
-        res.render('backoffice/admin/book/manageBooks', { books: books });
+        // check if the text parsed are only number
+        regex = /^[0-9]+$/;
+
+        if (RegExp(regex).test(req.body.search)) {
+            var books = await Book.find({ isbn: req.body.search });
+            res.render('backoffice/admin/book/manageBooks', { books: books });
+        } else {
+            var books = await Book.find({ $or:[ 
+                { title: { $regex: req.body.search, $options: 'i' } }, 
+                { author: { $regex: req.body.search, $options: 'i' } }, 
+                { editor: { $regex: req.body.search, $options: 'i' } } 
+            ] });
+            res.render('backoffice/admin/book/manageBooks', { books: books });
+        }
     } catch (error) {
-        res.render("error/error", { message: "Error searching books", error: error });
+        res.render("error/error", { message: "Error searching book", error: error });
     }
-}; // Done
+}; // Done          
+
 
 
 exports.backoffice_admin_book_delete_post = function (req, res) {
@@ -388,7 +395,6 @@ exports.backoffice_admin_make_sale_post = function (req, res) {
 exports.backoffice_admin_managepoints_get = async function (req, res) {
     try {
         var points = await Points.findById("62650c0098b8a1abe1af3bdc");
-        console.log(points);
         res.render('backoffice/admin/managePoints/managePoints', { points: points });
     } catch (error) {
         res.render("error/error", { message: "Error getting points", error: error });
@@ -396,12 +402,35 @@ exports.backoffice_admin_managepoints_get = async function (req, res) {
 };
 
 exports.backoffice_admin_managepoints_post = function (req, res) {
-    Points.findByIdAndUpdate("6263cd56c237f33c33e987b7", req.body, { new: true },
+    Points.findByIdAndUpdate("62650c0098b8a1abe1af3bdc", req.body, { new: true },
         function (err, points) {
         if (err) {
             res.render('error/error', { message: "Error managing points", error: err });
         } else {
-            res.redirect('/backoffice/admin/managePoints');
+            res.redirect('/backoffice/admin');
+        }
+    });
+}; // Done
+
+// --------------------- Backoffice/Admin/Manage Discount ---------------------------
+
+exports.backoffice_admin_managediscount_get = async function (req, res) {
+    try {
+        // create
+        var discount = await Discount.findById("62667eb941eac5eecb5f4e3a");
+        res.render('backoffice/admin/manageDiscount/manageDiscount', { discount: discount });
+    } catch (error) {
+        res.render("error/error", { message: "Error getting discount", error: error });
+    }
+};
+
+exports.backoffice_admin_managediscount_post = function (req, res) {
+    Discount.findByIdAndUpdate("62667eb941eac5eecb5f4e3a", req.body, { new: true },
+        function (err, discount) {
+        if (err) {
+            res.render('error/error', { message: "Error managing points", error: err });
+        } else {
+            res.redirect('/backoffice/admin');
         }
     });
 }; // Done

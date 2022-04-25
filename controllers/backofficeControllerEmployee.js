@@ -284,8 +284,38 @@ exports.backoffice_employee_make_sale_get = function (req, res) {
     res.render('backoffice/employee/sales/makeSale');
 };
 
-exports.backoffice_employee_make_sale_post = function (req, res) {
-    
-    res.render('NotImplemented');
-};
+exports.backoffice_employee_make_sale_post = async function (req, res) {
+    // get the ID based on the username
+    var books = await Book.find();
+    Client.findOne({ username: req.body.clientUsername }, function (err, client) {
+        if (err) {
+            res.render('error/error', { message: "Error finding user", error: err });
+        } else {
+            if (!client) {
+                res.render('backoffice/employee/sales/manageSales', 
+                { message: "User not found", books: books });
+            } else {
+                // make the sale
+                var sale = new Sale({
+                    clientUsername: req.body.clientUsername,
+                    books: req.body.bookId,
+                    total: 50,
+                    //total: calculateTotal(),
+                    online: req.body.online,
+                    employee_id: req.session.employeeID,
+                    //shipping: calculateShipping(),
+                    shipping: 50,
+                });
 
+                sale.save(function (err) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating sale", error: err });
+                    } else {
+                        res.redirect('/backoffice/employee/sales');
+                    }
+                });
+            }
+        }
+    });
+};
+        

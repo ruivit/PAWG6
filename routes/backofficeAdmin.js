@@ -75,5 +75,9 @@ router.get('/managePoints', controller.backoffice_admin_managepoints_get);
 
 router.post('/managePoints', multer().none(), controller.backoffice_admin_managepoints_post);
 
+router.get('/manageDiscount', controller.backoffice_admin_managediscount_get);
+
+router.post('/manageDiscount', multer().none(), controller.backoffice_admin_managediscount_post);
+
 module.exports = router;
 
