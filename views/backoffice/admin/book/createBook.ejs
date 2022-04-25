@@ -79,8 +79,9 @@
 		</div>
 	</form>
 	<% } else { %>
+		<div class="form">
 		<form action="/backoffice/admin/book/create" method="post" enctype="multipart/form-data">
-			<div class="form">
+			
 				<div class="subtitle">Create a new Book</div>
 				<div class="errormessage"><%= locals.message %></div>
 				<div class="input-container ic1">
@@ -155,8 +156,11 @@
 					<label for="buyPrice" class="placeholder">Buy Price</label>
 				</div>
 				<button type="text" class="submit">Create</button>
-			</div>
 		</form>
+		<form action="/backoffice/admin/book" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } %>
   </body>
 </html>

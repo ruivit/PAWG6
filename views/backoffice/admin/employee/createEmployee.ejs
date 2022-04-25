@@ -6,8 +6,8 @@
   </head>
   <body>
 	<% if(locals.oldata) { %>
-	<form action="/backoffice/admin/employee/create" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/employee/create" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Create a new Employee</div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
@@ -48,11 +48,14 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			</div>
 			<p></p>
 			<button type="text" class="submit">Create</button>
-		</div>
-	</form>
+		</form>
+		<form action="/backoffice/admin/employee" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } else { %>
-	<form action="/backoffice/admin/employee/create" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/employee/create" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Create a new Employee</div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
@@ -90,8 +93,11 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			</div>
 			<p></p>
 			<button type="text" class="submit">Create</button>
-		</div>
-	</form>
+		</form>
+		<form action="/backoffice/admin/employee" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } %>
   </body>
 </html>

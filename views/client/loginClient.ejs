@@ -5,8 +5,8 @@
 	<link rel="stylesheet" href="/stylesheets/login/loginClient.css">
   </head>
   <body>
-	<form action="/client/login" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/client/login" method="post" enctype="multipart/form-data">
 			<div class="title">Welcome Customer</div>
 			<div class="subtitle">Login into your account</div>
 			<div class="subtitle">...or create a new one</div>
@@ -30,7 +30,10 @@
 						Create account</button>
 				</div>
 			</form>
-		</div>
-	</form>
+		</form>
+		<form action="/" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
   </body>
 </html>

@@ -7,8 +7,8 @@
   </head>
   <body>
 	<% if(locals.points) { %>
-	<form action="/backoffice/admin/managePoints" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/managePoints" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Points Management</div>
 			<div class="input-container ic1">
 				<input name="pointsPerPrice" class="input" type="text" placeholder=" "
@@ -18,8 +18,11 @@
 				<label for="pointsPerPrice" class="placeholder">Points Per Price</label>
 			</div>
 			<button type="text" class="submit">Update</button>
-		</div>
-	</form>
+		</form>
+		<form action="/backoffice/admin/" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } else { %>
 		<h1>Some error occured, could not load point management</h1>
 	<% } %>

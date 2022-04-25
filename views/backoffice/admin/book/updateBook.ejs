@@ -7,8 +7,8 @@
   </head>
   <body>
 	<% if(locals.book) { %>
-	<form action="/backoffice/admin/book/update" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/book/update" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Updating the book <%= locals.book.title %></div>
 			<div class="input-container ic1">
 				<input type="text" name="title" id="title" value="<%= locals.book.title %>"
@@ -90,8 +90,11 @@
 				<label for="buyPrice" class="placeholder">Buy Price</label>
 			</div>
 			<button type="text" class="submit">Update</button>
-		</div>
-	</form>
+		</form>
+		<form action="/backoffice/admin/book" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } %>
   </body>
 </html>

@@ -7,8 +7,8 @@
   </head>
   <body>
 	<% if(employee) { %>
-	<form action="/backoffice/admin/employee/update" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/employee/update" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Editing <%=employee.name%></div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
@@ -46,8 +46,11 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			</div>
 			<p></p>
 			<button type="text" class="submit">Update</button>
-		</div>
-	</form>
+		</form>
+		<form action="/backoffice/employee/" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } %>
   </body>
 </html>

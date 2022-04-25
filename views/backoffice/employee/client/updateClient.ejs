@@ -7,8 +7,8 @@
   </head>
   <body>
 	<% if(locals.client) { %>
-	<form action="/backoffice/employee/client/update" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/employee/client/update" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Updating the client <%= locals.client.username %></div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
@@ -67,10 +67,12 @@
 			<span class="passwordpolicy">
 Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 			</span>
-			<button type="text" class="submit">Submit changes</button>
-		</div>
-	</div>	
-	</form>
+			<button type="text" class="submit">Submit changes</button>	
+		</form>
+		<form action="/backoffice/employee/client" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } %>
   </body>
 </html>

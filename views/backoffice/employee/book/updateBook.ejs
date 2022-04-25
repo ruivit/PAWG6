@@ -7,8 +7,8 @@
   </head>
   <body>
 	<% if(locals.book) { %>
-	<form action="/backoffice/admin/book/update" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/book/update" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Updating the book <%= locals.book.title %></div>
 			<div class="input-container ic1">
 				<input name="title" class="input" type="text" placeholder=" " 
@@ -17,7 +17,6 @@
 				<div class="cut"></div>
 				<label for="title" class="placeholder">Title</label>
 			</div>
-			<!-- Author depois devera ser uma tabela ??? -->
 			<div class="input-container ic2">
 				<input name="author" class="input" type="text" placeholder=" "
 				value="<%= locals.book.author %>" required
@@ -68,8 +67,11 @@
 				<label for="isbn" class="placeholder">ISBN</label>
 			</div>
 			<button type="text" class="submit">Update</button>
-		</div>
-	</form>
+		</form>
+		<form action="/backoffice/employee/book" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } %>
   </body>
 </html>
