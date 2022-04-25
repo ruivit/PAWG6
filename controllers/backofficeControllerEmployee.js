@@ -22,7 +22,7 @@ exports.backoffice_employee_get = function (req, res) {
 
 exports.backoffice_employee_client_get = async function (req, res) {
     try {
-        var clients = await Client.find().populate('username');
+        var clients = await Client.find();
         res.render('backoffice/employee/client/manageClients', { clients: clients });
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
@@ -41,6 +41,19 @@ exports.backoffice_employee_client_create_post = function (req, res) {
         } else {
             return totalPoints;
         }// else, logica de negocio
+    }
+
+    function calculateAgeType(birthDate) {
+        var age = new Date().getFullYear() - birthDate.substring(0, 4);;
+        if (age < 10) {
+            return "Infatil";
+        } else if (age > 10 && age <= 18) {
+            return "Juvenil";
+        } else if (age > 18 && age <= 60) {
+            return "Adulto";
+        } else {
+            return "Senior";
+        }
     }
 
     // Using promises to validate the data
@@ -67,7 +80,7 @@ exports.backoffice_employee_client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points),
             birthDate: req.body.birthDate,
-            ageType: 21, // falta calcular
+            ageType: calculateAgeType(req.body.birthDate),
         });
 
         client.save(function (err) {
@@ -279,16 +292,13 @@ exports.backoffice_employee_book_update_post = function (req, res) {
 }; // Done
 
 exports.backoffice_employee_book_search_post = async function (req, res) {
-    
     try {
-
         // check if the text parsed are only number
         regex = /^[0-9]+$/;
 
         if (RegExp(regex).test(req.body.search)) {
 
             var books = await Book.find({ isbn: req.body.search });
-
             res.render('backoffice/employee/book/manageBooks', { books: books });
 
         } else if (req.body.search == "true" || req.body.search == "false") {
@@ -307,15 +317,11 @@ exports.backoffice_employee_book_search_post = async function (req, res) {
             ] });
 
             res.render('backoffice/employee/book/manageBooks', { books: books });
-
         }
 
     } catch (error) {
-
         res.render("error/error", { message: "Error searching book", error: error });
-
     }
-
 }; // Done
 
 
@@ -331,7 +337,6 @@ exports.backoffice_employee_book_delete_post = function (req, res) {
 
 
 // --------------------- Backoffice/employee/Sale ---------------------------
-// Everything Todo
 
 exports.backoffice_employee_sale_get = async function (req, res) {
     try {
@@ -347,6 +352,14 @@ exports.backoffice_employee_make_sale_get = function (req, res) {
 };
 
 exports.backoffice_employee_make_sale_post = async function (req, res) {
+    function calculateTotal() {
+        return 0;
+    } // Milestone 2
+    
+    function calculateShipping() {
+        return 0;
+    } // Milestone 2
+    
     // get the ID based on the username
     var books = await Book.find();
     Client.findOne({ username: req.body.clientUsername }, function (err, client) {
@@ -357,22 +370,27 @@ exports.backoffice_employee_make_sale_post = async function (req, res) {
                 res.render('backoffice/employee/sales/manageSales', 
                 { message: "User not found", books: books });
             } else {
+                // Format the date in DD/MM/YYYY HH:MM
+                var d = new Date();
+                dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+                d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+
                 // make the sale
                 var sale = new Sale({
                     clientUsername: req.body.clientUsername,
                     books: req.body.bookId,
-                    total: 50,
-                    //total: calculateTotal(),
+                    dateString: dateNowString,
+                    total: calculateTotal(),
                     online: req.body.online,
                     employee_id: req.session.employeeID,
-                    //shipping: calculateShipping(),
-                    shipping: 50,
+                    shipping: calculateShipping()
                 });
 
                 sale.save(function (err) {
                     if (err) {
                         res.render('error/error', { message: "Error creating sale", error: err });
                     } else {
+                        // MileStone 2 - add success message
                         res.redirect('/backoffice/employee/sales');
                     }
                 });

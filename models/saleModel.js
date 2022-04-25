@@ -8,8 +8,9 @@ var SaleSchema = new Schema({
   total: { type: Number, default: 0 },
   gainedPoints: { type: Number, default: 0 },
   date: { type: Date, default: Date.now },
+  dateString: { type: String, default: '' },
   online: { type: Boolean, default: false },
-  employee_id: { type: Schema.Types.ObjectId, ref: 'Employee' },
+  employee_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
   shipping: { type: Number, default: 0 }
 }, { collection: 'Sales' });
 
