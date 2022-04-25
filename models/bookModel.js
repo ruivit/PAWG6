@@ -11,6 +11,7 @@ var BookSchema = new Schema({
   avaliation: { type: Number, required: false, default: 0 },
   isbn: { type: Number, required: true },
   dateAdded: { type: Date, required: false, default: Date.now },
+  dateString: { type: String, required: false, default: '' },
   condition: { type: String, required: true },
   provider: { type: String, required: true },
   stock: { type: Number, required: false, defeault: 0 },

@@ -11,7 +11,7 @@ var ClientSchema = new Schema({
   phone: { type: Number, required: false },
   points: { type: Number, required: false, default: 10 },
   birthDate: { type: Date, required: true },
-  ageType: { type: Number, required: true },
+  ageType: { type: String, required: true },
 
   totalBuys: { type: Number, required: false, default: 0 },
   // Quando se compra um livro, +1

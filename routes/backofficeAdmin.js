@@ -66,11 +66,11 @@ router.post('/book/search', multer().none(), controller.backoffice_admin_book_se
 // ------------------------------ Admin/Sale URL
 
 // Admin Sale Index
-router.get('/sale', controller.backoffice_admin_sale_get);
+router.get('/sales', controller.backoffice_admin_sales_get);
 
 // Admin Sale Create
-router.get('/sale/create', controller.backoffice_admin_make_sale_get);
-router.post('/sale/create', multer().none(), controller.backoffice_admin_make_sale_post);
+router.get('/sales/makeSale', controller.backoffice_admin_make_sale_get);
+router.post('/sales/makeSale', multer().none(), controller.backoffice_admin_make_sale_post);
 
 // ------------------------------ Admin/Points URL
 
