@@ -6,6 +6,7 @@
 cada vez que se faz operacoes que precisem do ageType, calcular e atualizar
 - [ ] Verificar Restricoes FrontEnd HTML
 - [ ] Bugs
+- [ ] Criar botão para sair das páginas de preenchimento de formulários
 
 ##### Enunciado
 - [x] Registo de funcionários da empresa;
@@ -15,3 +16,11 @@ cada vez que se faz operacoes que precisem do ageType, calcular e atualizar
 cliente (ex: compras físicas do cliente na livraria); (MAKE A SALE)
 - [x] Gestão das quantidades de livros novos e usados. Adicionar, remover e editar informação sobre livros
 na plataforma bem como a sua quantidade;
+
+##### Avançadas e coisinhas
+- [ ] Quando carregámos no botão create book, deverá 
+aparecer só uma mensagem a dizer que o livro foi 
+adicionado à base d dados e aparecer só os dados do livro (search)
+- [ ] Se der erro, por exemplo, isbn já existe, o cursor da página deve posicionar-se no topo.
+- [ ]
+
