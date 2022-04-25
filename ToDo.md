@@ -1,5 +1,5 @@
 #### Tarefas
-- [ ] Pesquisas
+- [ ] Pesquisas falta employeee
 - [ ] Sales
 - [ ] Discount/Points Update
 - [ ] Datas - so pedir o birthdate no create, dps e so ageType, listangs etc
@@ -22,5 +22,5 @@ na plataforma bem como a sua quantidade;
 aparecer só uma mensagem a dizer que o livro foi 
 adicionado à base d dados e aparecer só os dados do livro (search)
 - [ ] Se der erro, por exemplo, isbn já existe, o cursor da página deve posicionar-se no topo.
-- [ ]
+- [ ] Ver o bug de não voltar para o backoffice ao criar um novo livro
 
