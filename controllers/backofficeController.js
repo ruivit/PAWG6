@@ -30,6 +30,7 @@ exports.backoffice_login_post = function (req, res) {
                     if (employee.admin) {
                         req.session.admin = true;
                         req.session.username = employee.username;
+                        req.session.employeeID = employee._id;
                         res.redirect('/backoffice/admin');
                     } else {
                         req.session.admin = false;

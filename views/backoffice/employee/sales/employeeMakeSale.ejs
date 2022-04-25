@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Book Listing</title>
+  <title>Employee Make Sale</title>
 </head>
 <body>
   <ul>
@@ -34,7 +34,7 @@
         </thead>
         <tbody>
           <% for(var i=0; i<books.length;i++) { %>
-            <form action="/backoffice/employee/sales/makeSale" method="post">
+            <form action="/backoffice/employee/sales/makesale" method="post">
             <tr>
               <td data-label="Title"> <%=books[i].title%> </td>
               <td data-label="Image"> <%=books[i].image%> </td>

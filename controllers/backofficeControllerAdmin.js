@@ -511,7 +511,7 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
             res.render('error/error', { message: "Error finding user", error: err });
         } else {
             if (!client) {
-                res.render('backoffice/employee/sales/manageSales', 
+                res.render('backoffice/admin/sales/manageSales', 
                 { message: "User not found", books: books });
             } else {
                 // Format the date in DD/MM/YYYY HH:MM
@@ -535,7 +535,7 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
                         res.render('error/error', { message: "Error creating sale", error: err });
                     } else {
                         // MileStone 2 - add success message
-                        res.redirect('/backoffice/employee/sales');
+                        res.redirect('/backoffice/admin/sales');
                     }
                 });
             }

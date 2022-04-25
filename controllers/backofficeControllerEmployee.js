@@ -340,16 +340,33 @@ exports.backoffice_employee_book_delete_post = function (req, res) {
 
 exports.backoffice_employee_sale_get = async function (req, res) {
     try {
+        var sales = await Sale.find({});
+        for (var i = 0; i < sales.length; i++) {
+            // Get the title of the books
+            for (var j = 0; j < sales[i].books.length; j++) {
+                var book = await Book.findById(sales[i].books[j]._id);
+                sales[i].books[j].title = book.title;
+            }
+        
+            // Get username of the employee
+            var employee = await Employee.findById(sales[i].employee_id);
+            sales[i].employeeusername = employee.username;
+        }
+        res.render('backoffice/employee/sales/employeeManageSales', { sales: sales });
+    } catch (error) {
+        res.render("error/error", { message: "Error getting sales", error: error });
+    }
+}; // Done
+
+exports.backoffice_employee_make_sale_get = async function (req, res) {
+    try {
         var books = await Book.find();
-        res.render('backoffice/employee/sales/manageSales', { books: books });
+        res.render('backoffice/employee/sales/employeeMakeSale', { books: books });
     } catch (error) {
         res.render("error", { message: "Error finding sales", error: error });
     }
 };
 
-exports.backoffice_employee_make_sale_get = function (req, res) {
-    res.render('backoffice/employee/sales/makeSale');
-};
 
 exports.backoffice_employee_make_sale_post = async function (req, res) {
     function calculateTotal() {
@@ -367,7 +384,7 @@ exports.backoffice_employee_make_sale_post = async function (req, res) {
             res.render('error/error', { message: "Error finding user", error: err });
         } else {
             if (!client) {
-                res.render('backoffice/employee/sales/manageSales', 
+                res.render('backoffice/employee/sales/employeeManageSales', 
                 { message: "User not found", books: books });
             } else {
                 // Format the date in DD/MM/YYYY HH:MM

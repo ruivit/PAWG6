@@ -1,13 +1,14 @@
 #### Tarefas
-- [ ] Pesquisas falta employeee
-- [ ] Sales
-- [ ] Discount/Points Update
-- [ ] Datas - so pedir o birthdate no create, dps e so ageType, listangs etc
+- [x] Pesquisas falta employeee
+- [x] Sales
+- [x] Discount/Points Update
+- [ ] Datas - ver melhor forma de actualaizar o ageType
 cada vez que se faz operacoes que precisem do ageType, calcular e atualizar
 - [x] Verificar Restricoes FrontEnd HTML
 - [ ] Bugs
 - [x] Criar botão para sair das páginas de preenchimento de formulários
-- [ ] Employee Profile
+- [x] Employee Profile
+- [ ] Verificar CSS e adicionar compatibilidade
 ##### Enunciado
 - [x] Registo de funcionários da empresa;
 - [x] Registo e gestão de clientes
@@ -23,4 +24,11 @@ aparecer só uma mensagem a dizer que o livro foi
 adicionado à base d dados e aparecer só os dados do livro (search)
 - [ ] Se der erro, por exemplo, isbn já existe, o cursor da página deve posicionar-se no topo.
 - [ ] Ver o bug de não voltar para o backoffice ao criar um novo livro
+
+##### Perguntas Professor
+
+Relatório?
+Imagens das capas dos livros, qual a melhor forma?
+
+
 

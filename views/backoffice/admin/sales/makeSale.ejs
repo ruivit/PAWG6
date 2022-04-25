@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Book Listing</title>
+  <title>Admin Make Sale</title>
 </head>
 <body>
   <ul>
-    <li><a class="importantbutton" href="/backoffice/employee">Back</a></li>
+    <li><a class="importantbutton" href="/backoffice/admin">Back</a></li>
     <li style="float:right">
       <a class="importantbutton"
       href="/backoffice/logout">Logout</a>
@@ -34,7 +34,7 @@
         </thead>
         <tbody>
           <% for(var i=0; i<books.length;i++) { %>
-            <form action="/backoffice/employee/sales/makeSale" method="post">
+            <form action="/backoffice/admin/sales/makeSale" method="post">
             <tr>
               <td data-label="Title"> <%=books[i].title%> </td>
               <td data-label="Image"> <%=books[i].image%> </td>
