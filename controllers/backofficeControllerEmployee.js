@@ -102,6 +102,45 @@ exports.backoffice_employee_client_update_post = async function (req, res) {
     });
 }; // Done
 
+exports.backoffice_employee_client_search_post = async function (req, res) {
+    
+    try {
+
+        // check if the text parsed are only number
+
+        regex = /^[0-9]+$/;
+
+        console.log(RegExp(regex).test(req.body.search));
+
+        if (RegExp(regex).test(req.body.search)) {
+
+            var clients = await Client.find({ phone: req.body.search });
+
+            res.render('backoffice/employee/client/manageClients', { clients: clients });
+
+        } else {
+
+            var clients = await Client.find({ $or:[
+
+                { username: { $regex: req.body.search, $options: 'i' } },
+
+                { email: { $regex: req.body.search, $options: 'i' } },
+
+            ] });
+
+            res.render('backoffice/employee/client/manageClients', { clients: clients });
+
+        }
+
+    } catch (error) {
+
+        res.render("error/error", { message: "Error searching Client", error: error });
+
+    }
+
+}; // Done
+
+
 
 exports.backoffice_employee_client_delete_post = function (req, res) {
     Client.findByIdAndRemove(req.params.id, function (err) {
@@ -244,10 +283,7 @@ exports.backoffice_employee_book_search_post = async function (req, res) {
     try {
 
         // check if the text parsed are only number
-
         regex = /^[0-9]+$/;
-
-        console.log(RegExp(regex).test(req.body.search));
 
         if (RegExp(regex).test(req.body.search)) {
 
@@ -255,16 +291,19 @@ exports.backoffice_employee_book_search_post = async function (req, res) {
 
             res.render('backoffice/employee/book/manageBooks', { books: books });
 
+        } else if (req.body.search == "true" || req.body.search == "false") {
+
+            var books = await Book.find({ $or:[
+                { forSale: req.body.search } ] });
+
+            res.render('backoffice/employee/book/manageBooks', { books: books });
+
         } else {
 
             var books = await Book.find({ $or:[
-
                 { title: { $regex: req.body.search, $options: 'i' } },
-
                 { author: { $regex: req.body.search, $options: 'i' } },
-
                 { editor: { $regex: req.body.search, $options: 'i' } }
-
             ] });
 
             res.render('backoffice/employee/book/manageBooks', { books: books });
@@ -342,3 +381,38 @@ exports.backoffice_employee_make_sale_post = async function (req, res) {
     });
 };
         
+
+
+// --------------------- Backoffice/employee/profile ---------------------------
+
+
+exports.backoffice_employee_manageProfile_get = async function (req, res) {
+    try {
+        var employee = await Employee.findById(req.session.employeeID);
+        res.render('backoffice/employee/employeeProfile/manageEmployeeProfile', { employee: employee });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating profile", error: error });
+    }
+};
+
+exports.backoffice_employee__profile_update_get = async function (req, res) {
+    try {
+        var employee = await Employee.findById(req.session.employeeID);
+        res.render('backoffice/employee/employeeProfile/updateEmployeeProfile', { employee: employee });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating employee", error: error });
+    }
+}; // Done
+
+
+
+exports.backoffice_employee_profile_update_post = async function (req, res) {
+    Employee.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
+        function (err, employee) {
+        if (err) {
+            res.render('error/error', { message: "Error updating employee", error: err });
+        } else {
+            res.redirect('/backoffice/employee/profile');
+        }
+    });
+}; // Done

@@ -2,13 +2,13 @@
 <html>
   <head>
 	<title>Update Employee</title>
-	<link rel="stylesheet" href="/stylesheets/update/updateBook.css">
-	<script defer src="/javascripts/updateBook.js"></script>
+	<link rel="stylesheet" href="/stylesheets/update/updateEmployee.css">
+	<script defer src="/javascripts/update.js"></script>
   </head>
   <body>
 	<% if(employee) { %>
 	<div class="form">
-		<form action="/backoffice/admin/employee/update" method="post" enctype="multipart/form-data">
+		<form action="/backoffice/employee/profile/update" method="post" enctype="multipart/form-data">
 			<div class="subtitle">Editing <%=employee.name%></div>
 			<div class="input-container ic1">
 				<input name="username" class="input" type="text" placeholder=" "
@@ -35,6 +35,13 @@
 				value="<%= locals.employee.category %>" readonly />
 				<div class="cut"></div>
 				<label for="category" class="placeholder">Category</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="address" class="input" type="text" placeholder=" "
+				value="<%= locals.employee.address %>" required oninput="updatedValue()"
+				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut"></div>
+				<label for="address" class="placeholder">Adresss</label>
 			</div>
 			<div class="input-container ic2"> <!-- enforce the policy -->
 				<input name="password" class="input" type="password" placeholder="" id="password" required/>

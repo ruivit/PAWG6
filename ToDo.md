@@ -7,7 +7,7 @@ cada vez que se faz operacoes que precisem do ageType, calcular e atualizar
 - [x] Verificar Restricoes FrontEnd HTML
 - [ ] Bugs
 - [x] Criar botão para sair das páginas de preenchimento de formulários
-
+- [ ] Employee Profile
 ##### Enunciado
 - [x] Registo de funcionários da empresa;
 - [x] Registo e gestão de clientes

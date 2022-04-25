@@ -6,7 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
-  <title>Admin Portal</title>
+  <% if(locals.admin) { %>
+  <title>Admin Backoffice</title>
+  <% } else { %>
+    <title>Employee Backoffice</title>
+  <% } %>
 </head>
 <body>
   <% if(locals.admin) { %>
@@ -31,6 +35,7 @@
       <li><a href="/backoffice/employee/client">Clients</a></li>
       <li><a href="/backoffice/employee/book">Books</a></li>
       <li><a href="/backoffice/employee/sales">Sales</a></li>
+      <li><a href="/backoffice/employee/profile">Profile</a></li>
       <li style="float:right">
         <a class="importantbutton"
         href="/backoffice/logout">Logout</a>

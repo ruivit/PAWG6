@@ -24,6 +24,10 @@ router.post('/client/update/:id', multer().none(), controller.backoffice_employe
 // employee Client Delete
 router.post('/client/delete/:id', controller.backoffice_employee_client_delete_post);
 
+//employee Client search
+router.post('/client/search', multer().none(), controller.backoffice_employee_client_search_post);
+
+
 
 // ------------------------------ employee/Book URL
 
@@ -53,4 +57,13 @@ router.get('/sales/makeSale', controller.backoffice_employee_make_sale_get);
 router.post('/sales/makeSale', multer().none(), controller.backoffice_employee_make_sale_post);
 
 module.exports = router;
+
+// ------------------------------ employee/ProfileUpdate URL
+
+// Employee Profile Update
+router.get('/profile', controller.backoffice_employee_manageProfile_get);
+
+router.get('/profile/update/', controller.backoffice_employee__profile_update_get);
+
+router.post('/profile/update', multer().none(), controller.backoffice_employee_profile_update_post);
 

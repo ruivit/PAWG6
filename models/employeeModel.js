@@ -8,6 +8,7 @@ var EmployeeSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     category: { type: String, required: true },
+    address: { type: String, required: true },
     admin: { type: Boolean, required: false, default: false },
 }, { collection: 'Employees' });
 

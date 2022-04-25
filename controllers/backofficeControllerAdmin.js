@@ -58,6 +58,7 @@ exports.backoffice_admin_employee_create_post = (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 category: req.body.category,
+                address: req.body.address,
                 admin: false,
             });
 

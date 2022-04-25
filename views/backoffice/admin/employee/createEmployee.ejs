@@ -38,6 +38,13 @@
 				<div class="cut cut-long"></div>
 				<label for="category" class="placeholder">Category</label>
 			</div>
+			<div class="input-container ic2">
+				<input name="address" class="input" type="text" placeholder=" "
+				value="<%= locals.oldata.address %>" required oninput="updatedValue()"
+				minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut"></div>
+				<label for="address" class="placeholder">Adress</label>
+			</div>
 			<div class="input-container ic2"> <!-- enforce the policy -->
 				<input name="password" class="input" type="password" placeholder="" id="password" required/>
 				<div class="cut passwordpolicy"></div>
@@ -82,6 +89,12 @@ Minimum 8 characters, at least 1 letter, 1 number and 1 special character
 				</select>
 				<div class="cut"></div>
 				<label for="category" class="placeholder">Category</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="address" class="input" type="text" placeholder=" "
+				required minlength="2" maxlength="100" pattern="[a-zA-Z0-9].+" />
+				<div class="cut"></div>
+				<label for="address" class="placeholder">Adress</label>
 			</div>
 			<div class="input-container ic2"> <!-- enforce the policy -->
 				<input name="password" class="input" type="password" placeholder="" id="password" required/>
