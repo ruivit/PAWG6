@@ -12,7 +12,7 @@ var BookSchema = new Schema({
   isbn: { type: Number, required: true },
   dateAdded: { type: Date, required: false, default: Date.now },
   condition: { type: String, required: true },
-  provider: { type: Schema.Types.ObjectId, required: true },
+  provider: { type: String, required: true },
   stock: { type: Number, required: false, defeault: 0 },
   sellPrice: { type: Number, required: true },
   buyPrice: { type: Number, required: true},

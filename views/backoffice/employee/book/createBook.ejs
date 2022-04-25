@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-	<title>Creating Book</title>
+	<title>Create Book</title>
 	<link rel="stylesheet" href="/stylesheets/create/createBook.css">
   </head>
   <body>
@@ -11,60 +11,85 @@
 			<div class="subtitle">Create a new Book</div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
-				<input name="title" class="input" type="text" placeholder=" " 
-				value="<%= locals.oldata.title %>" required
-				pattern="[a-zA-Z0-9\s]{1,50}" minlength="5" maxlength="50">
+				<input type="text" name="title" id="title" value="<%= locals.oldata.title %>"
+				required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50" class="input">
 				<div class="cut"></div>
 				<label for="title" class="placeholder">Title</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="author" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.author %>" required
-				pattern="[a-zA-Z0-9\s]{1,50}" minlength="5" maxlength="50">
+				<input type="text" name="author" id="author" value="<%= locals.oldata.author %>"
+				required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50" class="input">
 				<div class="cut"></div>
 				<label for="author" class="placeholder">Author</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="genre" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.genre %>" required
-				pattern="[a-zA-Z0-9]{1,50}" minlength="5" maxlength="50">
+				<select class="input" name="genre" required>
+					<option value="Art">Art</option>
+					<option value="Biography">Biography</option>
+					<option value="Business">Business</option>
+					<option value="Children">Children</option>
+					<option value="Comics">Comics</option>
+					<option value="Cookbooks">Cookbooks</option>
+					<option value="Dictionaries">Dictionaries</option>
+					<option value="Fantasy">Fantasy</option>
+					<option value="Fiction">Fiction</option>
+					<option value="Graphic Novels">Graphic Novels</option>
+					<option value="Historical Fiction">Historical Fiction</option>
+					<option value="Action/Adventure">Action/Adventure</option>
+					<option value="Drama">Drama</option>
+					<option value="Horror">Horror</option>
+					<option value="Romance">Romance</option>
+					<option value="Thriller">Thriller</option>
+					<option value="Education">Education</option>
+					<option value="Other">Other</option>
+				</select>
 				<div class="cut"></div>
 				<label for="genre" class="placeholder">Genre</label>
 			</div>
+			<!-- Editor deverá ser uma tabela -->
 			<div class="input-container ic2">
-				<input name="publisher" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.publisher %>" required
-				pattern="[a-zA-Z0-9]{1,50}" minlength="5" maxlength="50">
+				<input type="text" name="editor" id="editor" value="<%= locals.oldata.editor %>"
+				required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50" class="input">
+				<div class="cut"></div>
+				<label for="editor" class="placeholder">Editor</label>
+			</div>
+			<div class="input-container ic2">
+				<input type="text" name="resume" class="input" id="resume" value="<%= locals.oldata.resume %>" 
+				required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
 				<div class="cut cut-long"></div>
-				<label for="publisher" class="placeholder">Publisher</label>
+				<label for="resume" class="placeholder">Resume</label>
 			</div>
 			<div class="input-container ic2">
-				<input name="year" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.year %>" required
-				pattern="[0-9]{4}" minlength="4" maxlength="4">
-				<div class="cut"></div>
-				<label for="year" class="placeholder">Year</label>
-			</div>
-			<div class="input-container ic2">
-				<input name="price" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.price %>" required
-				pattern="^\d+(.\d{1,2})?$" minlength="1" maxlength="10">
-				<div class="cut"></div>
-				<label for="price" class="placeholder">Price</label>
-			</div>
-			<div class="input-container ic2">
-				<input name="stock" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.stock %>" required
-				pattern="[0-9]{1,4}" minlength="1" maxlength="4">
-				<div class="cut"></div>
-				<label for="stock" class="placeholder">Stock</label>
-			</div>
-			<div class="input-container ic2">
-				<input name="isbn" class="input" type="text" placeholder=" "
-				value="<%= locals.oldata.isbn %>" required
-				pattern="[0-9]{13,13}" minlength="1" maxlength="13">
+				<input name="isbn" class="input" type="text" id="isbn" value="<%= locals.oldata.isbn %>" 
+				required pattern="[0-9]{13,13}" minlength="13" maxlength="13">
 				<div class="cut"></div>
 				<label for="isbn" class="placeholder">ISBN</label>
+			</div>
+			<div class="input-container ic2">
+				<select class="input" name="condition">
+					<option value="New">New</option>
+					<option value="Used">Used</option>
+				</select>
+				<div class="cut cut-long"></div>
+				<label for="condition" class="placeholder">Condition</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="provider" class="input" type="text" id="provider" value="<%= locals.oldata.provider %>"
+				required pattern="[a-zA-Z0-9].+" minlength="2" maxlength="50">
+				<div class="cut cut-long"></div>
+				<label for="provider" class="placeholder">Provider</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="sellPrice" class="input" type="text" id="sellPrice" value="<%= locals.oldata.sellPrice %>" 
+				required pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="5">
+				<div class="cut cut-long"></div>
+				<label for="sellPrice" class="placeholder">Sell Price</label>
+			</div>
+			<div class="input-container ic2">
+				<input name="buyPrice" class="input" type="text" id="buyPrice" value="<%= locals.oldata.buyPrice %>"
+				required pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="5">
+				<div class="cut cut-long"></div>
+				<label for="buyPrice" class="placeholder">Buy Price</label>
 			</div>
 			<button type="text" class="submit">Create</button>
 		</form>
@@ -90,8 +115,26 @@
 					<label for="author" class="placeholder">Author</label>
 				</div>
 				<div class="input-container ic2">
-					<input name="genre" class="input" type="text" placeholder=" " required
-					pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
+					<select class="input" name="genre" required>
+					<option value="Art">Art</option>
+					<option value="Biography">Biography</option>
+					<option value="Business">Business</option>
+					<option value="Children">Children</option>
+					<option value="Comics">Comics</option>
+					<option value="Cookbooks">Cookbooks</option>
+					<option value="Dictionaries">Dictionaries</option>
+					<option value="Fantasy">Fantasy</option>
+					<option value="Fiction">Fiction</option>
+					<option value="Graphic Novels">Graphic Novels</option>
+					<option value="Historical Fiction">Historical Fiction</option>
+					<option value="Action/Adventure">Action/Adventure</option>
+					<option value="Drama">Drama</option>
+					<option value="Horror">Horror</option>
+					<option value="Romance">Romance</option>
+					<option value="Thriller">Thriller</option>
+					<option value="Education">Education</option>
+					<option value="Other">Other</option>
+					</select>
 					<div class="cut"></div>
 					<label for="genre" class="placeholder">Genre</label>
 				</div>
@@ -103,15 +146,9 @@
 				</div>
 				<div class="input-container ic2">
 					<input name="resume" class="input" type="text" placeholder=" " required
-					pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50">
-					<div class="cut"></div>
+					pattern="[a-zA-Z0-9].+" minlength="5" maxlength="500">
+					<div class="cut cut-long"></div>
 					<label for="resume" class="placeholder">Resume</label>
-				</div>
-				<div class="input-container ic2">
-					<input name="avaliation" class="input" type="text" placeholder=" " required
-					pattern="[0-9]{1,2}" minlength="1" maxlength="2">
-					<div class="cut"></div>
-					<label for="avaliation" class="placeholder">Avaliation</label>
 				</div>
 				<div class="input-container ic2">
 					<input name="isbn" class="input" type="text" placeholder=" " required
@@ -120,34 +157,30 @@
 					<label for="isbn" class="placeholder">ISBN</label>
 				</div>
 				<div class="input-container ic2">
-					<input name="date" class="input" type="text" placeholder=" "
-					required pattern="\d{4}-\d{2}-\d{2}"/>
+					<select class="input" name="condition">
+						<option value="New">New</option>
+						<option value="Used">Used</option>
+					</select>
 					<div class="cut cut-long"></div>
-					<label for="date" class="placeholder">Added Date (YYYY-MM-DD)</label>
-				</div>
-				<div class="input-container ic2">
-					<input name="condition" class="input" type="text" placeholder=" " required
-					pattern="[a-zA-Z].+" minlength="2" maxlength="10">
-					<div class="cut"></div>
 					<label for="condition" class="placeholder">Condition</label>
 				</div>
 				<div class="input-container ic2">
 					<input name="provider" class="input" type="text" placeholder=" " required
-					pattern="[a-zA-Z].+" minlength="2" maxlength="50">
-					<div class="cut"></div>
+					pattern="[a-zA-Z0-9].+" minlength="2" maxlength="50">
+					<div class="cut cut-long"></div>
 					<label for="provider" class="placeholder">Provider</label>
 				</div>
 				<div class="input-container ic2">
-					<input name="stock" class="input" type="text" placeholder=" " required
-					pattern="[0-9]{1,4}" minlength="1" maxlength="4">
-					<div class="cut"></div>
-					<label for="stock" class="placeholder">Stock</label>
+					<input name="sellPrice" class="input" type="text" placeholder=" " required
+					pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="5">
+					<div class="cut cut-long"></div>
+					<label for="sellPrice" class="placeholder">Sell Price</label>
 				</div>
 				<div class="input-container ic2">
-					<input name="price" class="input" type="text" placeholder=" " required
-					pattern="^\d+(.\d{1,2})?$" minlength="1" maxlength="10">
-					<div class="cut"></div>
-					<label for="price" class="placeholder">Price</label>
+					<input name="buyPrice" class="input" type="text" placeholder=" " required
+					pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="5">
+					<div class="cut cut-long"></div>
+					<label for="buyPrice" class="placeholder">Buy Price</label>
 				</div>
 				<button type="text" class="submit">Create</button>
 			</form>

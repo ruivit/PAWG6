@@ -15,7 +15,7 @@ router.get('/client', controller.backoffice_employee_client_get);
 
 // employee Client Create
 router.get('/client/create', controller.backoffice_employee_client_create_get);
-router.post('/client/create', controller.backoffice_employee_client_create_post);
+router.post('/client/create', multer().none(), controller.backoffice_employee_client_create_post);
 
 // employee Client Update
 router.get('/client/update/:id', multer().none(), controller.backoffice_employee_client_update_get);
@@ -32,7 +32,7 @@ router.get('/book', controller.backoffice_employee_book_get);
 
 // employee Book Create
 router.get('/book/create', controller.backoffice_employee_book_create_get);
-router.post('/book/create', controller.backoffice_employee_book_create_post);
+router.post('/book/create', multer().none(), controller.backoffice_employee_book_create_post);
 
 // employee Book Update
 router.get('/book/update/:id', multer().none(), controller.backoffice_employee_book_update_get);

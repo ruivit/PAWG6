@@ -6,6 +6,9 @@ var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
+var Author = require('../models/authorModel');
+var Editor = require('../models/editorModel');
+var Points = require('../models/pointsModel');
 
 
 // --------------------- Backoffice/employee/ ---------------------------
@@ -124,24 +127,17 @@ exports.backoffice_employee_book_get = async function (req, res) {
 
 exports.backoffice_employee_book_create_get = function (req, res) {
     res.render('backoffice/employee/book/createBook');
-}; // Done, CSS MARAVILHA
+}; // Done
 
 exports.backoffice_employee_book_create_post = function (req, res) {
-    
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
     // Wait for the promises to resolve
     Promise.all([isbnPromise]).then(function (promisesToDo) {
-        // If the isbn already exists, increate the stock of that book by 1
+        // If the isbn already exists
         if (promisesToDo[0]) {
-            Book.findOneAndUpdate({ isbn: req.body.isbn }, { $inc: { stock: 1 } }, { new: true }, 
-                function (err, book) {
-                if (err) {
-                    res.render('error/error', { message: "Error creating book", error: err });
-                } else {
-                    res.redirect('/backoffice/employee/book'); // Need to add error message
-                }
-            });
+            oldata = req.body;
+            res.render('backoffice/employee/book/createBook', { oldata: oldata, message: "ISBN already exists" });
         } else {
         // If the isbn is not already in use, create the book
         var book = new Book({
@@ -150,25 +146,77 @@ exports.backoffice_employee_book_create_post = function (req, res) {
             genre: req.body.genre,
             editor: req.body.editor,
             resume: req.body.resume,
-            avaliation: req.body.avaliation,
             isbn: req.body.isbn,
-            dateAdded: req.body.dateAdded,
             condition: req.body.condition,
             provider: req.body.provider,
-            stock: req.body.stock,
-            price: req.body.price,
+            sellPrice: req.body.sellPrice,
+            buyPrice: req.body.buyPrice,
         });
 
         book.save(function (err) {
             if (err) {
                 res.render('error/error', { message: "Error creating book", error: err });
             } else {
-                res.redirect('/backoffice/employee/book');
+                // find or create the author
+                Author.findOne({ name: req.body.author }, function (err, author) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating book", error: err });
+                    } else {
+                        if (!author) {
+                            var author = new Author({
+                                name: req.body.author,
+                                books: [book]
+                            });
+
+                            author.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating author", error: err });
+                                }
+                            });
+                        } else {
+                            author.books.push(book);
+                            author.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating author", error: err });
+                                }
+                            });
+                        }
+                    }
+                });
+
+                // find or create the editor
+                Editor.findOne({ name: req.body.editor }, function (err, editor) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating book", error: err });
+                    } else {
+                        if (!editor) {
+                            var editor = new Editor({
+                                name: req.body.editor,
+                                books: [book]
+                            });
+
+                            editor.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating editor", error: err });
+                                }
+                            });
+                        } else {
+                            editor.books.push(book);
+                            editor.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', { message: "Error creating editor", error: err });
+                                } else {
+                                    res.redirect('/backoffice/employee/book');
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
         }
     });
-}; // Done
+}; // Done     
 
 
 exports.backoffice_employee_book_update_get = async function (req, res) {
@@ -180,8 +228,8 @@ exports.backoffice_employee_book_update_get = async function (req, res) {
     }
 }; // Done
 
-exports.backoffice_employee_book_update_post = async function (req, res) {
-    await Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
+exports.backoffice_employee_book_update_post = function (req, res) {
+    Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
         function (err, client) {
         if (err) {
             res.render('error/error', { message: "Error updating book", error: err });
@@ -189,6 +237,23 @@ exports.backoffice_employee_book_update_post = async function (req, res) {
             res.redirect('/backoffice/employee/book');
         }
     });
+}; // Done
+
+exports.backoffice_employee_book_search_post = async function (req, res) {
+    try {
+        console.log(req.body.search);
+        // find everything that matches the text, by title or author
+        var books = await Book.find({ $or: [
+        { title: { $regex: req.body.search, $options: 'i' } }, 
+        { author: { $regex: req.body.search, $options: 'i' } },
+        { editor: { $regex: req.body.search, $options: 'i' } },
+        { isbn: { $regex: req.body.search, $options: 'i' } },
+        { providor: { $regex: req.body.search, $options: 'i' } }
+        ] });
+        res.render('backoffice/employee/book/manageBooks', { books: books });
+    } catch (error) {
+        res.render("error/error", { message: "Error searching books", error: error });
+    }
 }; // Done
 
 

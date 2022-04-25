@@ -143,7 +143,7 @@ exports.client_sell_post = function (req, res) {
     /* Ver se ISBN existe
     Se sim, criar livro USADO
     Se nao, criar livro USADO E NOVO com stock a 0 
-    Alterar estado forSale para false 
+    Alterar estado forSale para false, ou seja validação do novo livro pelo admin
     
     No admin, fazer filtragem de books com forSale false
     Se aceitar, mudar para true e mudar preco etc */

@@ -41,6 +41,7 @@
             <th scope="col">Provider</th>
             <th scope="col">Stock</th>
             <th scope="col">Sell/Buy Price</th>
+            <th scope="col">ForSale</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -59,6 +60,7 @@
               <td data-label="Provider"> <%=books[i].provider%> </td>
               <td data-label="Stock"> <%=books[i].stock%> </td>
               <td data-label="Sell/Buy Price"> <%=books[i].sellPrice%>€ / <%=books[i].buyPrice%>€ </td>
+              <td data-label="ForSale"> <%=books[i].forSale%> </td>
               <td data-label="operations">
                 <form action="/backoffice/admin/book/update/<%=books[i].id%>" method="get">
                   <input type="image" class="material-icons edit" name="_method" value="edit">

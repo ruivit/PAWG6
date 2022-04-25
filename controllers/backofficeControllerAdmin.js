@@ -214,6 +214,8 @@ exports.backoffice_admin_book_create_get = function (req, res) {
     res.render('backoffice/admin/book/createBook');
 }; // Done
 
+// Apenas fazemos verificação do ISBN, pois se for uma venda do cliente o campo "forSale" será false e ficará a aguardar validação
+
 exports.backoffice_admin_book_create_post = function (req, res) {
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
