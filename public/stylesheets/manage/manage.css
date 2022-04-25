@@ -69,14 +69,23 @@ body {
     top: -20px;
     transform: translateY(0);
     transition: transform 200ms;
-    width: 76px;
+    width: 100px;
 }
 
 .cut-short {
     width: 50px;
 }
 .cut-long {
-    width: 115px;
+    width: 135px;
+}
+.cut-superlong {
+    width: 165px;
+}
+
+.info {
+    color: rgb(142, 142, 142);
+    font-size: 10px;
+    font-family: sans-serif;
 }
 
 .input:focus~.cut,

@@ -50,7 +50,7 @@ router.get('/sales', controller.backoffice_employee_sale_get);
 
 // employee Sale Create
 router.get('/sales/makeSale', controller.backoffice_employee_make_sale_get);
-router.post('/sales/makeSale', controller.backoffice_employee_make_sale_post);
+router.post('/sales/makeSale', multer().none(), controller.backoffice_employee_make_sale_post);
 
 module.exports = router;
 

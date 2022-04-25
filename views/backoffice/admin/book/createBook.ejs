@@ -6,8 +6,8 @@
   </head>
   <body>
 	<% if(locals.oldata) { %>
-	<form action="/backoffice/admin/book/create" method="post" enctype="multipart/form-data">
-		<div class="form">
+	<div class="form">
+		<form action="/backoffice/admin/book/create" method="post" enctype="multipart/form-data">		
 			<div class="subtitle">Create a new Book</div>
 			<div class="errormessage"><%= locals.message %></div>
 			<div class="input-container ic1">
@@ -16,7 +16,6 @@
 				<div class="cut"></div>
 				<label for="title" class="placeholder">Title</label>
 			</div>
-			<!-- Author depois devera ser uma tabela ??? -->
 			<div class="input-container ic2">
 				<input type="text" name="author" id="author" value="<%= locals.oldata.author %>"
 				required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50" class="input">
@@ -47,7 +46,6 @@
 				<div class="cut"></div>
 				<label for="genre" class="placeholder">Genre</label>
 			</div>
-			<!-- Editor deverá ser uma tabela -->
 			<div class="input-container ic2">
 				<input type="text" name="editor" id="editor" value="<%= locals.oldata.editor %>"
 				required pattern="[a-zA-Z0-9].+" minlength="5" maxlength="50" class="input">
@@ -93,12 +91,14 @@
 				<label for="buyPrice" class="placeholder">Buy Price</label>
 			</div>
 			<button type="text" class="submit">Create</button>
-		</div>
-	</form>
+			</form>
+		<form action="/backoffice/admin/book" method="get">
+			<button type="text" class="back">Back</button>
+		</form>
+	</div>
 	<% } else { %>
-		<div class="form">
+	<div class="form">
 		<form action="/backoffice/admin/book/create" method="post" enctype="multipart/form-data">
-			
 				<div class="subtitle">Create a new Book</div>
 				<div class="errormessage"><%= locals.message %></div>
 				<div class="input-container ic1">
@@ -182,7 +182,7 @@
 					<label for="buyPrice" class="placeholder">Buy Price</label>
 				</div>
 				<button type="text" class="submit">Create</button>
-		</form>
+			</form>
 		<form action="/backoffice/admin/book" method="get">
 			<button type="text" class="back">Back</button>
 		</form>

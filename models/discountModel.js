@@ -3,11 +3,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var DiscountSchema = new Schema({
-  perSoldBooks: { type: Number, required: true, default: 0.05 },
+  discountPerSale: { type: Number, required: true, default: 0.05 },
+  // Desconto por venda (tipo cliente FNAC)
 
-  perTotalSold: { type: Number, required: true, default: 0 },
+  discountPromotion: { type: Number, required: true, default: 0.1 },
 
-  perTotalBuys: { type: Number, required: true, default: 0 },
+  activePromotion: { type: Boolean, required: true, default: false },
 
   perInfantil: { type: Number, required: true, default: 0 },
   perJuvenil: { type: Number, required: true, default: 0 },

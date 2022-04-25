@@ -11,7 +11,6 @@
 </head>
 <body>
   <ul>
-    <!-- add logic of admin or employee -->
     <li><a class="importantbutton" href="/backoffice/employee">Back</a></li>
     <li><a href="/backoffice/employee/book/create">Create</a></li>
     <li><a href="/backoffice/employee/book/search">Search</a></li>
@@ -21,55 +20,55 @@
     </li>
   </ul>
   <br>
-    <% if(books.length>0) { %>
+    <% if(locals.message) { %>
+      <div class="message">
+        <%= locals.message %>
+      </div>
+    <% } %>
+    <% if(books.length>0 && !locals.message) { %>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Author</th>
-            <th scope="col">Genre</th>
-            <th scope="col">Editor</th>
-            <th scope="col">Resume</th>
-            <th scope="col">Avaliation</th>
-            <th scope="col">ISBN</th>
-            <th scope="col">Date</th>
-            <th scope="col">Condition</th>
-            <th scope="col">Provider</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Price</th>
+            <th scope="col">Image</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <% for(var i=0; i<books.length;i++) { %>
+            <form action="/backoffice/employee/sales/makeSale" method="post">
             <tr>
               <td data-label="Title"> <%=books[i].title%> </td>
-              <td data-label="Author"> <%=books[i].author%> </td>
-              <td data-label="Genre"> <%=books[i].genre%> </td>
-              <td data-label="Editor"> <%=books[i].editor%> </td>
-              <td data-label="Resume"> <%=books[i].resume%> </td>
-              <td data-label="Avaliation"> <%=books[i].avaliation%> </td>
-              <td data-label="ISBN"> <%=books[i].isbn%> </td>
-              <td data-label="Date"> <%=books[i].dateAdded%> </td>
-              <td data-label="Condition"> <%=books[i].condition%> </td>
-              <td data-label="Provider"> <%=books[i].provider%> </td>
-              <td data-label="Stock"> <%=books[i].stock%> </td>
-              <td data-label="Price"> <%=books[i].price%> </td>
+              <td data-label="Image"> <%=books[i].image%> </td>
               <td data-label="operations">
-                <input type="checkbox" class="material-icons edit" name="_method" value="edit">
+                <input type="checkbox" name="bookId" value="<%=books[i]._id%>">
               </td>
             </tr>
           <% } %>
+          <table>
+            <br>
+            <tr>
+              <td>
+                <input type="text" name="clientUsername" placeholder="Client Username">
+              </td>
+              <td>
+                <input class="submit" type="submit" value="Make Sale">
+              </td>
+            </tr>
+          </table>
         </tbody>
       </table>
+      </form>
     <% } else { %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">No Books were found</th>
-          </tr>
-        </thead>
-      </table>
+      <% if(!locals.message) { %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">No Books were found</th>
+            </tr>
+          </thead>
+        </table>
+      <% } %>
     <% } %>
 </body>
 </html>

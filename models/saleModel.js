@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var SaleSchema = new Schema({
   clientUsername: { type: String, required: true },
-  livros: [{ type: Schema.Types.ObjectId, ref: 'Livros' }],
+  books: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
   total: { type: Number, default: 0 },
   gainedPoints: { type: Number, default: 0 },
   date: { type: Date, default: Date.now },
