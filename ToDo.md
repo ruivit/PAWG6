@@ -1,13 +1,7 @@
 #### Tarefas
-<<<<<<< HEAD
 - [ ] Pesquisas falta employeee
 - [ ] Sales
 - [ ] Discount/Points Update
-=======
-- [x] Pesquisas
-- [x] Sales
-- [x] Discount/Points Update
->>>>>>> 2b239d8d17a5ed04705d0387337a2f848560d9e7
 - [ ] Datas - so pedir o birthdate no create, dps e so ageType, listangs etc
 cada vez que se faz operacoes que precisem do ageType, calcular e atualizar
 - [x] Verificar Restricoes FrontEnd HTML

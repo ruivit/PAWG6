@@ -371,13 +371,9 @@ exports.backoffice_admin_book_update_post = function (req, res) {
 exports.backoffice_admin_book_search_post = async function (req, res) {
     
     try {
-<<<<<<< HEAD
 
         // check if the text parsed are only number
-
         regex = /^[0-9]+$/;
-
-        console.log(RegExp(regex).test(req.body.search));
 
         if (RegExp(regex).test(req.body.search)) {
 
@@ -385,18 +381,19 @@ exports.backoffice_admin_book_search_post = async function (req, res) {
 
             res.render('backoffice/admin/book/manageBooks', { books: books });
 
+        } else if (req.body.search == "true" || req.body.search == "false") {
+
+            var books = await Book.find({ $or:[
+                { forSale: req.body.search } ] });
+
+            res.render('backoffice/admin/book/manageBooks', { books: books });
+
         } else {
 
             var books = await Book.find({ $or:[
-
                 { title: { $regex: req.body.search, $options: 'i' } },
-
                 { author: { $regex: req.body.search, $options: 'i' } },
-
-                { editor: { $regex: req.body.search, $options: 'i' } },
-
-                { forSale: req.body.search }
-
+                { editor: { $regex: req.body.search, $options: 'i' } }
             ] });
 
             res.render('backoffice/admin/book/manageBooks', { books: books });
@@ -410,27 +407,6 @@ exports.backoffice_admin_book_search_post = async function (req, res) {
     }
 
 }; // Done
-=======
-        // check if the text parsed are only number
-        regex = /^[0-9]+$/;
-
-        if (RegExp(regex).test(req.body.search)) {
-            var books = await Book.find({ isbn: req.body.search });
-            res.render('backoffice/admin/book/manageBooks', { books: books });
-        } else {
-            var books = await Book.find({ $or:[ 
-                { title: { $regex: req.body.search, $options: 'i' } }, 
-                { author: { $regex: req.body.search, $options: 'i' } }, 
-                { editor: { $regex: req.body.search, $options: 'i' } } 
-            ] });
-            res.render('backoffice/admin/book/manageBooks', { books: books });
-        }
-    } catch (error) {
-        res.render("error/error", { message: "Error searching book", error: error });
-    }
-}; // Done          
-
->>>>>>> 2b239d8d17a5ed04705d0387337a2f848560d9e7
 
 
 
