@@ -240,20 +240,43 @@ exports.backoffice_employee_book_update_post = function (req, res) {
 }; // Done
 
 exports.backoffice_employee_book_search_post = async function (req, res) {
+    
     try {
-        console.log(req.body.search);
-        // find everything that matches the text, by title or author
-        var books = await Book.find({ $or: [
-        { title: { $regex: req.body.search, $options: 'i' } }, 
-        { author: { $regex: req.body.search, $options: 'i' } },
-        { editor: { $regex: req.body.search, $options: 'i' } },
-        { isbn: { $regex: req.body.search, $options: 'i' } },
-        { providor: { $regex: req.body.search, $options: 'i' } }
-        ] });
-        res.render('backoffice/employee/book/manageBooks', { books: books });
+
+        // check if the text parsed are only number
+
+        regex = /^[0-9]+$/;
+
+        console.log(RegExp(regex).test(req.body.search));
+
+        if (RegExp(regex).test(req.body.search)) {
+
+            var books = await Book.find({ isbn: req.body.search });
+
+            res.render('backoffice/employee/book/manageBooks', { books: books });
+
+        } else {
+
+            var books = await Book.find({ $or:[
+
+                { title: { $regex: req.body.search, $options: 'i' } },
+
+                { author: { $regex: req.body.search, $options: 'i' } },
+
+                { editor: { $regex: req.body.search, $options: 'i' } }
+
+            ] });
+
+            res.render('backoffice/employee/book/manageBooks', { books: books });
+
+        }
+
     } catch (error) {
-        res.render("error/error", { message: "Error searching books", error: error });
+
+        res.render("error/error", { message: "Error searching book", error: error });
+
     }
+
 }; // Done
 
 

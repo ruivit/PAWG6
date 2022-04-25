@@ -13,7 +13,12 @@
   <ul>
     <li><a class="importantbutton" href="/backoffice/admin">Back</a></li>
     <li><a href="/backoffice/admin/client/create">Create</a></li>
-    <li><a href="/backoffice/admin/client/search">Search</a></li>
+    <li><a>
+      <form action="/backoffice/admin/client/search" method="post">
+        <input type="text" name="search" placeholder="Search">
+        <input type="submit" value="Search">
+      </form>
+    </a></li>
     <li style="float:right">
       <a class="importantbutton"
       href="/backoffice/logout">Logout</a>
@@ -30,7 +35,7 @@
             <th scope="col">Address</th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
-            <th scope="col">BirthDate</th>
+            <th scope="col">AgeType</th>
             <th scope="col">Points</th>
             <th scope="col"></th>
           </tr>
@@ -44,7 +49,7 @@
               <td data-label="address"> <%=clients[i].address%></td>
               <td data-label="email"> <%=clients[i].email%></td>
               <td data-label="phone"> <%=clients[i].phone%></td>
-              <td data-label="birthdate"> <%=clients[i].birthDate%></td>
+              <td data-label="ageType"> <%=clients[i].ageType%></td>
               <td data-label="points"> <%=clients[i].points%></td>
               <td data-label="operations">
                 <form action="/backoffice/admin/client/update/<%=clients[i].id%>" method="get">

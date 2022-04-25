@@ -41,6 +41,7 @@ router.post('/book/update/:id', multer().none(), controller.backoffice_employee_
 // employee Book Delete
 router.post('/book/delete/:id', controller.backoffice_employee_book_delete_post);
 
+router.post('/book/search', multer().none(), controller.backoffice_employee_book_search_post);
 
 // ------------------------------ employee/Sale URL
 

@@ -41,6 +41,8 @@ router.post('/client/update', multer().none(), controller.backoffice_admin_clien
 // Admin Client Delete
 router.post('/client/delete/:id', multer().none(), controller.backoffice_admin_client_delete_post);
 
+//Admin Client search
+router.post('/client/search', multer().none(), controller.backoffice_admin_client_search_post);
 
 // ------------------------------ Admin/Book URL
 
@@ -58,6 +60,7 @@ router.post('/book/update', multer().none(), controller.backoffice_admin_book_up
 // Admin Book Delete
 router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_book_delete_post);
 
+// Admin Book search
 router.post('/book/search', multer().none(), controller.backoffice_admin_book_search_post);
 
 // ------------------------------ Admin/Sale URL

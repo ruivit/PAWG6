@@ -199,6 +199,46 @@ exports.backoffice_admin_client_delete_post = (req, res) => {
 }; // Done
 
 
+exports.backoffice_admin_client_search_post = async function (req, res) {
+    
+    try {
+
+        // check if the text parsed are only number
+
+        regex = /^[0-9]+$/;
+
+        console.log(RegExp(regex).test(req.body.search));
+
+        if (RegExp(regex).test(req.body.search)) {
+
+            var clients = await Client.find({ phone: req.body.search });
+
+            res.render('backoffice/admin/client/manageClients', { clients: clients });
+
+        } else {
+
+            var clients = await Client.find({ $or:[
+
+                { username: { $regex: req.body.search, $options: 'i' } },
+
+                { email: { $regex: req.body.search, $options: 'i' } },
+
+            ] });
+
+            res.render('backoffice/admin/client/manageClients', { clients: clients });
+
+        }
+
+    } catch (error) {
+
+        res.render("error/error", { message: "Error searching Client", error: error });
+
+    }
+
+}; // Done
+
+
+
 // --------------------- Backoffice/Admin/Book ---------------------------
 
 exports.backoffice_admin_book_get = async function (req, res) {
@@ -327,21 +367,48 @@ exports.backoffice_admin_book_update_post = function (req, res) {
 }; // Done
 
 exports.backoffice_admin_book_search_post = async function (req, res) {
+    
     try {
-        console.log(req.body.search);
-        // find everything that matches the text, by title or author
-        var books = await Book.find({ $or: [
-        { title: { $regex: req.body.search, $options: 'i' } }, 
-        { author: { $regex: req.body.search, $options: 'i' } },
-        { editor: { $regex: req.body.search, $options: 'i' } },
-        { isbn: { $regex: req.body.search, $options: 'i' } },
-        { providor: { $regex: req.body.search, $options: 'i' } }
-        ] });
-        res.render('backoffice/admin/book/manageBooks', { books: books });
+
+        // check if the text parsed are only number
+
+        regex = /^[0-9]+$/;
+
+        console.log(RegExp(regex).test(req.body.search));
+
+        if (RegExp(regex).test(req.body.search)) {
+
+            var books = await Book.find({ isbn: req.body.search });
+
+            res.render('backoffice/admin/book/manageBooks', { books: books });
+
+        } else {
+
+            var books = await Book.find({ $or:[
+
+                { title: { $regex: req.body.search, $options: 'i' } },
+
+                { author: { $regex: req.body.search, $options: 'i' } },
+
+                { editor: { $regex: req.body.search, $options: 'i' } },
+
+                { forSale: req.body.search }
+
+            ] });
+
+            res.render('backoffice/admin/book/manageBooks', { books: books });
+
+        }
+
     } catch (error) {
-        res.render("error/error", { message: "Error searching books", error: error });
+
+        res.render("error/error", { message: "Error searching book", error: error });
+
     }
+
 }; // Done
+
+
 
 
 exports.backoffice_admin_book_delete_post = function (req, res) {
