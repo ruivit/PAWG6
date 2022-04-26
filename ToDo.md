@@ -1,5 +1,5 @@
 #### Tarefas
-- [x] Pesquisas falta employeee
+- [x] Pesquisas, no menu Sales, falta implementar as pesquisas por vendas
 - [x] Sales
 - [x] Discount/Points Update
 - [ ] Datas - ver melhor forma de actualaizar o ageType
@@ -24,6 +24,8 @@ aparecer só uma mensagem a dizer que o livro foi
 adicionado à base d dados e aparecer só os dados do livro (search)
 - [ ] Se der erro, por exemplo, isbn já existe, o cursor da página deve posicionar-se no topo.
 - [ ] Ver o bug de não voltar para o backoffice ao criar um novo livro
+- [ ] No menu Make Sale, deverá ser possivel pesquisar por livros para associar às vendas,
+é preciso ver como se guarda os livros selecionados após cada pesquisa.
 
 ##### Perguntas Professor
 
