@@ -7,13 +7,12 @@ var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
-var Points = require('../models/pointsModel');
 
 
 // --------------------- Backoffice/employee/ ---------------------------
 
 exports.backoffice_employee_get = function (req, res) {
-    res.render('backoffice/backofficeIndex', { employee: true });
+    res.render('backoffice/backofficeIndex', { admin: false });
 }; // Done
 
 

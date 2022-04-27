@@ -4,6 +4,8 @@ var router = express.Router();
 
 var controller = require('../controllers/backofficeController');
 
+/* Se o cliente estiver logado, nem sequer deve ser permitido acessar a página de login do backend */
+
 // Login Portal
 router.get('/', controller.backoffice_login_get);
 

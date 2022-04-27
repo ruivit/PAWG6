@@ -4,6 +4,22 @@ var router = express.Router();
 
 var controller = require('../controllers/backofficeControllerEmployee');
 
+
+/* If there is no session created OR the session is not employee, then redirect to login
+But if there is session created AS THE CLIENT, generate a 302 and redirect to index */
+router.use(function (req, res, next) {
+    if (!req.session || !req.session.employee) {
+        if (req.session.client) {
+            res.status(302).redirect('/');
+        } else {
+            res.redirect('/backoffice');
+        }
+    } else {
+        next();
+    }
+});
+
+
 // employee Index
 router.get('/', controller.backoffice_employee_get);
 

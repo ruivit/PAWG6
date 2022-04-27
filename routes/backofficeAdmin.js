@@ -1,9 +1,23 @@
 var express = require('express');
+const req = require('express/lib/request');
 var multer = require('multer');
 var router = express.Router();
 
 var controller = require('../controllers/backofficeControllerAdmin');
 
+/* If there is no session created OR the session is not admin, then redirect to login
+But if there is session created AS THE CLIENT, generate a 302 and redirect to index */
+router.use(function (req, res, next) {
+    if (!req.session || !req.session.admin) {
+        if (req.session.client) {
+            res.status(302).redirect('/');
+        } else {
+            res.redirect('/backoffice');
+        }
+    } else {
+        next();
+    }
+});
 
 // Admin Index
 router.get('/', controller.backoffice_admin_get);

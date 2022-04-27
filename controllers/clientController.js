@@ -92,8 +92,21 @@ exports.client_create_post = function (req, res) {
         }// else, logica de negocio
     }
 
+    function calculateAgeType(birthDate) {
+        var age = new Date().getFullYear() - birthDate.substring(0, 4);;
+        if (age < 10) {
+            return "Infatil";
+        } else if (age > 10 && age <= 18) {
+            return "Juvenil";
+        } else if (age > 18 && age <= 60) {
+            return "Adulto";
+        } else {
+            return "Senior";
+        }
+    }
+
     // Using promises to validate the data
-   var usernamePromise = Client.findOne({ username: req.body.username });
+    var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
     
     // Wait for the promises to resolve
@@ -116,7 +129,7 @@ exports.client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points),
             birthDate: req.body.birthDate,
-            ageType: 21, // falta calcular
+            ageType: calculateAgeType(req.body.birthDate),
         });
 
         client.save(function (err) {

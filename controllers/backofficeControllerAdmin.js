@@ -22,12 +22,8 @@ function CheckSession(req, res) {
 
 // --------------------- Backoffice/Admin/ ---------------------------
 
-exports.backoffice_admin_get = function (req, res) {
-    if (req.session.username !== "admin") {
-        res.render('backoffice/backofficeLogin');
-    } else {
-        res.render('backoffice/backofficeIndex', { admin: true });
-    }
+exports.backoffice_admin_get = function (req, res) {    
+    res.render('backoffice/backofficeIndex', { admin: true });
 }; // Get the admin portal (after login)
 
 
