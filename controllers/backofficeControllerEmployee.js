@@ -1,5 +1,4 @@
 const { redirect } = require('express/lib/response');
-const { session } = require('passport/lib');
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
