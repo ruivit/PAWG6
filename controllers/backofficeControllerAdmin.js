@@ -543,6 +543,52 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
     });
 };
 
+exports.backoffice_admin_sale_search = async function (req, res) {
+    async function getTitleBooks (req, res, sales) {
+        for (var i = 0; i < sales.length; i++) {
+            for (var j = 0; j < sales[i].books.length; j++) {
+                var book = await Book.findById(sales[i].books[j]._id);
+                sales[i].books[j].title = book.title;
+            }
+        }
+        return sales;
+    }
+
+    async function getEmployeeUsername (req, res, sales) {
+        for (var i = 0; i < sales.length; i++) {
+            var employee = await Employee.findById(sales[i].employee_id);
+            sales[i].employeeUsername = employee.username;
+        }
+        return sales;
+    }
+
+    try {
+        // if true or false, we are checking for online field
+        if (req.body.search == "true" || req.body.search == "false") {
+            var sales = await Sale.find({ online: req.body.search });
+
+            // get the title of the books
+            await getTitleBooks(req, res, sales);
+            await getEmployeeUsername(req, res, sales);
+
+            res.render('backoffice/admin/sales/manageSales', { sales: sales });
+        } else {
+            // else, we are search for client username (only)
+            var sales = await Sale.find({ $or:[
+                { clientUsername: { $regex: req.body.search, $options: 'i' } }
+            ] });
+
+            // get the title of the books
+            await getTitleBooks(req, res, sales);
+            await getEmployeeUsername(req, res, sales);
+
+            res.render('backoffice/admin/sales/manageSales', { sales: sales });
+        }
+    } catch (error) {
+        res.render("error/error", { message: "Error searching sale", error: error });
+    }
+};
+
 
 // --------------------- Backoffice/Admin/Manage Points ---------------------------
 

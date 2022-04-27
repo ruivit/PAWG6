@@ -72,6 +72,9 @@ router.get('/sales', controller.backoffice_admin_sales_get);
 router.get('/sales/makeSale', controller.backoffice_admin_make_sale_get);
 router.post('/sales/makeSale', multer().none(), controller.backoffice_admin_make_sale_post);
 
+// Admin Sale Search
+router.post('/sales/search', multer().none(), controller.backoffice_admin_sale_search);
+
 // ------------------------------ Admin/Points URL
 
 router.get('/managePoints', controller.backoffice_admin_managepoints_get);

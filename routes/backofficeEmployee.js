@@ -56,7 +56,8 @@ router.get('/sales', controller.backoffice_employee_sale_get);
 router.get('/sales/makesale', controller.backoffice_employee_make_sale_get);
 router.post('/sales/makesale', multer().none(), controller.backoffice_employee_make_sale_post);
 
-module.exports = router;
+// employee Sale Search
+router.post('/sales/search', multer().none(), controller.backoffice_employee_sale_search);
 
 // ------------------------------ employee/ProfileUpdate URL
 
@@ -67,3 +68,4 @@ router.get('/profile/update/', controller.backoffice_employee__profile_update_ge
 
 router.post('/profile/update', multer().none(), controller.backoffice_employee_profile_update_post);
 
+module.exports = router;
