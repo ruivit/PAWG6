@@ -26,7 +26,7 @@ exports.client_login_post = function (req, res) {
         } else {
             if (client) {
                 // check if the password is correct
-                if (client.password == password) {
+                if (client.validPassword(password, client.password)) {
                     // save the client in the session
                     req.session.client = client;
                     req.session.client._id = client._id;
@@ -92,19 +92,6 @@ exports.client_create_post = function (req, res) {
         }// else, logica de negocio
     }
 
-    function calculateAgeType(birthDate) {
-        var age = new Date().getFullYear() - birthDate.substring(0, 4);;
-        if (age < 10) {
-            return "Infatil";
-        } else if (age > 10 && age <= 18) {
-            return "Juvenil";
-        } else if (age > 18 && age <= 60) {
-            return "Adulto";
-        } else {
-            return "Senior";
-        }
-    }
-
     // Using promises to validate the data
     var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
@@ -129,8 +116,10 @@ exports.client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points),
             birthDate: req.body.birthDate,
-            ageType: calculateAgeType(req.body.birthDate),
         });
+
+        client.setPassword(req.body.password);        
+        client.setAgeType(req.body.birthDate);
 
         client.save(function (err) {
             if (err) {
@@ -176,32 +165,39 @@ exports.client_profile_get = function (req, res) {
 }; // Done
 
 exports.client_profile_post = function (req, res) {
-    // Check if the password is correct
-    if (req.body.password == req.session.client.password) {
-        // Update the client
-        Client.findByIdAndUpdate(req.session.client._id, {
-            username: req.body.username,
-            password: req.body.password,
-            name: req.body.name,
-            address: req.body.address,
-            email: req.body.email,
-            phone: req.body.phone,
-            points: req.body.points,
-            birthDate: req.body.birthDate,
-        }, function (err, client) {
-            if (err) {
-                res.redirect('error', { error: err });
-            } else {
-                res.redirect('/client');
-            }
-        });
-    } else {
-        var client = Client.findById(req.session.client._id, function (err, client) {
+    // Find the client
+    Client.findById(req.session.client._id, function (err, client) {
         if (err) {
             res.redirect('error', { error: err });
-        } else {
-            res.render('client/profileClient', { client: client, message: "Wrong password" });
+        }}).then(function (client) {
+            // Check if the password is correct
+            if (Client.validPassword(req.body.password, client.password)) {
+                
+                // Update the client
+                Client.findByIdAndUpdate(req.session.client._id, {
+                    username: req.body.username,
+                    name: req.body.name,
+                    address: req.body.address,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    points: req.body.points,
+                    birthDate: req.body.birthDate,
+                }, function (err, client) {
+                    if (err) {
+                        res.redirect('error', { error: err });
+                    } else {
+                        res.redirect('/client');
+                    }
+                });
+            } else {
+                // Wrong password
+                var client = Client.findById(req.session.client._id, function (err, client) {
+                if (err) {
+                    res.redirect('error', { error: err });
+                } else {
+                    res.render('client/profileClient', { client: client, message: "Wrong password" });
+                }
+            });
         }
-        });
-    }
+    });
 }; // Done

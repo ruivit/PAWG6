@@ -12,13 +12,6 @@ var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var Discount = require('../models/discountModel');
 
-// ---------------------- Auxiliary Functions ------------------------
-function CheckSession(req, res) {
-    if (!req.session) {
-        req.session.destroy();
-        res.redirect('/backoffice/');
-    }
-}
 
 // --------------------- Backoffice/Admin/ ---------------------------
 
@@ -68,6 +61,8 @@ exports.backoffice_admin_employee_create_post = function (req, res) {
                 address: req.body.address,
                 admin: false,
             });
+
+            employee.setPassword(req.body.password);
 
             employee.save(function (err) {
                 if (err) {

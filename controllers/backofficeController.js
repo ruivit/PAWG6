@@ -25,7 +25,7 @@ exports.backoffice_login_post = function (req, res) {
             res.redirect('error', { error: err });
         } else {
             if (employee) {
-                if (employee.password == password) {
+                if (employee.validPassword(password)) {
                     if (employee.admin) {
                         req.session.admin = true;
                         req.session.username = employee.username;
