@@ -8,25 +8,19 @@ var Sale = require('../models/saleModel');
 
 // -------------------- Client/ ---------------------------
 
-// Login Portal
 exports.client_login_get = function (req, res) {
     res.render('client/loginClient');
-};
+}; // Login Portal
 
-// Login Process
 exports.client_login_post = function (req, res) {
-    data = req.body;
-    var username = data.username;
-    var password = data.password;
-
     // search the username in the database
-    Client.findOne({ username: username }, function (err, client) {
+    Client.findOne({ username: req.body.username }, function (err, client) {
         if (err) {
             res.redirect('error', { error: err });
         } else {
             if (client) {
                 // check if the password is correct
-                if (client.validPassword(password, client.password)) {
+                if (client.validPassword(req.body.password, client.password)) {
                     // save the client in the session
                     req.session.client = client;
                     req.session.client._id = client._id;
@@ -69,18 +63,17 @@ exports.client_index_get = function (req, res) {
     }
 };
 
-// Logout Process
 exports.client_logout = function (req, res) {
     req.session.destroy();
     res.redirect('/');
-}; 
+}; // Logout Process
 
 
 // -------------------- Client/Create ---------------------------
 
 exports.client_create_get = function (req, res) {
     res.render('client/createClient');
-}; // Done
+}; // Create client form
 
 exports.client_create_post = function (req, res) {
     function calculatePoints(points) {
@@ -92,11 +85,9 @@ exports.client_create_post = function (req, res) {
         }// else, logica de negocio
     }
 
-    // Using promises to validate the data
     var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
     
-    // Wait for the promises to resolve
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
         // If the username or email already exists, redirect to the create page
         if (promisesToDo[0]) {
@@ -130,15 +121,14 @@ exports.client_create_post = function (req, res) {
         });
     }
     });
-}; // Done
+}; // Create a client
 
 
 // -------------------- Client/Sell Book ---------------------------
 
-// Get the form to sell a book
 exports.client_sell_get = function (req, res) {
     res.render('client/sellBookClient');
-}; // Done
+}; // // Get the form to sell a book
 
 exports.client_sell_post = function (req, res) {
     /* Ver se ISBN existe
@@ -153,7 +143,6 @@ exports.client_sell_post = function (req, res) {
 
 // -------------------- Client/Profile ---------------------------
 
-// Profile
 exports.client_profile_get = function (req, res) {
     var client = Client.findById(req.session.client._id, function (err, client) {
         if (err) {
@@ -162,7 +151,7 @@ exports.client_profile_get = function (req, res) {
             res.render('client/profileClient', { client: client });
         }
     });
-}; // Done
+}; // Get the Client Profile
 
 exports.client_profile_post = function (req, res) {
     // Find the client
@@ -200,4 +189,4 @@ exports.client_profile_post = function (req, res) {
             });
         }
     });
-}; // Done
+}; // Update the client information

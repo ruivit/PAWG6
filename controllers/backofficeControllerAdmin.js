@@ -1,4 +1,6 @@
 const { redirect } = require('express/lib/response');
+const pointsIDcollection = "62650c0098b8a1abe1af3bdc";
+const discountIDcollection = "62667eb941eac5eecb5f4e3a";
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
@@ -12,6 +14,14 @@ var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var Discount = require('../models/discountModel');
 
+
+// ------------------- Auxiliary Functions ---------------------------
+function getDateNow(date) {
+    var d = new Date();
+    dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    return dateNowString;
+}
 
 // --------------------- Backoffice/Admin/ ---------------------------
 
@@ -37,13 +47,12 @@ exports.backoffice_admin_employee_create_get = function (req, res) {
 }; // Get the form to create a new employee
 
 exports.backoffice_admin_employee_create_post = function (req, res) {
-    // Using promises to search for username and email already in use
+    // Using promises to search for username and/or email already in use
     var usernamePromise = Employee.findOne({ username: req.body.username });
     var emailPromise = Employee.findOne({ email: req.body.email });
     
-    // Wait for the promises to resolve
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
-    // If the username or email already exists, redirect to the create page, with an error message
+        // If the username or email already exists, redirect to the create page, with an error message
         if (promisesToDo[0]) {
             return res.render('backoffice/admin/employee/createEmployee', 
             { oldata: req.body, message: "Username already exists" });
@@ -51,7 +60,7 @@ exports.backoffice_admin_employee_create_post = function (req, res) {
             return res.render('backoffice/admin/employee/createEmployee', 
             { oldata: req.body, message: "Email already exists" });
         } else {
-            // If the username and email are unique, create the employee
+        // If the username and email are unique, create the employee
             var employee = new Employee({
                 username: req.body.username,
                 password: req.body.password,
@@ -97,7 +106,7 @@ exports.backoffice_admin_employee_update_post = function (req, res) {
             res.redirect('/backoffice/admin/employee');
         }
     });
-}; // Update an employee (by ID, parsed via multer)
+}; // Update an employee
     
 
 exports.backoffice_admin_employee_delete_post = function (req, res) {   
@@ -109,7 +118,7 @@ exports.backoffice_admin_employee_delete_post = function (req, res) {
             res.redirect('/backoffice/admin/employee'); // Need to add success message
         }
     });
-}; // Delete a employee (by ID, parsed via multer)
+}; // Delete a employee
 
 
 // --------------------- Backoffice/Admin/Client ---------------------------
@@ -139,24 +148,10 @@ exports.backoffice_admin_client_create_post = function (req, res) {
         }
     }
 
-    function calculateAgeType(birthDate) {
-        var age = new Date().getFullYear() - birthDate.substring(0, 4);;
-        if (age < 10) {
-            return "Infatil";
-        } else if (age > 10 && age <= 18) {
-            return "Juvenil";
-        } else if (age > 18 && age <= 60) {
-            return "Adulto";
-        } else {
-            return "Senior";
-        }
-    }
-
     // Using promises to search for username and email already in use
     var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
     
-    // Wait for the promises to resolve
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
     // If the username or email already exists, redirect to the create page, with an error message
         if (promisesToDo[0]) {
@@ -169,15 +164,16 @@ exports.backoffice_admin_client_create_post = function (req, res) {
         // If the username and email are not already in use, create the client
         var client = new Client({
             username: req.body.username,
-            password: req.body.password,
             name: req.body.name,
             address: req.body.address,
             email: req.body.email,
             phone: req.body.phone,
             points: calculatePoints(req.body.points), // Milestone2
             birthDate: req.body.birthDate,
-            ageType: calculateAgeType(req.body.birthDate),
         });
+
+        client.setPassword(req.body.password);
+        client.setAgeType(req.body.birthDate); // Calculate the ageType field
 
         client.save(function (err) {
             if (err) {
@@ -200,10 +196,10 @@ exports.backoffice_admin_client_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating client", error: error });
     }
-}; // Get the form to update a client (by ID, parsed via multer)
+}; // Get the form to update a client
 
 exports.backoffice_admin_client_update_post = async function (req, res) {
-    // Check if the data being updated is valid, email
+    // Check if the data being updated is valid, email is not duplicated
     emailPromise = Client.findOne({ email: req.body.email });
     if (emailPromise) {
         var client = await Client.findOne({ username: req.body.username });
@@ -221,7 +217,7 @@ exports.backoffice_admin_client_update_post = async function (req, res) {
             }
         });
     }
-}; // Update a client (by ID, parsed via multer)
+}; // Update a client
 
 
 exports.backoffice_admin_client_delete_post = function (req, res) {
@@ -233,7 +229,7 @@ exports.backoffice_admin_client_delete_post = function (req, res) {
             res.redirect('/backoffice/admin/client');
         }
     });
-}; // Delete a client (by ID, parsed via multer)
+}; // Delete a client
 
 
 exports.backoffice_admin_client_search_post = async function (req, res) {
@@ -280,8 +276,8 @@ exports.backoffice_admin_book_create_get = function (req, res) {
     res.render('backoffice/admin/book/createBook');
 }; // Get the form to create a new book
 
-/* Apenas fazemos verificação do ISBN, pois se for uma venda do cliente,
- o campo "forSale" será false e ficará a aguardar validação */
+/* We only check for the ISBN, because if there is a sale by the client,
+the "forSale" field will be false and the status will be "pending" */
 exports.backoffice_admin_book_create_post = function (req, res) {
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
@@ -293,25 +289,20 @@ exports.backoffice_admin_book_create_post = function (req, res) {
             res.render('backoffice/admin/book/createBook', 
             { oldata: oldata, message: "ISBN already exists" });
         } else {
-            
-        // Format the date in DD/MM/YYYY HH:MM
-        var d = new Date();
-        dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-        // If the isbn is not already in use, create the book
-        var book = new Book({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
-            editor: req.body.editor,
-            resume: req.body.resume,
-            isbn: req.body.isbn,
-            dateString: dateNowString,
-            condition: req.body.condition,
-            provider: req.body.provider,
-            sellPrice: req.body.sellPrice,
-            buyPrice: req.body.buyPrice,
-        });
+            // If the isbn is not already in use, create the book
+            var book = new Book({
+                title: req.body.title,
+                author: req.body.author,
+                genre: req.body.genre,
+                editor: req.body.editor,
+                resume: req.body.resume,
+                isbn: req.body.isbn,
+                dateString: getDateNow(),
+                condition: req.body.condition,
+                provider: req.body.provider,
+                sellPrice: req.body.sellPrice,
+                buyPrice: req.body.buyPrice,
+            });
 
         book.save(function (err) {
             if (err) {
@@ -404,7 +395,7 @@ exports.backoffice_admin_book_update_post = function (req, res) {
             res.redirect('/backoffice/admin/book');
         }
     });
-}; // Update a book (by id)
+}; // Update a book
 
 
 exports.backoffice_admin_book_delete_post = function (req, res) {
@@ -416,7 +407,7 @@ exports.backoffice_admin_book_delete_post = function (req, res) {
             res.redirect('/backoffice/admin/book');
         }
     });
-}; // Delete a book (by id)
+}; // Delete a book
 
 exports.backoffice_admin_book_search_post = async function (req, res) {
     try {
@@ -456,7 +447,6 @@ exports.backoffice_admin_book_search_post = async function (req, res) {
 // --------------------- Backoffice/Admin/Sale ---------------------------
 
 exports.backoffice_admin_sales_get = async function (req, res) {
-    CheckSession(req, res);
     try {
         var sales = await Sale.find();
         for (var i = 0; i < sales.length; i++) {
@@ -504,16 +494,11 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
                 res.render('backoffice/admin/sales/makeSale', 
                 { message: "User not found", books: books });
             } else {
-                // Format the date in DD/MM/YYYY HH:MM
-                var d = new Date();
-                dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-                d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-
                 // make the sale
                 var sale = new Sale({
                     clientUsername: req.body.clientUsername,
                     books: req.body.bookId,
-                    dateString: dateNowString,
+                    dateString: getDateNow(),
                     total: calculateTotal(),
                     online: req.body.online,
                     employee_id: req.session.employeeID,
@@ -584,7 +569,7 @@ exports.backoffice_admin_sale_search = async function (req, res) {
 
 exports.backoffice_admin_managepoints_get = async function (req, res) {
     try {
-        var points = await Points.findById("62650c0098b8a1abe1af3bdc");
+        var points = await Points.findById(pointsIDcollection);
         res.render('backoffice/admin/managePoints/managePoints', { points: points });
     } catch (error) {
         res.render("error/error", { message: "Error getting points", error: error });
@@ -592,7 +577,7 @@ exports.backoffice_admin_managepoints_get = async function (req, res) {
 }; // Get the form to update the points
 
 exports.backoffice_admin_managepoints_post = function (req, res) {
-    Points.findByIdAndUpdate("62650c0098b8a1abe1af3bdc", req.body, { new: true },
+    Points.findByIdAndUpdate(pointsIDcollection, req.body, { new: true },
         function (err, points) {
         if (err) {
             res.render('error/error', { message: "Error managing points", error: err });
@@ -606,7 +591,7 @@ exports.backoffice_admin_managepoints_post = function (req, res) {
 
 exports.backoffice_admin_managediscount_get = async function (req, res) {
     try {
-        var discount = await Discount.findById("62667eb941eac5eecb5f4e3a");
+        var discount = await Discount.findById(discountIDcollection);
         res.render('backoffice/admin/manageDiscount/manageDiscount', { discount: discount });
     } catch (error) {
         res.render("error/error", { message: "Error getting discount", error: error });
@@ -614,7 +599,7 @@ exports.backoffice_admin_managediscount_get = async function (req, res) {
 }; // Get the form to update the discount
 
 exports.backoffice_admin_managediscount_post = function (req, res) {
-    Discount.findByIdAndUpdate("62667eb941eac5eecb5f4e3a", req.body, { new: true },
+    Discount.findByIdAndUpdate(discountIDcollection, req.body, { new: true },
         function (err, discount) {
         if (err) {
             res.render('error/error', { message: "Error managing points", error: err });

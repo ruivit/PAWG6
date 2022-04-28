@@ -16,7 +16,7 @@ app.use('/favicon.ico', express.static('public/images/favicon.ico'));
 // MongoDB
 //Import the mongoose module
 var mongoose = require('mongoose');
-//Set up default mongoose connection
+//Set up default mongoose connection using dotenv
 var mongoDB = process.env.MONGOURL;
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 //Get the default connection
@@ -63,7 +63,7 @@ app.use('/backoffice/employee', backofficeEmployeeRouter);
 app.use('/client', clientRouter);
 // -----------------------------------------------------
 
-// catch 404 and forward to error handler
+// catch 404 and 500 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });

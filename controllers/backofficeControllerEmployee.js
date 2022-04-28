@@ -13,7 +13,7 @@ var Editor = require('../models/editorModel');
 
 exports.backoffice_employee_get = function (req, res) {
     res.render('backoffice/backofficeIndex', { admin: false });
-}; // Done
+}; // Get the employee portal (after login)
 
 
 // --------------------- Backoffice/employee/Client ---------------------------
@@ -25,11 +25,11 @@ exports.backoffice_employee_client_get = async function (req, res) {
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
     }
-}; // Done
+}; // List/show the employees
 
 exports.backoffice_employee_client_create_get = function (req, res) {
     res.render('backoffice/employee/client/createClient');
-}; // Done
+}; // Get the form to create a new employee
 
 exports.backoffice_employee_client_create_post = function (req, res) {
     function calculatePoints(points) {
@@ -41,24 +41,10 @@ exports.backoffice_employee_client_create_post = function (req, res) {
         }// else, logica de negocio
     }
 
-    function calculateAgeType(birthDate) {
-        var age = new Date().getFullYear() - birthDate.substring(0, 4);;
-        if (age < 10) {
-            return "Infatil";
-        } else if (age > 10 && age <= 18) {
-            return "Juvenil";
-        } else if (age > 18 && age <= 60) {
-            return "Adulto";
-        } else {
-            return "Senior";
-        }
-    }
-
-    // Using promises to validate the data
+    // Using promises to search for username and/or email already in use
     var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
     
-    // Wait for the promises to resolve
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
         // If the username or email already exists, redirect to the create page
         if (promisesToDo[0]) {
@@ -71,15 +57,16 @@ exports.backoffice_employee_client_create_post = function (req, res) {
         // If the username and email are not already in use, create the client
         var client = new Client({
             username: req.body.username,
-            password: req.body.password,
             name: req.body.name,
             address: req.body.address,
             email: req.body.email,
             phone: req.body.phone,
             points: calculatePoints(req.body.points),
             birthDate: req.body.birthDate,
-            ageType: calculateAgeType(req.body.birthDate),
         });
+
+        client.setPassword(req.body.password);
+        client.setAgeType(req.body.birthDate);
 
         client.save(function (err) {
             if (err) {
@@ -90,7 +77,7 @@ exports.backoffice_employee_client_create_post = function (req, res) {
         });
         }
     });
-}; // Done
+}; // Creating process for a new client
 
 
 exports.backoffice_employee_client_update_get = async function (req, res) {
@@ -100,7 +87,7 @@ exports.backoffice_employee_client_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating client", error: error });
     }
-}; // Done
+}; // Form to update a client
 
 exports.backoffice_employee_client_update_post = async function (req, res) {
     Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
@@ -111,45 +98,31 @@ exports.backoffice_employee_client_update_post = async function (req, res) {
             res.redirect('/backoffice/employee/client');
         }
     });
-}; // Done
+}; // Update the client
 
 exports.backoffice_employee_client_search_post = async function (req, res) {
-    
     try {
-
         // check if the text parsed are only number
-
         regex = /^[0-9]+$/;
-
-        console.log(RegExp(regex).test(req.body.search));
 
         if (RegExp(regex).test(req.body.search)) {
 
             var clients = await Client.find({ phone: req.body.search });
-
             res.render('backoffice/employee/client/manageClients', { clients: clients });
 
         } else {
 
             var clients = await Client.find({ $or:[
-
                 { username: { $regex: req.body.search, $options: 'i' } },
-
                 { email: { $regex: req.body.search, $options: 'i' } },
-
             ] });
 
             res.render('backoffice/employee/client/manageClients', { clients: clients });
-
         }
-
     } catch (error) {
-
         res.render("error/error", { message: "Error searching Client", error: error });
-
     }
-
-}; // Done
+}; // Search for a client
 
 
 
@@ -161,7 +134,7 @@ exports.backoffice_employee_client_delete_post = function (req, res) {
             res.redirect('/backoffice/employee/client'); // Need to add success message
         }
     });
-}; // Done
+}; // Delete a client
 
 
 // --------------------- Backoffice/employee/Book ---------------------------
@@ -173,21 +146,21 @@ exports.backoffice_employee_book_get = async function (req, res) {
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
     }
-}; // Done
+}; // List/show the books
 
 exports.backoffice_employee_book_create_get = function (req, res) {
     res.render('backoffice/employee/book/createBook');
-}; // Done
+}; // Get the form to create a book
 
 exports.backoffice_employee_book_create_post = function (req, res) {
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
-    // Wait for the promises to resolve
     Promise.all([isbnPromise]).then(function (promisesToDo) {
         // If the isbn already exists
         if (promisesToDo[0]) {
             oldata = req.body;
-            res.render('backoffice/employee/book/createBook', { oldata: oldata, message: "ISBN already exists" });
+            res.render('backoffice/employee/book/createBook', 
+            { oldata: oldata, message: "ISBN already exists" });
         } else {
         // If the isbn is not already in use, create the book
         var book = new Book({
@@ -232,7 +205,7 @@ exports.backoffice_employee_book_create_post = function (req, res) {
                             });
                         }
                     }
-                });
+                }); // End author
 
                 // find or create the editor
                 Editor.findOne({ name: req.body.editor }, function (err, editor) {
@@ -261,11 +234,11 @@ exports.backoffice_employee_book_create_post = function (req, res) {
                             });
                         }
                     }
-                });
+                }); // End editor
             }
-        });
+        }); // Book save
         }
-    });
+    }); // End promise
 }; // Done     
 
 
@@ -276,7 +249,7 @@ exports.backoffice_employee_book_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating book", error: error });
     }
-}; // Done
+}; // Get the form to update the book
 
 exports.backoffice_employee_book_update_post = function (req, res) {
     Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
@@ -287,7 +260,7 @@ exports.backoffice_employee_book_update_post = function (req, res) {
             res.redirect('/backoffice/employee/book');
         }
     });
-}; // Done
+}; // Update book
 
 exports.backoffice_employee_book_search_post = async function (req, res) {
     try {
@@ -320,7 +293,7 @@ exports.backoffice_employee_book_search_post = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error searching book", error: error });
     }
-}; // Done
+}; // Search books
 
 
 exports.backoffice_employee_book_delete_post = function (req, res) {
@@ -331,7 +304,7 @@ exports.backoffice_employee_book_delete_post = function (req, res) {
             res.redirect('/backoffice/employee/book'); // Need to add success message
         }
     });
-}; // Done
+}; // Delete book
 
 
 // --------------------- Backoffice/employee/Sale ---------------------------
@@ -354,7 +327,7 @@ exports.backoffice_employee_sale_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error getting sales", error: error });
     }
-}; // Done
+}; // List/show the sales
 
 exports.backoffice_employee_make_sale_get = async function (req, res) {
     try {
@@ -363,7 +336,7 @@ exports.backoffice_employee_make_sale_get = async function (req, res) {
     } catch (error) {
         res.render("error", { message: "Error finding sales", error: error });
     }
-};
+}; // Get the form to make a sale
 
 
 exports.backoffice_employee_make_sale_post = async function (req, res) {
@@ -412,7 +385,7 @@ exports.backoffice_employee_make_sale_post = async function (req, res) {
             }
         }
     });
-};
+}; // Make a sale
         
 exports.backoffice_employee_sale_search = async function (req, res) {
     async function getTitleBooks (req, res, sales) {
@@ -458,7 +431,7 @@ exports.backoffice_employee_sale_search = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error searching sale", error: error });
     }
-};
+}; // Search sales
 
 // --------------------- Backoffice/employee/profile ---------------------------
 
@@ -470,7 +443,7 @@ exports.backoffice_employee_manageProfile_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating profile", error: error });
     }
-};
+}; // List the employee information
 
 exports.backoffice_employee__profile_update_get = async function (req, res) {
     try {
@@ -479,7 +452,7 @@ exports.backoffice_employee__profile_update_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error updating employee", error: error });
     }
-}; // Done
+}; // Get the form to update the employee 
 
 
 
@@ -492,4 +465,4 @@ exports.backoffice_employee_profile_update_post = async function (req, res) {
             res.redirect('/backoffice/employee/profile');
         }
     });
-}; // Done
+}; // Update the profile

@@ -39,6 +39,7 @@ router.post('/employee/update', multer().none(), controller.backoffice_admin_emp
 router.post('/employee/delete/:id', multer().none(), controller.backoffice_admin_employee_delete_post);
 
 
+
 // ------------------------------ /Backoffice/Admin/Client URL
 
 // Admin Client Index
@@ -55,8 +56,9 @@ router.post('/client/update', multer().none(), controller.backoffice_admin_clien
 // Admin Client Delete
 router.post('/client/delete/:id', multer().none(), controller.backoffice_admin_client_delete_post);
 
-//Admin Client search
+//Admin Client Search
 router.post('/client/search', multer().none(), controller.backoffice_admin_client_search_post);
+
 
 // ------------------------------ Admin/Book URL
 
@@ -77,6 +79,8 @@ router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_boo
 // Admin Book search
 router.post('/book/search', multer().none(), controller.backoffice_admin_book_search_post);
 
+
+
 // ------------------------------ Admin/Sale URL
 
 // Admin Sale Index
@@ -89,6 +93,8 @@ router.post('/sales/makeSale', multer().none(), controller.backoffice_admin_make
 // Admin Sale Search
 router.post('/sales/search', multer().none(), controller.backoffice_admin_sale_search);
 
+
+
 // ------------------------------ Admin/Points URL
 
 router.get('/managePoints', controller.backoffice_admin_managepoints_get);
@@ -98,6 +104,8 @@ router.post('/managePoints', multer().none(), controller.backoffice_admin_manage
 router.get('/manageDiscount', controller.backoffice_admin_managediscount_get);
 
 router.post('/manageDiscount', multer().none(), controller.backoffice_admin_managediscount_post);
+
+
 
 module.exports = router;
 

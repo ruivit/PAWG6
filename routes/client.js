@@ -4,7 +4,7 @@ var router = express.Router();
 
 var clientController = require('../controllers/clientController');
 
-
+// ------------------------------ Login/Logout Process
 // Login Portal
 router.get('/login', clientController.client_login_get);
 
@@ -14,8 +14,12 @@ router.post('/login', multer().none(), clientController.client_login_post);
 // Logout
 router.get('/logout', clientController.client_logout);
 
+
+// ------------------------------ Client Index
+
 // Client Portal - after login
 router.get('/', clientController.client_index_get);
+
 
 // Register a new client
 router.get('/create', clientController.client_create_get);

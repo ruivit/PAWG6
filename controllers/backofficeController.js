@@ -13,19 +13,15 @@ exports.backoffice_login_get = function (req, res) {
 
 // Login Process
 exports.backoffice_login_post = function (req, res) {
-    data = req.body;
-    var username = data.username;
-    var password = data.password;
-
-    // search the username in the database
+    // Search the username and password (hash) in the database
     // if the admin field is true go to admin dashboard
     // if the admin field is false go to employee dashboard
-    Employee.findOne({ username: username }, function (err, employee) {
+    Employee.findOne({ username: req.body.username }, function (err, employee) {
         if (err) {
             res.redirect('error', { error: err });
         } else {
             if (employee) {
-                if (employee.validPassword(password)) {
+                if (employee.validPassword(req.body.password)) {
                     if (employee.admin) {
                         req.session.admin = true;
                         req.session.username = employee.username;
@@ -38,6 +34,8 @@ exports.backoffice_login_post = function (req, res) {
                         req.session.employeeID = employee._id;  
                         res.redirect('/backoffice/employee');
                     }
+
+                // If the username/password is wrong, render the login page again with a message
                 } else {
                     res.render('backoffice/backofficeLogin', { message: 'Invalid password' });
                 }
