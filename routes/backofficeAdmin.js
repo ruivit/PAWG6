@@ -2,21 +2,26 @@ var express = require('express');
 const req = require('express/lib/request');
 var multer = require('multer');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
 
 var controller = require('../controllers/backofficeControllerAdmin');
 
-/* If there is no session created OR the session is not admin, then redirect to login
-But if there is session created AS THE CLIENT, generate a 302 and redirect to index */
-router.use(function (req, res, next) {
-    if (!req.session || !req.session.admin) {
-        if (req.session.client) {
-            res.status(302).redirect('/');
-        } else {
-            res.redirect('/backoffice');
-        }
-    } else {
-        next();
+
+router.use(function (req, res, next) {    
+    var token = req.cookies.token;
+    if (!token) {
+        res.status(302).redirect('/');
     }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            res.render('error', { error: err });
+        } else if (req.session.admin) {
+            next();
+        } else {
+            res.status(302).redirect('/');
+        }
+    });
 });
 
 // Admin Index
@@ -104,7 +109,6 @@ router.post('/managePoints', multer().none(), controller.backoffice_admin_manage
 router.get('/manageDiscount', controller.backoffice_admin_managediscount_get);
 
 router.post('/manageDiscount', multer().none(), controller.backoffice_admin_managediscount_post);
-
 
 
 module.exports = router;

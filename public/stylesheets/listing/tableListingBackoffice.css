@@ -102,3 +102,25 @@ body {
     color: white;
     font-weight: bold;
 }
+
+.pagination a {
+    display: inline-block;
+    color: #c2c2c2;
+    text-align: center;
+    padding: 7px;
+    text-decoration: none;
+    font-size: larger;
+}
+
+.pagination a:hover {
+    color: #113fd7;
+}
+
+.pagination a.active {
+    color: white;
+    font-weight: bold;
+}  
+
+
+
+  

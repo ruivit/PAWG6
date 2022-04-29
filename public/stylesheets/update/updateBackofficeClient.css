@@ -165,3 +165,18 @@ body {
     margin-top: 10px;
     text-align: center;
 }
+
+.updatePassword {
+    background-color: rgb(0, 98, 255);
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    margin-top: 25px;
+    outline: 0;
+    text-align: center;
+    width: 100%;
+}

@@ -20,7 +20,7 @@ exports.client_login_post = function (req, res) {
         } else {
             if (client) {
                 // check if the password is correct
-                if (client.validPassword(req.body.password, client.password)) {
+                if (client.checkPassword(req.body.password, client.password)) {
                     // save the client in the session
                     req.session.client = client;
                     req.session.client._id = client._id;
@@ -160,7 +160,7 @@ exports.client_profile_post = function (req, res) {
             res.redirect('error', { error: err });
         }}).then(function (client) {
             // Check if the password is correct
-            if (Client.validPassword(req.body.password, client.password)) {
+            if (Client.checkPassword(req.body.password, client.password)) {
                 
                 // Update the client
                 Client.findByIdAndUpdate(req.session.client._id, {

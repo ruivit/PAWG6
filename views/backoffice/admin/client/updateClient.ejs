@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/stylesheets/update/updateBackofficeClient.css">
 	<script defer src="/javascripts/update.js"></script>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
   </head>
   <body>
 	<% if(locals.client) { %>
@@ -59,16 +60,9 @@
 				<div class="cut"></div>
 				<label for="birthDate" class="placeholder">Birth Date</label>
 			</div>
-			<div class="input-container ic2">
-				<input name="password" class="input" type="password" placeholder=" "
-				value="<%= locals.client.password %>" required
-				minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
-				<div class="cut"></div>
-				<label for="password" class="placeholder">Password</label>
-			</div>
-			<span class="passwordpolicy">
-Minimum 8 characters, at least 1 letter, 1 number and 1 special character
-			</span>
+			<form action="/backoffice/admin/client/update/password" method="get">
+				<button type="submit" class="updatePassword">Change Password</button>
+			</form>
 			<button type="text" class="submit">Submit changes</button>
 		</form>
 		<form action="/backoffice/admin/client" method="get">

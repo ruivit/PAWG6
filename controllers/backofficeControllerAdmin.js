@@ -34,8 +34,19 @@ exports.backoffice_admin_get = function (req, res) {
 
 exports.backoffice_admin_employee_get = async function (req, res) {
     try {
-        var employees = await Employee.find();
-        res.render('backoffice/admin/employee/manageEmployees', { employees: employees });
+        var perPage = 10;
+        var total = await Employee.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        // convert currentPage to integer
+        currentPage = parseInt(currentPage);
+
+        var employees = await Employee.find().skip(start).limit(perPage);
+        res.render('backoffice/admin/employee/manageEmployees', 
+        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, employees: employees });
     }
     catch (error) {
         res.render("error", { message: "Error finding employees", error: error });
@@ -50,7 +61,7 @@ exports.backoffice_admin_employee_create_post = function (req, res) {
     // Using promises to search for username and/or email already in use
     var usernamePromise = Employee.findOne({ username: req.body.username });
     var emailPromise = Employee.findOne({ email: req.body.email });
-    
+
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
         // If the username or email already exists, redirect to the create page, with an error message
         if (promisesToDo[0]) {
@@ -199,24 +210,16 @@ exports.backoffice_admin_client_update_get = async function (req, res) {
 }; // Get the form to update a client
 
 exports.backoffice_admin_client_update_post = async function (req, res) {
-    // Check if the data being updated is valid, email is not duplicated
-    emailPromise = Client.findOne({ email: req.body.email });
-    if (emailPromise) {
-        var client = await Client.findOne({ username: req.body.username });
-        res.render('backoffice/admin/client/updateClient',
-        { client: client, message: "Email already exists" });
-    } else {
-        // If the data is valid, update the client
-        Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
-            function (err, client) {
-            if (err) {
-                res.render('error/error', { message: "Error updating client", error: err });
-            } else {
-                // Milestone2 - add message of success
-                res.redirect('/backoffice/admin/client');
-            }
-        });
-    }
+    // Update the client
+    Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
+        function (err, client) {
+        if (err) {
+            res.render('error/error', { message: "Error updating client", error: err });
+        } else {
+            // Milestone2 - add message of success
+            res.redirect('/backoffice/admin/client');
+        }
+    });
 }; // Update a client
 
 
@@ -264,8 +267,19 @@ exports.backoffice_admin_client_search_post = async function (req, res) {
 
 exports.backoffice_admin_book_get = async function (req, res) {
     try {
-        var books = await Book.find();
-        res.render('backoffice/admin/book/manageBooks', { books: books });
+        var perPage = 5;
+        var total = await Book.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        // convert currentPage to integer
+        currentPage = parseInt(currentPage);
+
+        var books = await Book.find().skip(start).limit(perPage);
+        res.render('backoffice/admin/book/manageBooks', 
+        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, books: books });
         // Milestone2 - add message of success
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });

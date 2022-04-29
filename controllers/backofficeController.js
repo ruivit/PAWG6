@@ -2,7 +2,7 @@ const { redirect } = require('express/lib/response');
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
-
+var jwt = require('jsonwebtoken');
 
 // -------------------- Backoffice/ ---------------------------
 
@@ -21,20 +21,23 @@ exports.backoffice_login_post = function (req, res) {
             res.redirect('error', { error: err });
         } else {
             if (employee) {
-                if (employee.validPassword(req.body.password)) {
+                if (employee.checkPassword(req.body.password)) {
                     if (employee.admin) {
                         req.session.admin = true;
                         req.session.username = employee.username;
                         req.session.employeeID = employee._id;
-                        res.redirect('/backoffice/admin');
+                        var token = jwt.sign({ employeeID: employee._id }, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token));
+                        res.cookie('token', token);
+                        res.render('backoffice/backofficeIndex', { admin: true });
                     } else {
                         req.session.admin = false;
                         req.session.employee = true;
                         req.session.username = employee.username;
                         req.session.employeeID = employee._id;  
-                        res.redirect('/backoffice/employee');
+                        var token = jwt.sign({ employeeID: employee._id }, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token));
+                        res.cookie('token', token);
+                        res.render('backoffice/backofficeIndex', { admin: false });
                     }
-
                 // If the username/password is wrong, render the login page again with a message
                 } else {
                     res.render('backoffice/backofficeLogin', { message: 'Invalid password' });
@@ -49,5 +52,9 @@ exports.backoffice_login_post = function (req, res) {
 // Logout Process
 exports.backoffice_logout = function (req, res) {
     req.session.destroy();
+
+    // clear the cookies and token
+    res.clearCookie('token');
+
     res.redirect('/backoffice');
 }; 

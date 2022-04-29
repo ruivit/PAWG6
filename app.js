@@ -12,6 +12,7 @@ require('dotenv').config();
 var app = express();
 
 app.use('/favicon.ico', express.static('public/images/favicon.ico'));
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 
 // MongoDB
 //Import the mongoose module

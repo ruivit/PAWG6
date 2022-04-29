@@ -1,22 +1,26 @@
 var express = require('express');
 var multer = require('multer');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
 
 var controller = require('../controllers/backofficeControllerEmployee');
 
 
-/* If there is no session created OR the session is not employee, then redirect to login
-But if there is session created AS THE CLIENT, generate a 302 and redirect to index */
 router.use(function (req, res, next) {
-    if (!req.session || !req.session.employee) {
-        if (req.session.client) {
-            res.status(302).redirect('/');
-        } else {
-            res.redirect('/backoffice');
-        }
-    } else {
-        next();
+    var token = req.cookies.token;
+    if (!token) {
+        res.status(302).redirect('/');
     }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            res.render('error', { error: err });
+        } else if (req.session.employee) {
+            next();
+        } else {
+            res.status(302).redirect('/');
+        }
+    });
 });
 
 

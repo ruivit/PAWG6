@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/stylesheets/update/updateEmployee.css">
 	<script defer src="/javascripts/update.js"></script>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
   </head>
   <body>
 	<% if(employee) { %>
@@ -37,14 +38,9 @@
 				<div class="cut"></div>
 				<label for="category" class="placeholder">Category</label>
 			</div>
-			<div class="input-container ic2"> <!-- enforce the policy -->
-				<input name="password" class="input" type="password" placeholder="" id="password" required/>
-				<div class="cut passwordpolicy"></div>
-				<label for="password" class="placeholder">Password</label>
-				<span class="passwordpolicy">
-Minimum 8 characters, at least 1 letter, 1 number and 1 special character
-				</span>
-			</div>
+			<form action="/backoffice/admin/client/update/password" method="get">
+				<button type="submit" class="updatePassword">Change Password</button>
+			</form>
 			<p></p>
 			<button type="text" class="submit">Update</button>
 		</form>

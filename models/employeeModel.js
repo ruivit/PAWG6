@@ -26,7 +26,7 @@ EmployeeSchema.methods.setPassword = function(password) {
 }; 
     
 // Method to check the entered password is correct or not 
-EmployeeSchema.methods.validPassword = function(password) { 
+EmployeeSchema.methods.checkPassword = function(password) { 
     var hash = crypto.pbkdf2Sync(password,  
     this.salt, 1000, 64, process.env.ENCRYPTION).toString('hex'); 
     return this.passwordHash === hash; 
