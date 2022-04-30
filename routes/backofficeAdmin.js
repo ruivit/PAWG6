@@ -7,6 +7,18 @@ var jwt = require('jsonwebtoken');
 var controller = require('../controllers/backofficeControllerAdmin');
 
 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+  
+var upload = multer({ storage: storage });
+
+
 router.use(function (req, res, next) {    
     var token = req.cookies.token;
     if (!token) {
@@ -40,10 +52,14 @@ router.post('/employee/create', multer().none(), controller.backoffice_admin_emp
 router.get('/employee/update/:id', multer().none(), controller.backoffice_admin_employee_update_get);
 router.post('/employee/update', multer().none(), controller.backoffice_admin_employee_update_post);
 
+router.get('/employee/update/password/:id', multer().none(), controller.backoffice_admin_employee_update_password_get);
+router.post('/employee/update/password', multer().none(), controller.backoffice_admin_employee_update_password_post);
+
 // Admin Employee Delete
 router.post('/employee/delete/:id', multer().none(), controller.backoffice_admin_employee_delete_post);
 
-
+// Admin Employee Search
+router.post('/employee/search', multer().none(), controller.backoffice_admin_employee_search_post);
 
 // ------------------------------ /Backoffice/Admin/Client URL
 
@@ -57,6 +73,9 @@ router.post('/client/create', multer().none(), controller.backoffice_admin_clien
 // Admin Client Update
 router.get('/client/update/:id', multer().none(), controller.backoffice_admin_client_update_get);
 router.post('/client/update', multer().none(), controller.backoffice_admin_client_update_post);
+
+router.get('/client/update/password/:id', multer().none(), controller.backoffice_admin_client_update_password_get);
+router.post('/client/update/password', multer().none(), controller.backoffice_admin_client_update_password_post);
 
 // Admin Client Delete
 router.post('/client/delete/:id', multer().none(), controller.backoffice_admin_client_delete_post);

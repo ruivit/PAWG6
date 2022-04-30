@@ -13,7 +13,12 @@
   <ul>
     <li><a class="importantbutton" href="/backoffice/admin">Back</a></li>
     <li><a href="/backoffice/admin/employee/create">Create</a></li>
-    <li><a href="#">Search</a></li>
+    <li><a>
+      <form action="/backoffice/admin/employee/search" method="post">
+        <input type="text" name="search" placeholder="Search">
+        <input type="submit" value="Search">
+      </form>
+    </a></li>
     <li style="float:right">
       <a class="importantbutton"
       href="/backoffice/logout">Logout</a>
@@ -29,6 +34,7 @@
             <th scope="col">Email</th>
             <th scope="col">Name</th>
             <th scope="col">Category</th>
+            <th scope="col"></th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -52,6 +58,9 @@
                   <input type="image" class="material-icons delete" name="_method" value="delete">
                 </form>
                 <% } %>
+                <td data-label="passwordRecovery">
+                  <a href="/backoffice/admin/employee/update/password/<%=employees[i].id%>">Reset password</a>
+                </td>
               </th>
             </tr>
           <% } %>

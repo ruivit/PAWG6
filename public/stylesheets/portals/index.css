@@ -10,7 +10,7 @@ body {
 	background-size: cover;
 	color: #eee;
 	font-family: 'Lato', sans-serif;
-	font-size: 62.5%;
+	font-size: 35%;
 	padding: 0 20px;
 	box-sizing: border-box;
 }
@@ -21,7 +21,7 @@ body {
 	background-image: linear-gradient(to bottom, rgba(255, 177, 22, 0.2), transparent);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0 32px #0003;
-	font-size: 2em;
+	font-size: 1.5em;
 	font-weight: 300;
 }
 .links > a {

@@ -1,11 +1,10 @@
 #### Tarefas
-- [ ] Datas
+- [x] Password recovery system (routes e backend)
+- [x] Paginação
 - [ ] Verificar tudo
+
+- [ ] Datas
 - [ ] Imagens
-- [ ] Password recovery system (routes e backend)
-- [ ] Paginação
-- [ ] Bootstrap Employee
-- [ ] Adicionar paginas cliente
 ##### Enunciado
 - [x] Registo de funcionários da empresa;
 - [x] Registo e gestão de clientes

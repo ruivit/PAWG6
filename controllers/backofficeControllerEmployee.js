@@ -321,7 +321,7 @@ exports.backoffice_employee_sale_get = async function (req, res) {
         
             // Get username of the employee
             var employee = await Employee.findById(sales[i].employee_id);
-            sales[i].employeeusername = employee.username;
+            sales[i].employeeUsername = employee.username;
         }
         res.render('backoffice/employee/sales/employeeManageSales', { sales: sales });
     } catch (error) {

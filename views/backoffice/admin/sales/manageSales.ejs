@@ -25,6 +25,7 @@
     </li>
   </ul>
   <br>
+  <div class="container">
   <% if(sales.length>0) { %>
     <table class="table">
       <thead>
@@ -69,6 +70,36 @@
         <% } %>
       </tbody>
     </table>
+  </div>
+  <div class="pagination">
+    <br>
+    <table>
+      <tr>
+        <td>
+          <% if(pages>1) { %>
+            <a href="?page=<%= (currentPage-1) %>">
+              <i class="material-icons">chevron_left</i>
+            </a>
+          <% } %>
+        </td>
+        <td>
+          <% for(var i=1; i<=pages; i++) { %>
+            <a href="?page=<%= i %>" class="<% if(i==currentPage) { %>active<% } %>">
+              <%= i %>
+            </a>
+          <% } %>
+        </td>
+        <td>
+        <!-- check if its lastPage -->
+        <% if(pages>1 && pages>currentPage) { %>
+          <a href="?page=<%= (currentPage+1) %>">
+            <i class="material-icons">chevron_right</i>
+          </a>
+        <% } %>
+        </td>
+      </tr>
+    </table>
+  </div>
   <% } else { %>
     <table class="table">
       <thead>

@@ -6,6 +6,8 @@ var logger = require('morgan');
 var session = require('express-session');
 var passport = require('passport');
 var crypto = require('crypto');
+var fs = require('fs');
+var multer = require('multer');
 
 require('dotenv').config();
 

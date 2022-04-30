@@ -1,6 +1,7 @@
 const { redirect } = require('express/lib/response');
 const pointsIDcollection = "62650c0098b8a1abe1af3bdc";
 const discountIDcollection = "62667eb941eac5eecb5f4e3a";
+var crypto = require('crypto');
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
@@ -14,6 +15,7 @@ var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var Discount = require('../models/discountModel');
 
+var imgModel = require('../models/imageModel');
 
 // ------------------- Auxiliary Functions ---------------------------
 function getDateNow(date) {
@@ -131,13 +133,86 @@ exports.backoffice_admin_employee_delete_post = function (req, res) {
     });
 }; // Delete a employee
 
+exports.backoffice_admin_employee_update_password_get = async function (req, res) {
+    try {
+        var employee = await Employee.findById(req.params.id);
+        console.log(employee);
+        res.render('backoffice/admin/employee/updatePassword', { employee: employee });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating employee", error: error });
+    }
+}; // Form to update an employee's password
+
+exports.backoffice_admin_employee_update_password_post = async function (req, res) {
+    // Update the client
+    var salt = crypto.randomBytes(16).toString('hex'); 
+    
+    // Hashing user's salt and password with 1000 iterations, 
+    var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
+    1000, 64, process.env.ENCRYPTION).toString('hex');
+
+    Employee.findOneAndUpdate({ username: req.body.username }, 
+        { salt: salt, passwordHash: newPasswordHash }, { new: true },
+        function (err, employee) {
+        if (err) {
+            res.render('error/error', { message: "Error updating employee", error: err });
+        } else {
+            // Milestone2 - add message of success
+            res.redirect('/backoffice/admin/employee');
+        }
+    });
+}; // Update an employee's password
+
+exports.backoffice_admin_employee_search_post = async function (req, res) {
+    async function pagination(page) {
+        var perPage = 1;
+        var total = await Employee.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        // convert currentPage to integer
+        currentPage = parseInt(currentPage);
+
+        var employees = await Employee.find().skip(start).limit(perPage);
+        return { pages: totalPages, currentPage: currentPage, lastPage: lastPage, employees: employees };
+    }
+
+    try {
+        var pD = await pagination(req);
+
+        var employees = await Employee.find({ $or: [
+            { username: { $regex: req.body.search, $options: 'i' } },
+            { email: { $regex: req.body.search, $options: 'i' } },
+        ] }).skip(pD.start).limit(pD.perPage);
+
+        res.render('backoffice/admin/employee/manageEmployees', 
+        { employees: employees, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
+
+    } catch (error) {
+        res.render("error/error", { message: "Error searching employee", error: error });
+    }
+}; // Search for an employee
+
 
 // --------------------- Backoffice/Admin/Client ---------------------------
 
 exports.backoffice_admin_client_get = async function (req, res) {
     try {
-        var clients = await Client.find();
-        res.render('backoffice/admin/client/manageClients', { clients: clients });
+        var perPage = 10;
+        var total = await Employee.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        // convert currentPage to integer
+        currentPage = parseInt(currentPage);
+
+        var clients = await Client.find().skip(start).limit(perPage);
+        res.render('backoffice/admin/client/manageClients', 
+        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, clients: clients });
         // Milestone2 - add message of success
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
@@ -234,25 +309,71 @@ exports.backoffice_admin_client_delete_post = function (req, res) {
     });
 }; // Delete a client
 
+exports.backoffice_admin_client_update_password_get = async function (req, res) {
+    try {
+        var client = await Client.findById(req.params.id);
+        res.render('backoffice/admin/client/updatePassword', { client: client });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating client", error: error });
+    }
+}; // Get the form to update a client password
+
+exports.backoffice_admin_client_update_password_post = async function (req, res) {
+    // Update the client
+    var salt = crypto.randomBytes(16).toString('hex'); 
+
+    // Hashing user's salt and password with 1000 iterations, 
+    var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
+    1000, 64, process.env.ENCRYPTION).toString('hex');
+
+    Client.findOneAndUpdate({ username: req.body.username }, 
+        { salt: salt, passwordHash: newPasswordHash }, { new: true },
+        function (err, client) {
+        if (err) {
+            res.render('error/error', { message: "Error updating client", error: err });
+        } else {
+            // Milestone2 - add message of success
+            res.redirect('/backoffice/admin/client');
+        }
+    });
+}; // Update a client password
+
 
 exports.backoffice_admin_client_search_post = async function (req, res) {
+    async function pagination(req) {
+        var perPage = 10;
+        var total = await Employee.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        // convert currentPage to integer
+        currentPage = parseInt(currentPage);
+        return { pages: totalPages, currentPage: currentPage, lastPage: lastPage };
+    }
+
     try {
         // check if the text parsed are only numbers, if yes then we are searching by phoneNumber
         regex = /^[0-9]+$/;
 
         if (RegExp(regex).test(req.body.search)) {
-
-            var clients = await Client.find({ phone: req.body.search });
-            res.render('backoffice/admin/client/manageClients', { clients: clients });
+            var pD = await pagination(req);
+            var clients = await Client.find({ phone: req.body.search }).skip(pD.start).limit(pD.perPage);
+            
+            res.render('backoffice/admin/client/manageClients',
+            { clients: clients, pages: pD.totalPages, currentPage: pD.currentPage, lastPage: pD.lastPage });
 
         } else { // if not, we are searching by username or email
+            var pD = await pagination(req);
 
             var clients = await Client.find({ $or:[
                 { username: { $regex: req.body.search, $options: 'i' } },
                 { email: { $regex: req.body.search, $options: 'i' } },
-            ] });
+            ] }).skip(pD.start).limit(pD.perPage);
 
-            res.render('backoffice/admin/client/manageClients', { clients: clients });
+            res.render('backoffice/admin/client/manageClients',
+            { clients: clients, pages: pD.totalPages, currentPage: pD.currentPage, lastPage: pD.lastPage });
         }
 
     } catch (error) {
@@ -424,31 +545,52 @@ exports.backoffice_admin_book_delete_post = function (req, res) {
 }; // Delete a book
 
 exports.backoffice_admin_book_search_post = async function (req, res) {
+    async function pagination(req) {
+        var perPage = 5;
+        var total = await Book.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        currentPage = parseInt(currentPage);
+        return { total: total, totalPages: totalPages, currentPage: currentPage, lastPage: lastPage };
+    }
+
     try {
         // check if the text parsed are only number, if yes we are searching by ISBN
         regex = /^[0-9]+$/;
 
         if (RegExp(regex).test(req.body.search)) {
-            var books = await Book.find({ isbn: req.body.search });
+            var pD = await pagination(req); // pD means paginationData
+            
+            var books = await Book.find({ isbn: req.body.search }).skip(pD.start).limit(pD.lastPage);
 
-            res.render('backoffice/admin/book/manageBooks', { books: books });
+            res.render('backoffice/admin/book/manageBooks', 
+            { books: books, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
 
         // if we are searching true or false, we are searching by the forSale field
         } else if (req.body.search == "true" || req.body.search == "false") {
-            var books = await Book.find({ $or:[
-                { forSale: req.body.search } ] });
+            var pD = await pagination(req);
 
-            res.render('backoffice/admin/book/manageBooks', { books: books });
+            var books = await Book.find({ $or:[
+                { forSale: req.body.search } ] }).skip(pD.start).limit(pD.perPage);
+
+            res.render('backoffice/admin/book/manageBooks',
+            { books: books, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
 
         // else, we are searching by the title, author or editor
         } else {
+            var pD = await pagination(req);
+
             var books = await Book.find({ $or:[
                 { title: { $regex: req.body.search, $options: 'i' } },
                 { author: { $regex: req.body.search, $options: 'i' } },
                 { editor: { $regex: req.body.search, $options: 'i' } }
-            ] });
+            ] }).skip(pD.start).limit(pD.perPage);
 
-            res.render('backoffice/admin/book/manageBooks', { books: books });
+            res.render('backoffice/admin/book/manageBooks',
+            { books: books, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
         }
 
     } catch (error) {
@@ -461,8 +603,22 @@ exports.backoffice_admin_book_search_post = async function (req, res) {
 // --------------------- Backoffice/Admin/Sale ---------------------------
 
 exports.backoffice_admin_sales_get = async function (req, res) {
+    async function pagination(req) {
+        var perPage = 10;
+        var total = await Sale.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        currentPage = parseInt(currentPage);
+        return { total: total, totalPages: totalPages, currentPage: currentPage, lastPage: lastPage };
+    }
+
     try {
-        var sales = await Sale.find();
+        var pD = await pagination(req);
+
+        var sales = await Sale.find().skip(pD.start).limit(pD.lastPage);
         for (var i = 0; i < sales.length; i++) {
             // Get the title of the books
             for (var j = 0; j < sales[i].books.length; j++) {
@@ -474,13 +630,14 @@ exports.backoffice_admin_sales_get = async function (req, res) {
             var employee = await Employee.findById(sales[i].employee_id);
             sales[i].employeeUsername = employee.username;
         }
-        res.render('backoffice/admin/sales/manageSales', { sales: sales });
+        res.render('backoffice/admin/sales/manageSales', 
+        { sales: sales, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
     } catch (error) {
         res.render("error/error", { message: "Error getting sales", error: error });
     }
 };
 
-exports.backoffice_admin_make_sale_get = async function (req, res) {
+exports.backoffice_admin_make_sale_get = async function (req, res) {  
     try {
         var books = await Book.find();
         res.render('backoffice/admin/sales/makeSale', { books: books });
@@ -551,27 +708,45 @@ exports.backoffice_admin_sale_search = async function (req, res) {
         return sales;
     }
 
+    async function pagination(req) {
+        var perPage = 10;
+        var total = await Sale.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        currentPage = parseInt(currentPage);
+        return { total: total, totalPages: totalPages, currentPage: currentPage, lastPage: lastPage };
+    }
+
     try {
         // if true or false, we are checking for online field
         if (req.body.search == "true" || req.body.search == "false") {
-            var sales = await Sale.find({ online: req.body.search });
+            var pD = await pagination(req);
+
+            var sales = await Sale.find({ online: req.body.search }).skip(pD.start).limit(pD.lastPage);
 
             // get the title of the books
             await getTitleBooks(req, res, sales);
             await getEmployeeUsername(req, res, sales);
 
-            res.render('backoffice/admin/sales/manageSales', { sales: sales });
+            res.render('backoffice/admin/sales/manageSales',
+            { sales: sales, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
         } else {
             // else, we are search for client username (only)
+            var pD = await pagination(req);            
+
             var sales = await Sale.find({ $or:[
                 { clientUsername: { $regex: req.body.search, $options: 'i' } }
-            ] });
+            ] }).skip(pD.start).limit(pD.lastPage);
 
             // get the title of the books
             await getTitleBooks(req, res, sales);
             await getEmployeeUsername(req, res, sales);
 
-            res.render('backoffice/admin/sales/manageSales', { sales: sales });
+            res.render('backoffice/admin/sales/manageSales',
+            { sales: sales, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
         }
     } catch (error) {
         res.render("error/error", { message: "Error searching sale", error: error });

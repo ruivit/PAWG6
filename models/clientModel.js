@@ -43,6 +43,8 @@ ClientSchema.methods.checkPassword = function(password) {
   return this.passwordHash === hash; 
 }; 
 
+
+
 ClientSchema.methods.setAgeType = function(birthDate) {
   var age = new Date().getFullYear() - birthDate.substring(0, 4);
   var ageType = "";
