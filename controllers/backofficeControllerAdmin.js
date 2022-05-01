@@ -15,7 +15,6 @@ var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var Discount = require('../models/discountModel');
 
-var imgModel = require('../models/imageModel');
 
 // ------------------- Auxiliary Functions ---------------------------
 function getDateNow(date) {
@@ -165,7 +164,7 @@ exports.backoffice_admin_employee_update_password_post = async function (req, re
 
 exports.backoffice_admin_employee_search_post = async function (req, res) {
     async function pagination(page) {
-        var perPage = 1;
+        var perPage = 10;
         var total = await Employee.countDocuments();
         var totalPages = Math.ceil(total / perPage);
         var currentPage = page || 1;
@@ -201,7 +200,7 @@ exports.backoffice_admin_employee_search_post = async function (req, res) {
 exports.backoffice_admin_client_get = async function (req, res) {
     try {
         var perPage = 10;
-        var total = await Employee.countDocuments();
+        var total = await Client.countDocuments();
         var totalPages = Math.ceil(total / perPage);
         var currentPage = req.query.page || 1;
         var start = (currentPage - 1) * perPage;
@@ -230,7 +229,7 @@ exports.backoffice_admin_client_create_post = function (req, res) {
             return 10;
         } else {
             // Milestone2 - logica de negocio
-            return totalPoints;
+            return points;
         }
     }
 
@@ -285,6 +284,22 @@ exports.backoffice_admin_client_update_get = async function (req, res) {
 }; // Get the form to update a client
 
 exports.backoffice_admin_client_update_post = async function (req, res) {
+    async function calculateAgeType(birthDate) {
+        var age = new Date().getFullYear() - birthDate.substring(0, 4);
+        var ageType = "";
+        if (age < 10) {
+            ageType = "Infantil";
+        } else if (age > 10 && age <= 18) {
+            ageType = "Juvenil";
+        } else if (age > 18 && age <= 60) {
+            ageType = "Adulto";
+        } else {
+            ageType = "Senior";
+        }
+        return ageType;
+    }
+    
+    req.body.ageType = await calculateAgeType(req.body.birthDate);
     // Update the client
     Client.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }, 
         function (err, client) {
@@ -342,7 +357,7 @@ exports.backoffice_admin_client_update_password_post = async function (req, res)
 exports.backoffice_admin_client_search_post = async function (req, res) {
     async function pagination(req) {
         var perPage = 10;
-        var total = await Employee.countDocuments();
+        var total = await Client.countDocuments();
         var totalPages = Math.ceil(total / perPage);
         var currentPage = req.query.page || 1;
         var start = (currentPage - 1) * perPage;
@@ -359,6 +374,7 @@ exports.backoffice_admin_client_search_post = async function (req, res) {
 
         if (RegExp(regex).test(req.body.search)) {
             var pD = await pagination(req);
+
             var clients = await Client.find({ phone: req.body.search }).skip(pD.start).limit(pD.perPage);
             
             res.render('backoffice/admin/client/manageClients',

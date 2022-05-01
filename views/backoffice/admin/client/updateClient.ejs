@@ -43,7 +43,7 @@
 			<div class="input-container ic2">
 				<input name="phone" class="input" type="text" placeholder=" "
 				value="<%= locals.client.phone %>" required oninput="updatedValue()"
-				minlength="2" maxlength="20" pattern="[0-9]+" />
+				minlength="9" maxlength="9" pattern="[0-9]+" />
 				<div class="cut cut-long"></div>
 				<label for="phone" class="placeholder">Phone Number</label>
 			</div>
@@ -56,14 +56,15 @@
 			</div>
 			<div class="input-container ic2">
 				<input name="birthDate" class="input" type="date" placeholder=" "
-				value="<%= locals.client.brithDate %>" required oninput="updatedValue()"/>
+				value="<%= locals.client.birthDate %>" required oninput="updatedValue()"/>
 				<div class="cut"></div>
 				<label for="birthDate" class="placeholder">Birth Date</label>
 			</div>
-			<form action="/backoffice/admin/client/update/password" method="get">
-				<button type="submit" class="updatePassword">Change Password</button>
-			</form>
 			<button type="text" class="submit">Submit changes</button>
+		</form>
+		<form action="/backoffice/admin/client/update/password/<%= locals.client.id %>" 
+			method="get" enctype="multipart/form-data">
+			<button type="text" class="updatePassword">Change Password</button>
 		</form>
 		<form action="/backoffice/admin/client" method="get">
 			<button type="text" class="back">Back</button>

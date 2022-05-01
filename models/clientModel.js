@@ -55,7 +55,7 @@ ClientSchema.methods.setAgeType = function(birthDate) {
   } else if (age > 18 && age <= 60) {
     ageType = "Adulto";
   } else {
-    ageType = "Idoso";
+    ageType = "Senior";
   }
   return this.ageType = ageType;
 };

@@ -7,18 +7,6 @@ var jwt = require('jsonwebtoken');
 var controller = require('../controllers/backofficeControllerAdmin');
 
 
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
-});
-  
-var upload = multer({ storage: storage });
-
-
 router.use(function (req, res, next) {    
     var token = req.cookies.token;
     if (!token) {
@@ -29,6 +17,7 @@ router.use(function (req, res, next) {
         if (err) {
             res.render('error', { error: err });
         } else if (req.session.admin) {
+            console.log(req.session);
             next();
         } else {
             res.status(302).redirect('/');
