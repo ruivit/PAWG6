@@ -135,7 +135,6 @@ exports.backoffice_admin_employee_delete_post = function (req, res) {
 exports.backoffice_admin_employee_update_password_get = async function (req, res) {
     try {
         var employee = await Employee.findById(req.params.id);
-        console.log(employee);
         res.render('backoffice/admin/employee/updatePassword', { employee: employee });
     } catch (error) {
         res.render("error/error", { message: "Error updating employee", error: error });
@@ -255,6 +254,7 @@ exports.backoffice_admin_client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points), // Milestone2
             birthDate: req.body.birthDate,
+            dateString: req.body.birthDate,
         });
 
         client.setPassword(req.body.password);
@@ -276,6 +276,7 @@ exports.backoffice_admin_client_create_post = function (req, res) {
 exports.backoffice_admin_client_update_get = async function (req, res) {
     try {
         var client = await Client.findById(req.params.id);
+        
         res.render('backoffice/admin/client/updateClient', { client: client });
         // Milestone2 - add message of success
     } catch (error) {

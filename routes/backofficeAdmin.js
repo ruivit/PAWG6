@@ -17,7 +17,6 @@ router.use(function (req, res, next) {
         if (err) {
             res.render('error', { error: err });
         } else if (req.session.admin) {
-            console.log(req.session);
             next();
         } else {
             res.status(302).redirect('/');

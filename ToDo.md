@@ -1,10 +1,11 @@
 #### Tarefas
-- [x] Password recovery system (routes e backend)
-- [x] Paginação
 - [ ] Verificar tudo
-
-- [ ] Datas
+- [ ] Passar changes Admin > Employee
+<br>
+- [x] Datas
 - [ ] Imagens
+
+<br>
 ##### Enunciado
 - [x] Registo de funcionários da empresa;
 - [x] Registo e gestão de clientes
@@ -14,14 +15,12 @@ cliente (ex: compras físicas do cliente na livraria); (MAKE A SALE)
 - [x] Gestão das quantidades de livros novos e usados. Adicionar, remover e editar informação sobre livros
 na plataforma bem como a sua quantidade;
 
+<br>
 ##### Avançadas e coisinhas
 - [ ] Quando carregámos no botão create book, deverá 
 aparecer só uma mensagem a dizer que o livro foi 
-adicionado à base d dados e aparecer só os dados do livro (search)
+adicionado à base d dados e aparecer só os dados do livro (search) // milestone2
 - [ ] Se der erro, por exemplo, isbn já existe, o cursor da página deve posicionar-se no topo.
-- [ ] Ver o bug de não voltar para o backoffice ao criar um novo livro
-- [ ] No menu Make Sale, deverá ser possivel pesquisar por livros para associar às vendas,
-é preciso ver como se guarda os livros selecionados após cada pesquisa.
 
 
 
