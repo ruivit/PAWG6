@@ -34,25 +34,47 @@ exports.backoffice_admin_get = function (req, res) {
 // --------------------- Backoffice/Admin/Employee ---------------------------
 
 exports.backoffice_admin_employee_get = async function (req, res) {
+    async function pagination(req, totalDocs) {
+        var perPage = 5;
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+        
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
+
+    var pD, totalDocs, employees;
     try {
-        var perPage = 10;
-        var total = await Employee.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
+        if (req.query.search) {
+            totalDocs = await Employee.countDocuments({ $or: [
+                { username: { $regex: req.query.search, $options: 'i' } },
+                { name: { $regex: req.query.search, $options: 'i' } },
+            ] });
 
-        // convert currentPage to integer
-        currentPage = parseInt(currentPage);
+            pD = await pagination(req, totalDocs);
 
-        var employees = await Employee.find().skip(start).limit(perPage);
+            employees = await Employee.find({ $or: [
+                { username: { $regex: req.query.search, $options: 'i' } },
+                { name: { $regex: req.query.search, $options: 'i' } },
+            ] }).skip(pD.startFrom).limit(pD.perPage);
+
+        // General Listing
+        } else {
+            totalDocs = await Employee.countDocuments();
+            pD = await pagination(req, totalDocs);
+            employees = await Employee.find().skip(pD.startFrom).limit(pD.perPage);
+        }
+
         res.render('backoffice/admin/employee/manageEmployees', 
-        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, employees: employees });
+        { employees: employees, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
+
+    } catch (error) {
+        res.render("error/error", { message: "Error searching sale", error: error });
     }
-    catch (error) {
-        res.render("error", { message: "Error finding employees", error: error });
-    }
-}; // List/show the employees
+};
 
 exports.backoffice_admin_employee_create_get = function (req, res) {
     res.render('backoffice/admin/employee/createEmployee');
@@ -161,61 +183,62 @@ exports.backoffice_admin_employee_update_password_post = async function (req, re
     });
 }; // Update an employee's password
 
-exports.backoffice_admin_employee_search_post = async function (req, res) {
-    async function pagination(page) {
-        var perPage = 10;
-        var total = await Employee.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
 
-        // convert currentPage to integer
-        currentPage = parseInt(currentPage);
-
-        var employees = await Employee.find().skip(start).limit(perPage);
-        return { pages: totalPages, currentPage: currentPage, lastPage: lastPage, employees: employees };
-    }
-
-    try {
-        var pD = await pagination(req);
-
-        var employees = await Employee.find({ $or: [
-            { username: { $regex: req.body.search, $options: 'i' } },
-            { email: { $regex: req.body.search, $options: 'i' } },
-        ] }).skip(pD.start).limit(pD.perPage);
-
-        res.render('backoffice/admin/employee/manageEmployees', 
-        { employees: employees, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-
-    } catch (error) {
-        res.render("error/error", { message: "Error searching employee", error: error });
-    }
-}; // Search for an employee
 
 
 // --------------------- Backoffice/Admin/Client ---------------------------
 
 exports.backoffice_admin_client_get = async function (req, res) {
+    async function pagination(req) {
+        var perPage = 5;
+        var totalDocs = await Client.countDocuments();
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+        
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
+
+    async function paginationQuery(req) {
+        var perPage = 2;
+        var totalDocs = await Client.find({ $or:[
+            { username: { $regex: req.query.search, $options: 'i' } },
+            { email: { $regex: req.query.search, $options: 'i' } },
+        ] }).countDocuments();
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
+
+    var pD, clients;
     try {
-        var perPage = 10;
-        var total = await Client.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
-
-        // convert currentPage to integer
-        currentPage = parseInt(currentPage);
-
-        var clients = await Client.find().skip(start).limit(perPage);
+        if (req.query.search) {
+            pD = await paginationQuery(req);
+            clients = await Client.find({ $or:[
+                { username: { $regex: req.query.search, $options: 'i' } },
+                { email: { $regex: req.query.search, $options: 'i' } },
+            ] }).skip(pD.startFrom).limit(pD.perPage);
+        } else {
+            pD = await pagination(req);
+            clients = await Client.find().skip(pD.startFrom).limit(pD.perPage);
+        }
+        
         res.render('backoffice/admin/client/manageClients', 
-        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, clients: clients });
+        { clients: clients, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         // Milestone2 - add message of success
     } catch (error) {
         res.render("error", { message: "Error finding clients", error: error });
     }
 }; // List/show the clients
+
 
 exports.backoffice_admin_client_create_get = function (req, res) {
     res.render('backoffice/admin/client/createClient');
@@ -355,72 +378,61 @@ exports.backoffice_admin_client_update_password_post = async function (req, res)
 }; // Update a client password
 
 
-exports.backoffice_admin_client_search_post = async function (req, res) {
-    async function pagination(req) {
-        var perPage = 10;
-        var total = await Client.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
-
-        // convert currentPage to integer
-        currentPage = parseInt(currentPage);
-        return { pages: totalPages, currentPage: currentPage, lastPage: lastPage };
-    }
-
-    try {
-        // check if the text parsed are only numbers, if yes then we are searching by phoneNumber
-        regex = /^[0-9]+$/;
-
-        if (RegExp(regex).test(req.body.search)) {
-            var pD = await pagination(req);
-
-            var clients = await Client.find({ phone: req.body.search }).skip(pD.start).limit(pD.perPage);
-            
-            res.render('backoffice/admin/client/manageClients',
-            { clients: clients, pages: pD.totalPages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-
-        } else { // if not, we are searching by username or email
-            var pD = await pagination(req);
-
-            var clients = await Client.find({ $or:[
-                { username: { $regex: req.body.search, $options: 'i' } },
-                { email: { $regex: req.body.search, $options: 'i' } },
-            ] }).skip(pD.start).limit(pD.perPage);
-
-            res.render('backoffice/admin/client/manageClients',
-            { clients: clients, pages: pD.totalPages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-        }
-
-    } catch (error) {
-        res.render("error/error", { message: "Error searching Client", error: error });
-    }
-
-}; // Search function for clients (by username, email, or phoneNumber)
-
-
-
 // --------------------- Backoffice/Admin/Book ---------------------------
 
 exports.backoffice_admin_book_get = async function (req, res) {
-    try {
+    async function pagination(req, totalDocs) {
         var perPage = 5;
-        var total = await Book.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+        
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
 
-        // convert currentPage to integer
-        currentPage = parseInt(currentPage);
+    var pD, totalDocs, books;
+    try {
+        if (req.query.search) {
+            // ISBN Search
+            if (RegExp(/^[0-9]+$/).test(req.query.search)) {
+                totalDocs = await Book.countDocuments().where('isbn').equals(req.query.search);
+                pD = await pagination(req, totalDocs);
+                
+                books = await Book.find({ isbn: req.query.search })
+                .skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+            
+            // Title, Author, Editor Search
+            } else {
+                totalDocs = await Book.find({ $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { author: { $regex: req.query.search, $options: 'i' } },
+                    { editor: { $regex: req.query.search, $options: 'i' } }
+                ] }).countDocuments();
+                pD = await pagination(req, totalDocs);
 
-        var books = await Book.find().skip(start).limit(perPage);
+                books = await Book.find({ $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { author: { $regex: req.query.search, $options: 'i' } },
+                    { editor: { $regex: req.query.search, $options: 'i' } }
+                ] })
+                .skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+            }
+
+        // General listing
+        } else {
+            totalDocs = await Book.countDocuments();
+            pD = await pagination(req, totalDocs);
+            books = await Book.find().skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+        }
+        
         res.render('backoffice/admin/book/manageBooks', 
-        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, books: books });
+        { books: books, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         // Milestone2 - add message of success
     } catch (error) {
-        res.render("error", { message: "Error finding books", error: error });
+        res.render("error/error", { message: "Error listing books", error: error });
     }
 }; // List/show the books
 
@@ -524,6 +536,17 @@ exports.backoffice_admin_book_create_post = function (req, res) {
                 }); // Editor end
             }
         }); // Book save end
+
+        // Save the image
+        var imageName = book._id + ".jpg";
+        var imagePath = "public/images/books/" + imageName;
+        var image = req.file.image;
+        image.mv(imagePath, function (err) {
+            if (err) {
+                res.render('error/error', { message: "Error uploading image", error: err });
+            }
+        });
+        res.render('backoffice/admin/book/');
         }
     }); // Promise end
 }; // Create a new book
@@ -561,96 +584,82 @@ exports.backoffice_admin_book_delete_post = function (req, res) {
     });
 }; // Delete a book
 
-exports.backoffice_admin_book_search_post = async function (req, res) {
-    async function pagination(req) {
-        var perPage = 5;
-        var total = await Book.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
-
-        currentPage = parseInt(currentPage);
-        return { total: total, totalPages: totalPages, currentPage: currentPage, lastPage: lastPage };
-    }
-
-    try {
-        // check if the text parsed are only number, if yes we are searching by ISBN
-        regex = /^[0-9]+$/;
-
-        if (RegExp(regex).test(req.body.search)) {
-            var pD = await pagination(req); // pD means paginationData
-            
-            var books = await Book.find({ isbn: req.body.search }).skip(pD.start).limit(pD.lastPage);
-
-            res.render('backoffice/admin/book/manageBooks', 
-            { books: books, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-
-        // if we are searching true or false, we are searching by the forSale field
-        } else if (req.body.search == "true" || req.body.search == "false") {
-            var pD = await pagination(req);
-
-            var books = await Book.find({ $or:[
-                { forSale: req.body.search } ] }).skip(pD.start).limit(pD.perPage);
-
-            res.render('backoffice/admin/book/manageBooks',
-            { books: books, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-
-        // else, we are searching by the title, author or editor
-        } else {
-            var pD = await pagination(req);
-
-            var books = await Book.find({ $or:[
-                { title: { $regex: req.body.search, $options: 'i' } },
-                { author: { $regex: req.body.search, $options: 'i' } },
-                { editor: { $regex: req.body.search, $options: 'i' } }
-            ] }).skip(pD.start).limit(pD.perPage);
-
-            res.render('backoffice/admin/book/manageBooks',
-            { books: books, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-        }
-
-    } catch (error) {
-        res.render("error/error", { message: "Error searching book", error: error });
-    }
-}; // Search a book
-
 
 
 // --------------------- Backoffice/Admin/Sale ---------------------------
 
 exports.backoffice_admin_sales_get = async function (req, res) {
-    async function pagination(req) {
-        var perPage = 10;
-        var total = await Sale.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
-
-        currentPage = parseInt(currentPage);
-        return { total: total, totalPages: totalPages, currentPage: currentPage, lastPage: lastPage };
-    }
-
-    try {
-        var pD = await pagination(req);
-
-        var sales = await Sale.find().skip(pD.start).limit(pD.lastPage);
+    async function getTitleBooks (req, res, sales) {
         for (var i = 0; i < sales.length; i++) {
-            // Get the title of the books
             for (var j = 0; j < sales[i].books.length; j++) {
                 var book = await Book.findById(sales[i].books[j]._id);
                 sales[i].books[j].title = book.title;
             }
+        }
+        return sales;
+    }
 
-            // Get the username of the employee
+    async function getEmployeeUsername (req, res, sales) {
+        for (var i = 0; i < sales.length; i++) {
             var employee = await Employee.findById(sales[i].employee_id);
             sales[i].employeeUsername = employee.username;
         }
-        res.render('backoffice/admin/sales/manageSales', 
-        { sales: sales, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
+        return sales;
+    }
+
+    async function pagination(req, totalDocs) {
+        var perPage = 5;
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+        
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
+
+    var pD, totalDocs, sales;
+    try {
+        if (req.query.search) {
+            // if true or false, we are checking for online field
+            if (req.query.search == "true" || req.query.search == "false") {
+                totalDocs = await Sale.countDocuments({ online: req.query.search });
+                pD = await pagination(req, totalDocs);
+
+                sales = await Sale.find({ online: req.query.search }).skip(pD.startFrom).limit(pD.perPage);
+            
+            // if not true or false, we are checking for clientUsername field
+            } else {
+                totalDocs = await Sale.countDocuments({ clientUsername: req.query.search });
+                pD = await pagination(req, totalDocs);
+
+                sales = await Sale.find({ clientUsername: req.query.search }).skip(pD.startFrom).limit(pD.perPage);
+            }
+
+            // get the title of the books
+            await getTitleBooks(req, res, sales);
+            await getEmployeeUsername(req, res, sales);
+
+            res.render('backoffice/admin/sales/manageSales',
+            { sales: sales, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
+        
+        // General Listing
+        } else {
+            totalDocs = await Sale.countDocuments();
+            pD = await pagination(req, totalDocs);
+
+            sales = await Sale.find().skip(pD.startFrom).limit(pD.perPage);
+            await getTitleBooks(req, res, sales);
+            await getEmployeeUsername(req, res, sales);
+
+            console.log(pD);
+            res.render('backoffice/admin/sales/manageSales',
+            { sales: sales, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
+        }
+
     } catch (error) {
-        res.render("error/error", { message: "Error getting sales", error: error });
+        res.render("error/error", { message: "Error searching sale", error: error });
     }
 };
 
@@ -706,69 +715,7 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
     });
 };
 
-exports.backoffice_admin_sale_search = async function (req, res) {
-    async function getTitleBooks (req, res, sales) {
-        for (var i = 0; i < sales.length; i++) {
-            for (var j = 0; j < sales[i].books.length; j++) {
-                var book = await Book.findById(sales[i].books[j]._id);
-                sales[i].books[j].title = book.title;
-            }
-        }
-        return sales;
-    }
 
-    async function getEmployeeUsername (req, res, sales) {
-        for (var i = 0; i < sales.length; i++) {
-            var employee = await Employee.findById(sales[i].employee_id);
-            sales[i].employeeUsername = employee.username;
-        }
-        return sales;
-    }
-
-    async function pagination(req) {
-        var perPage = 10;
-        var total = await Sale.countDocuments();
-        var totalPages = Math.ceil(total / perPage);
-        var currentPage = req.query.page || 1;
-        var start = (currentPage - 1) * perPage;
-        var lastPage = start + perPage;
-
-        currentPage = parseInt(currentPage);
-        return { total: total, totalPages: totalPages, currentPage: currentPage, lastPage: lastPage };
-    }
-
-    try {
-        // if true or false, we are checking for online field
-        if (req.body.search == "true" || req.body.search == "false") {
-            var pD = await pagination(req);
-
-            var sales = await Sale.find({ online: req.body.search }).skip(pD.start).limit(pD.lastPage);
-
-            // get the title of the books
-            await getTitleBooks(req, res, sales);
-            await getEmployeeUsername(req, res, sales);
-
-            res.render('backoffice/admin/sales/manageSales',
-            { sales: sales, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-        } else {
-            // else, we are search for client username (only)
-            var pD = await pagination(req);            
-
-            var sales = await Sale.find({ $or:[
-                { clientUsername: { $regex: req.body.search, $options: 'i' } }
-            ] }).skip(pD.start).limit(pD.lastPage);
-
-            // get the title of the books
-            await getTitleBooks(req, res, sales);
-            await getEmployeeUsername(req, res, sales);
-
-            res.render('backoffice/admin/sales/manageSales',
-            { sales: sales, pages: pD.pages, currentPage: pD.currentPage, lastPage: pD.lastPage });
-        }
-    } catch (error) {
-        res.render("error/error", { message: "Error searching sale", error: error });
-    }
-};
 
 
 // --------------------- Backoffice/Admin/Manage Points ---------------------------
@@ -792,6 +739,8 @@ exports.backoffice_admin_managepoints_post = function (req, res) {
         }
     });
 }; // Update the points table
+
+
 
 // --------------------- Backoffice/Admin/Manage Discount ---------------------------
 

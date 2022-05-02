@@ -26,7 +26,8 @@ exports.backoffice_login_post = function (req, res) {
                         req.session.admin = true;
                         req.session.username = employee.username;
                         req.session.employeeID = employee._id;
-                        var token = jwt.sign({ employeeID: employee._id }, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token));
+                        var token = jwt.sign({ employeeID: employee._id }, process.env.SECRET_KEY, 
+                            { expiresIn: '1h' }, (err, token));
                         res.cookie('token', token);
                         res.render('backoffice/backofficeIndex', { admin: true });
                     } else {
@@ -34,7 +35,8 @@ exports.backoffice_login_post = function (req, res) {
                         req.session.employee = true;
                         req.session.username = employee.username;
                         req.session.employeeID = employee._id;  
-                        var token = jwt.sign({ employeeID: employee._id }, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token));
+                        var token = jwt.sign({ employeeID: employee._id }, process.env.SECRET_KEY, 
+                            { expiresIn: '1h' }, (err, token));
                         res.cookie('token', token);
                         res.render('backoffice/backofficeIndex', { admin: false });
                     }

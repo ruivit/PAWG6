@@ -27,6 +27,8 @@ router.use(function (req, res, next) {
 // Admin Index
 router.get('/', controller.backoffice_admin_get);
 
+
+
 // ------------------------------ /Backoffice/Admin/Employee URL
 
 // Admin Employee Index
@@ -46,8 +48,7 @@ router.post('/employee/update/password', multer().none(), controller.backoffice_
 // Admin Employee Delete
 router.post('/employee/delete/:id', multer().none(), controller.backoffice_admin_employee_delete_post);
 
-// Admin Employee Search
-router.post('/employee/search', multer().none(), controller.backoffice_admin_employee_search_post);
+
 
 // ------------------------------ /Backoffice/Admin/Client URL
 
@@ -55,8 +56,7 @@ router.post('/employee/search', multer().none(), controller.backoffice_admin_emp
 router.get('/client', controller.backoffice_admin_client_get);
 
 // Admin Client Create
-router.get('/client/create', controller.backoffice_admin_client_create_get);
-router.post('/client/create', multer().none(), controller.backoffice_admin_client_create_post);
+router.get('/client/create/:page', controller.backoffice_admin_client_create_get);
 
 // Admin Client Update
 router.get('/client/update/:id', multer().none(), controller.backoffice_admin_client_update_get);
@@ -68,8 +68,6 @@ router.post('/client/update/password', multer().none(), controller.backoffice_ad
 // Admin Client Delete
 router.post('/client/delete/:id', multer().none(), controller.backoffice_admin_client_delete_post);
 
-//Admin Client Search
-router.post('/client/search', multer().none(), controller.backoffice_admin_client_search_post);
 
 
 // ------------------------------ Admin/Book URL
@@ -79,7 +77,7 @@ router.get('/book', controller.backoffice_admin_book_get);
 
 // Admin Book Create
 router.get('/book/create', controller.backoffice_admin_book_create_get);
-router.post('/book/create', multer().none(), controller.backoffice_admin_book_create_post);
+router.post('/book/create', multer().single('cover'), controller.backoffice_admin_book_create_post);
 
 // Admin Book Update
 router.get('/book/update/:id', multer().none(), controller.backoffice_admin_book_update_get);
@@ -87,9 +85,6 @@ router.post('/book/update', multer().none(), controller.backoffice_admin_book_up
 
 // Admin Book Delete
 router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_book_delete_post);
-
-// Admin Book search
-router.post('/book/search', multer().none(), controller.backoffice_admin_book_search_post);
 
 
 
@@ -102,9 +97,6 @@ router.get('/sales', controller.backoffice_admin_sales_get);
 router.get('/sales/makeSale', controller.backoffice_admin_make_sale_get);
 router.post('/sales/makeSale', multer().none(), controller.backoffice_admin_make_sale_post);
 
-// Admin Sale Search
-router.post('/sales/search', multer().none(), controller.backoffice_admin_sale_search);
-
 
 
 // ------------------------------ Admin/Points URL
@@ -112,6 +104,9 @@ router.post('/sales/search', multer().none(), controller.backoffice_admin_sale_s
 router.get('/managePoints', controller.backoffice_admin_managepoints_get);
 
 router.post('/managePoints', multer().none(), controller.backoffice_admin_managepoints_post);
+
+
+// ------------------------------ Admin/Discount URL
 
 router.get('/manageDiscount', controller.backoffice_admin_managediscount_get);
 
