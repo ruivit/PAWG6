@@ -18,7 +18,6 @@ var BookSchema = new Schema({
   sellPrice: { type: Number, required: true },
   buyPrice: { type: Number, required: true},
   forSale: { type: Boolean, required: true, default: true },
-  cover: { type: String, required: true, default: '../public/images/covers/default-book-cover.jpg' },
 }, { collection: 'Books' });
 
 // Export model.

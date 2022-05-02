@@ -2,6 +2,8 @@ const { redirect } = require('express/lib/response');
 const pointsIDcollection = "62650c0098b8a1abe1af3bdc";
 const discountIDcollection = "62667eb941eac5eecb5f4e3a";
 var crypto = require('crypto');
+var path = require('path');
+var fs = require('fs');
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
@@ -29,6 +31,7 @@ function getDateNow(date) {
 exports.backoffice_admin_get = function (req, res) {    
     res.render('backoffice/backofficeIndex', { admin: true });
 }; // Get the admin portal (after login)
+
 
 
 // --------------------- Backoffice/Admin/Employee ---------------------------
@@ -74,7 +77,7 @@ exports.backoffice_admin_employee_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error searching sale", error: error });
     }
-};
+}; // Get the employee list
 
 exports.backoffice_admin_employee_create_get = function (req, res) {
     res.render('backoffice/admin/employee/createEmployee');
@@ -378,6 +381,8 @@ exports.backoffice_admin_client_update_password_post = async function (req, res)
 }; // Update a client password
 
 
+
+
 // --------------------- Backoffice/Admin/Book ---------------------------
 
 exports.backoffice_admin_book_get = async function (req, res) {
@@ -526,28 +531,20 @@ exports.backoffice_admin_book_create_post = function (req, res) {
                                 if (err) {
                                     res.render('error/error', 
                                     { message: "Error creating editor", error: err });
-                                } else {
-                                    // Milestone2 - add message of success
-                                    res.redirect('/backoffice/admin/book');
                                 }
                             });
                         }
                     }
                 }); // Editor end
+
+                // save the cover
+                if (req.file) {
+                    fs.writeFileSync("./public/images/books/" + book._id + ".jpg", req.file.buffer);
+                }
             }
         }); // Book save end
-
-        // Save the image
-        var imageName = book._id + ".jpg";
-        var imagePath = "public/images/books/" + imageName;
-        var image = req.file.image;
-        image.mv(imagePath, function (err) {
-            if (err) {
-                res.render('error/error', { message: "Error uploading image", error: err });
-            }
-        });
-        res.render('backoffice/admin/book/');
-        }
+        res.redirect('/backoffice/admin/book');
+    }
     }); // Promise end
 }; // Create a new book
 
@@ -653,7 +650,6 @@ exports.backoffice_admin_sales_get = async function (req, res) {
             await getTitleBooks(req, res, sales);
             await getEmployeeUsername(req, res, sales);
 
-            console.log(pD);
             res.render('backoffice/admin/sales/manageSales',
             { sales: sales, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         }
@@ -661,16 +657,19 @@ exports.backoffice_admin_sales_get = async function (req, res) {
     } catch (error) {
         res.render("error/error", { message: "Error searching sale", error: error });
     }
-};
+}; // Get the list of sales
 
 exports.backoffice_admin_make_sale_get = async function (req, res) {  
     try {
+        // get the image stored by gridFS
+
         var books = await Book.find();
+
         res.render('backoffice/admin/sales/makeSale', { books: books });
     } catch (error) {
-        res.render("error", { message: "Error finding sales", error: error });
+        res.render("error/error", { message: "Error finding sales", error: error });
     }
-};
+}; // Get the form to make a sale
 
 exports.backoffice_admin_make_sale_post = async function (req, res) {
     function calculateTotal() {
@@ -713,7 +712,7 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
             }
         }
     });
-};
+}; // Make a sale
 
 
 

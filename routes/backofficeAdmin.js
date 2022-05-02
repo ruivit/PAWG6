@@ -56,7 +56,7 @@ router.post('/employee/delete/:id', multer().none(), controller.backoffice_admin
 router.get('/client', controller.backoffice_admin_client_get);
 
 // Admin Client Create
-router.get('/client/create/:page', controller.backoffice_admin_client_create_get);
+router.get('/client/create', controller.backoffice_admin_client_create_get);
 
 // Admin Client Update
 router.get('/client/update/:id', multer().none(), controller.backoffice_admin_client_update_get);

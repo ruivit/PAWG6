@@ -6,8 +6,14 @@ var logger = require('morgan');
 var session = require('express-session');
 var passport = require('passport');
 var crypto = require('crypto');
-var fs = require('fs');
 var multer = require('multer');
+
+
+// Image related
+var fs = require('fs');
+var path = require('path');
+
+
 
 require('dotenv').config();
 
@@ -51,6 +57,8 @@ app.use(cookieParser());
 // Use the public folder to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Use the public/images/books folder to serve static files of books
+app.use('/images/books', express.static(path.join(__dirname, 'public/images/books')));
 
 // ----------------------- Routes -----------------------
 var indexRouter = require('./routes/index');
