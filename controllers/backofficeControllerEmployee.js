@@ -8,6 +8,14 @@ var Sale = require('../models/saleModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
 
+// ------------------- Auxiliary Functions ---------------------------
+function getDateNow(date) {
+    var d = new Date();
+    dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    return dateNowString;
+}
+
 
 // --------------------- Backoffice/employee/ ---------------------------
 
@@ -63,6 +71,7 @@ exports.backoffice_employee_client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points),
             birthDate: req.body.birthDate,
+            dateString: req.body.birthDate,
         });
 
         client.setPassword(req.body.password);
@@ -141,12 +150,25 @@ exports.backoffice_employee_client_delete_post = function (req, res) {
 
 exports.backoffice_employee_book_get = async function (req, res) {
     try {
-        var books = await Book.find();
-        res.render('backoffice/employee/book/manageBooks', { books: books });
+        var perPage = 5;
+        var total = await Book.countDocuments();
+        var totalPages = Math.ceil(total / perPage);
+        var currentPage = req.query.page || 1;
+        var start = (currentPage - 1) * perPage;
+        var lastPage = start + perPage;
+
+        // convert currentPage to integer
+        currentPage = parseInt(currentPage);
+
+        var books = await Book.find().skip(start).limit(perPage);
+        res.render('backoffice/employee/book/manageBooks', 
+        { pages: totalPages, currentPage: currentPage, lastPage: lastPage, books: books });
+        // Milestone2 - add message of success
     } catch (error) {
         res.render("error", { message: "Error finding books", error: error });
     }
 }; // List/show the books
+
 
 exports.backoffice_employee_book_create_get = function (req, res) {
     res.render('backoffice/employee/book/createBook');
