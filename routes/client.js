@@ -2,7 +2,26 @@ var express = require('express');
 var multer = require('multer');
 var router = express.Router();
 
+var jwt = require('jsonwebtoken');
+
 var clientController = require('../controllers/clientController');
+
+router.use(function (req, res, next) {
+    const token = req.cookies.token;
+
+    if (token == null) return res.redirect('/client/login');
+
+    jwt.verify(token, process.env.SECRET_KEY, function (err, user) {
+        if (err) return res.render('error/error', { error: err });
+
+        if (req.session.client) {
+            next();
+
+        } else {
+            return res.status(200).redirect('/');
+        }
+    });
+});
 
 // ------------------------------ Login/Logout Process
 // Login Portal

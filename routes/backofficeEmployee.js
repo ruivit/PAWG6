@@ -1,24 +1,28 @@
 var express = require('express');
 var multer = require('multer');
 var router = express.Router();
+
 var jwt = require('jsonwebtoken');
 
 var controller = require('../controllers/backofficeControllerEmployee');
 
 
 router.use(function (req, res, next) {
-    var token = req.cookies.token;
-    if (!token) {
-        res.status(302).redirect('/');
-    }
+    const token = req.cookies.token;
 
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-        if (err) {
-            res.render('error', { error: err });
-        } else if (req.session.employee) {
-            next();
+    if (token == null) return res.redirect('/backoffice');
+
+    jwt.verify(token, process.env.SECRET_KEY, function (err, user) {
+        if (err) return res.render('error/error', { error: err });
+
+        if (req.session.admin) {
+            return res.status(301).redirect('/backoffice/admin');
+
+        } else if (req.session.client) {
+            return res.status(200).render('client/indexClient');
+            
         } else {
-            res.status(302).redirect('/');
+            next();
         }
     });
 });

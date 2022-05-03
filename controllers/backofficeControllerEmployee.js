@@ -1,5 +1,3 @@
-const { redirect } = require('express/lib/response');
-
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');

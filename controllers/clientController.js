@@ -1,10 +1,9 @@
-const { redirect } = require('express/lib/response');
-
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
 
+var jwt = require('jsonwebtoken');
 
 // -------------------- Client/ ---------------------------
 
@@ -24,8 +23,20 @@ exports.client_login_post = function (req, res) {
                     // save the client in the session
                     req.session.client = client;
                     req.session.client._id = client._id;
-                    req.session.save();
+                    
+                    token = jwt.sign({ clientID: client._id }, 
+                        process.env.SECRET_KEY, 
+                        { expiresIn: '6h' });
+
+                    res.cookie('token', token, {
+                        maxAge: 3600000,
+                        httpOnly: true,
+                        samesite: 'Strict',
+                        secure: true,
+                    });
+
                     res.redirect('/client');
+                    
                 } else {
                     res.render('client/loginClient', { message: 'Wrong password' });
                 }

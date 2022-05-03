@@ -35,11 +35,13 @@
           <% for(var i=0; i<books.length;i++) { %>
             <form action="/backoffice/admin/sales/makeSale" method="post">
             <tr>
-              <td data-label="Title"> <%=books[i].title%> </td>
+              <td data-label="Title"><br><br> <%=books[i].title%> </td>
               <td data-label="Image"> <!-- public/images/books/id.jpg -->
                 <img src="/images/books/<%=books[i].id%>.jpg" width="100" height="100">
               <td data-label="operations">
-                <input type="checkbox" name="bookId" value="<%=books[i]._id%>">
+                <br><br>
+                <span class="material-icons">shopping_cart</span>
+                <input type="checkbox" name="bookId" value="<%=books[i].id%>">
               </td>
             </tr>
           <% } %>

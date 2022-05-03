@@ -1,9 +1,9 @@
-const { redirect } = require('express/lib/response');
+var crypto = require('crypto');
+var fs = require('fs');
+
 const pointsIDcollection = "62650c0098b8a1abe1af3bdc";
 const discountIDcollection = "62667eb941eac5eecb5f4e3a";
-var crypto = require('crypto');
-var path = require('path');
-var fs = require('fs');
+
 
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');

@@ -9,6 +9,7 @@ router.get('/', function (req, res, next) {
   res.render('index/index');
 });
 
+// dar fix nisto
 router.get('/search', async function (req, res, next) {
   var perPage = 10;
   var total = await Book.countDocuments();
