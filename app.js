@@ -4,7 +4,6 @@ var createError = require('http-errors');
 // Session related
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
@@ -27,8 +26,8 @@ app.use('/favicon.ico', express.static('public/images/favicon.ico'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 
 // MongoDB Config
-var mongoDB = process.env.MONGOURL;
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+var mongoDBURL = process.env.MONGOURL;
+mongoose.connect(mongoDBURL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var dbconn = mongoose.connection;
 
