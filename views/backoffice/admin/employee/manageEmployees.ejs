@@ -27,7 +27,7 @@
   <br>
   <div class="container">
     <% if(employees.length>0) { %>
-      <table class="table">
+      <table class="table table-hover table-dark">
         <thead>
           <tr>
             <th scope="col">Username</th>
@@ -41,16 +41,14 @@
         <tbody>
           <% for(var i=0; i<employees.length;i++) { %>
             <tr>              
-              <td data-label="username"> <%=employees[i].username%></a></td>
-              <td data-label="email"> <%=employees[i].email%></a></td>
-              <td data-label="name"> <%=employees[i].name%></a></td>
-              <td data-label="category"> <%=employees[i].category%></a></td>
+              <td data-label="username"><br> <%=employees[i].username%></td>
+              <td data-label="email"><br> <%=employees[i].email%></td>
+              <td data-label="name"><br> <%=employees[i].name%></td>
+              <td data-label="category"><br> <%=employees[i].category%></td>
               <th scope="row">
-                <p></p>
                 <form action="/backoffice/admin/employee/update/<%=employees[i].id%>" method="get">
                   <input type="image" class="material-icons edit" name="_method" value="edit">
                 </form>
-                <p></p>
                 <!-- Dont allow deletion of admin -->
                 <% if(employees[i].category!="admin") { %>
                 <form action="/backoffice/admin/employee/delete/<%=employees[i].id%>" method="post"
