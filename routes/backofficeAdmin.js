@@ -59,6 +59,7 @@ router.get('/client', controller.backoffice_admin_client_get);
 
 // Admin Client Create
 router.get('/client/create', controller.backoffice_admin_client_create_get);
+router.post('/client/create', multer().none(), controller.backoffice_admin_client_create_post);
 
 // Admin Client Update
 router.get('/client/update/:id', multer().none(), controller.backoffice_admin_client_update_get);

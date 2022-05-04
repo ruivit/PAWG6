@@ -37,7 +37,7 @@ exports.backoffice_login_post = function (req, res) {
                             samesite: 'Strict',
                             secure: true,
                         });
-                        res.render('backoffice/backofficeIndex', { admin: true });
+                        res.redirect('/backoffice/admin');
                         
                     } else {
                         req.session.admin = false;
@@ -55,15 +55,17 @@ exports.backoffice_login_post = function (req, res) {
                             samesite: 'Strict',
                             secure: true,
                         });
-                        res.render('backoffice/backofficeIndex', { admin: false });
+                        res.redirect('/backoffice/employee');
                     }
                     
                 // If the username/password is wrong, render the login page again with a message
                 } else {
-                    res.render('backoffice/backofficeLogin', { message: 'Invalid password' });
+                    res.render('backoffice/backofficeLogin', 
+                    { oldata: req.body, message: 'Invalid password' });
                 }
             } else {
-                res.render('backoffice/backofficeLogin', { message: 'Invalid username' });
+                res.render('backoffice/backofficeLogin', 
+                { oldata: req.body, message: 'Invalid password' });
             }
         }
     });
@@ -73,7 +75,6 @@ exports.backoffice_login_post = function (req, res) {
 exports.backoffice_logout = function (req, res) {
     req.session.destroy();
 
-    // clear the cookies and token
     res.clearCookie('token');
 
     res.redirect('/backoffice');

@@ -7,6 +7,9 @@ var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
+// Logger
+var logger = require('morgan');
+
 // Multer Middleware and DB
 var multer = require('multer');
 var mongoose = require('mongoose');
@@ -38,6 +41,8 @@ dbconn.on('connected', console.log.bind(console, '[OK] MongoDB connection sucess
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// use the logger
+app.use(logger('dev'));
 
 // Get JSON DATA
 app.use(express.json());
@@ -71,6 +76,7 @@ app.use('/backoffice/admin', backofficeAdminRouter);
 app.use('/backoffice/employee', backofficeEmployeeRouter);
 app.use('/client', clientRouter);
 // -----------------------------------------------------
+
 
 // catch 404 and 500 and forward to error handler
 app.use(function(req, res, next) {

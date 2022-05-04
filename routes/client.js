@@ -6,7 +6,7 @@ var jwt = require('jsonwebtoken');
 
 var clientController = require('../controllers/clientController');
 
-router.use(function (req, res, next) {
+/*router.use(function (req, res, next) {
     const token = req.cookies.token;
 
     if (token == null) return res.redirect('/client/login');
@@ -21,7 +21,7 @@ router.use(function (req, res, next) {
             return res.status(200).redirect('/');
         }
     });
-});
+});*/
 
 // ------------------------------ Login/Logout Process
 // Login Portal
@@ -51,5 +51,9 @@ router.post('/sellbook', multer().none(), clientController.client_sell_post);
 // Profile
 router.get('/profile', clientController.client_profile_get);
 router.post('/profile', multer().none(), clientController.client_profile_post);
+
+// Update password
+router.get('/password', clientController.client_updatepassword_get);
+router.post('/password', multer().none(), clientController.client_updatepassword_post);
 
 module.exports = router;

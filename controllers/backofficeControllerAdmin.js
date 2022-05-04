@@ -173,7 +173,7 @@ exports.backoffice_admin_employee_update_password_post = async function (req, re
     // Hashing user's salt and password with 1000 iterations, 
     var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
     1000, 64, process.env.ENCRYPTION).toString('hex');
-
+    
     Employee.findOneAndUpdate({ username: req.body.username }, 
         { salt: salt, passwordHash: newPasswordHash }, { new: true },
         function (err, employee) {
@@ -206,7 +206,7 @@ exports.backoffice_admin_client_get = async function (req, res) {
     }
 
     async function paginationQuery(req) {
-        var perPage = 2;
+        var perPage = 5;
         var totalDocs = await Client.find({ $or:[
             { username: { $regex: req.query.search, $options: 'i' } },
             { email: { $regex: req.query.search, $options: 'i' } },
@@ -300,6 +300,8 @@ exports.backoffice_admin_client_create_post = function (req, res) {
 
 
 exports.backoffice_admin_client_update_get = async function (req, res) {
+    // bug query already executed... wtf
+    
     try {
         var client = await Client.findById(req.params.id);
         
@@ -661,8 +663,6 @@ exports.backoffice_admin_sales_get = async function (req, res) {
 
 exports.backoffice_admin_make_sale_get = async function (req, res) {  
     try {
-        // get the image stored by gridFS
-
         var books = await Book.find();
 
         res.render('backoffice/admin/sales/makeSale', { books: books });

@@ -15,7 +15,7 @@ exports.client_login_post = function (req, res) {
     // search the username in the database
     Client.findOne({ username: req.body.username }, function (err, client) {
         if (err) {
-            res.redirect('error', { error: err });
+            res.redirect('error/error', { error: err });
         } else {
             if (client) {
                 // check if the password is correct
@@ -76,6 +76,9 @@ exports.client_index_get = function (req, res) {
 
 exports.client_logout = function (req, res) {
     req.session.destroy();
+    
+    res.clearCookie('token');
+
     res.redirect('/');
 }; // Logout Process
 
@@ -118,6 +121,7 @@ exports.client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points),
             birthDate: req.body.birthDate,
+            dateString: req.body.birthDate,
         });
 
         client.setPassword(req.body.password);        
@@ -165,39 +169,59 @@ exports.client_profile_get = function (req, res) {
 }; // Get the Client Profile
 
 exports.client_profile_post = function (req, res) {
-    // Find the client
-    Client.findById(req.session.client._id, function (err, client) {
-        if (err) {
-            res.redirect('error', { error: err });
-        }}).then(function (client) {
-            // Check if the password is correct
-            if (Client.checkPassword(req.body.password, client.password)) {
-                
-                // Update the client
-                Client.findByIdAndUpdate(req.session.client._id, {
-                    username: req.body.username,
-                    name: req.body.name,
-                    address: req.body.address,
-                    email: req.body.email,
-                    phone: req.body.phone,
-                    points: req.body.points,
-                    birthDate: req.body.birthDate,
-                }, function (err, client) {
-                    if (err) {
-                        res.redirect('error', { error: err });
-                    } else {
-                        res.redirect('/client');
-                    }
-                });
+    try{
+        Client.findByIdAndUpdate(req.session.client._id, {
+            username: req.body.username,
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            phone: req.body.phone,
+            points: req.body.points,
+            birthDate: req.body.birthDate,
+        }, function (err, client) {
+            if (err) {
+                res.redirect('error/error', { error: err });
             } else {
-                // Wrong password
-                var client = Client.findById(req.session.client._id, function (err, client) {
-                if (err) {
-                    res.redirect('error', { error: err });
-                } else {
-                    res.render('client/profileClient', { client: client, message: "Wrong password" });
-                }
-            });
+                res.redirect('/client');
+            }
+        });
+    } catch (err) {
+        res.redirect('error/error', { error: err });
+    }
+}; // Update the client information
+
+
+exports.client_updatepassword_get = function (req, res) {
+    var client = Client.findById(req.session.client._id, function (err, client) {
+        if (err) {
+            res.redirect('error/error', { error: err });
+        } else {
+            res.render('client/updatePasswordClient', { client: client });
         }
     });
-}; // Update the client information
+}; // Get the form to update the client password
+
+exports.client_updatepassword_post = function (req, res) {
+    try {
+        Client.findById(req.session.client._id, function (err, client) {
+            if (err) {
+                res.redirect('error/error', { error: err });
+            } else {
+                if (client.validPassword(req.body.oldPassword)) {
+                    client.setPassword(req.body.newPassword);
+                    client.save(function (err) {
+                        if (err) {
+                            res.redirect('error/error', { error: err });
+                        } else {
+                            res.redirect('/client');
+                        }
+                    });
+                } else {
+                    res.redirect('/client/updatepassword', { message: "Wrong password" });
+                }
+            }
+        });
+    } catch (err) {
+        res.redirect('error/error', { error: err });
+    }
+}; // Update the client password

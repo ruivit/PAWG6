@@ -38,7 +38,6 @@
           <th scope="col">Date</th>
           <th scope="col">Online</th>
           <th scope="col">Employee Username</th>
-          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +46,7 @@
             <td data-label="Client Username"> <%=sales[i].clientUsername%> </td>
             <td data-label="Books">
               <% for(var j=0; j<sales[i].books.length; j++) { %>
-                <%=sales[i].books[j].title%>
+                - <%=sales[i].books[j].title%>
                 <br>
               <% } %>
             </td>
@@ -57,15 +56,6 @@
             <td data-label="Date"> <%=sales[i].dateString%> </td>
             <td data-label="Online"> <%=sales[i].online%> </td>
             <td data-label="Employee Username"> <%=sales[i].employeeUsername%> </td>
-            <td data-label="operations">
-              <form action="#/<%=sales[i].id%>" method="get">
-                <input type="image" class="material-icons edit" name="_method" value="edit">
-              </form>
-              <form action="#/<%=sales[i].id%>" method="post" enctype="multipart/form-data"
-                onsubmit="return confirm('Are you sure you want to remove this sale?')">
-                <input type="image" class="material-icons delete" name="_method" value="delete">
-              </form>
-            </td>
           </tr>
         <% } %>
       </tbody>
