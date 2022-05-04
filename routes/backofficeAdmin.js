@@ -6,7 +6,7 @@ var jwt = require('jsonwebtoken');
 
 var controller = require('../controllers/backofficeControllerAdmin');
 
-
+//#region Auth
 router.use(function (req, res, next) {
     const token = req.cookies.token;
 
@@ -26,12 +26,14 @@ router.use(function (req, res, next) {
         }
     });
 });
-
+//#endregion
 
 // Admin Index
 router.get('/', controller.backoffice_admin_get);
 
-// ------------------------------ /Backoffice/Admin/Employee URL
+
+// ------------------------------ /Backoffice/Admin/Employee
+//#region Employee
 
 // Admin Employee Index
 router.get('/employee', controller.backoffice_admin_employee_get);
@@ -50,9 +52,11 @@ router.post('/employee/update/password', multer().none(), controller.backoffice_
 // Admin Employee Delete
 router.post('/employee/delete/:id', multer().none(), controller.backoffice_admin_employee_delete_post);
 
+//#endregion
 
 
-// ------------------------------ /Backoffice/Admin/Client URL
+// ------------------------------ /Backoffice/Admin/Client
+//#region Client
 
 // Admin Client Index
 router.get('/client', controller.backoffice_admin_client_get);
@@ -71,9 +75,11 @@ router.post('/client/update/password', multer().none(), controller.backoffice_ad
 // Admin Client Delete
 router.post('/client/delete/:id', multer().none(), controller.backoffice_admin_client_delete_post);
 
+//#endregion
 
 
-// ------------------------------ Admin/Book URL
+// ------------------------------ /Backoffice/Admin/Book
+//#region Book
 
 // Admin Book Index
 router.get('/book', controller.backoffice_admin_book_get);
@@ -89,9 +95,11 @@ router.post('/book/update', multer().none(), controller.backoffice_admin_book_up
 // Admin Book Delete
 router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_book_delete_post);
 
+//#endregion
 
 
-// ------------------------------ Admin/Sale URL
+// ------------------------------ /Backoffice/Admin/Sale
+//#region Sale
 
 // Admin Sale Index
 router.get('/sales', controller.backoffice_admin_sales_get);
@@ -100,21 +108,24 @@ router.get('/sales', controller.backoffice_admin_sales_get);
 router.get('/sales/makeSale', controller.backoffice_admin_make_sale_get);
 router.post('/sales/makeSale', multer().none(), controller.backoffice_admin_make_sale_post);
 
+//#endregion
 
 
-// ------------------------------ Admin/Points URL
+//#region Points/Discount
+// ------------------------------ /Backoffice/Admin/Points
 
 router.get('/managePoints', controller.backoffice_admin_managepoints_get);
 
 router.post('/managePoints', multer().none(), controller.backoffice_admin_managepoints_post);
 
 
-// ------------------------------ Admin/Discount URL
+// ------------------------------ /Backoffice/Admin/Discount
 
 router.get('/manageDiscount', controller.backoffice_admin_managediscount_get);
 
 router.post('/manageDiscount', multer().none(), controller.backoffice_admin_managediscount_post);
 
+//#endregion
 
 module.exports = router;
 

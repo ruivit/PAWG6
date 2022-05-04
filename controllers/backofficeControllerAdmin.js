@@ -27,7 +27,7 @@ function getDateNow(date) {
 }
 
 // --------------------- Backoffice/Admin/ ---------------------------
-
+    
 exports.backoffice_admin_get = function (req, res) {    
     res.render('backoffice/backofficeIndex', { admin: true });
 }; // Get the admin portal (after login)
@@ -35,6 +35,7 @@ exports.backoffice_admin_get = function (req, res) {
 
 
 // --------------------- Backoffice/Admin/Employee ---------------------------
+//#region Employee
 
 exports.backoffice_admin_employee_get = async function (req, res) {
     async function pagination(req, totalDocs) {
@@ -186,10 +187,11 @@ exports.backoffice_admin_employee_update_password_post = async function (req, re
     });
 }; // Update an employee's password
 
-
+//#endregion
 
 
 // --------------------- Backoffice/Admin/Client ---------------------------
+//#region Client
 
 exports.backoffice_admin_client_get = async function (req, res) {
     async function pagination(req) {
@@ -299,9 +301,7 @@ exports.backoffice_admin_client_create_post = function (req, res) {
 }; // Creating process for a new client
 
 
-exports.backoffice_admin_client_update_get = async function (req, res) {
-    // bug query already executed... wtf
-    
+exports.backoffice_admin_client_update_get = async function (req, res) {   
     try {
         var client = await Client.findById(req.params.id);
         
@@ -362,6 +362,7 @@ exports.backoffice_admin_client_update_password_get = async function (req, res) 
     }
 }; // Get the form to update a client password
 
+
 exports.backoffice_admin_client_update_password_post = async function (req, res) {
     // Update the client
     var salt = crypto.randomBytes(16).toString('hex'); 
@@ -382,10 +383,11 @@ exports.backoffice_admin_client_update_password_post = async function (req, res)
     });
 }; // Update a client password
 
-
+//#endregion
 
 
 // --------------------- Backoffice/Admin/Book ---------------------------
+//#region Book
 
 exports.backoffice_admin_book_get = async function (req, res) {
     async function pagination(req, totalDocs) {
@@ -468,6 +470,7 @@ exports.backoffice_admin_book_create_post = function (req, res) {
                 resume: req.body.resume,
                 isbn: req.body.isbn,
                 dateString: getDateNow(),
+                stock: 1,
                 condition: req.body.condition,
                 provider: req.body.provider,
                 sellPrice: req.body.sellPrice,
@@ -561,7 +564,7 @@ exports.backoffice_admin_book_update_get = async function (req, res) {
 
 exports.backoffice_admin_book_update_post = function (req, res) {
     Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
-        function (err, client) {
+        function (err, book) {
         if (err) {
             res.render('error/error', { message: "Error updating book", error: err });
         } else {
@@ -574,7 +577,7 @@ exports.backoffice_admin_book_update_post = function (req, res) {
 exports.backoffice_admin_book_delete_post = function (req, res) {
     Book.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
-            res.render('error', { message: "Error deleting book", error: err });
+            res.render('error/error', { message: "Error deleting book", error: err });
         } else {
             // Milestone2 - add message of success
             res.redirect('/backoffice/admin/book');
@@ -582,9 +585,11 @@ exports.backoffice_admin_book_delete_post = function (req, res) {
     });
 }; // Delete a book
 
+//#endregion
 
 
 // --------------------- Backoffice/Admin/Sale ---------------------------
+//#region Sale
 
 exports.backoffice_admin_sales_get = async function (req, res) {
     async function getTitleBooks (req, res, sales) {
@@ -716,10 +721,11 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
     });
 }; // Make a sale
 
-
+//#endregion
 
 
 // --------------------- Backoffice/Admin/Manage Points ---------------------------
+//#region Points
 
 exports.backoffice_admin_managepoints_get = async function (req, res) {
     try {
@@ -741,9 +747,11 @@ exports.backoffice_admin_managepoints_post = function (req, res) {
     });
 }; // Update the points table
 
+//#endregion
 
 
 // --------------------- Backoffice/Admin/Manage Discount ---------------------------
+//#region Discount
 
 exports.backoffice_admin_managediscount_get = async function (req, res) {
     try {
@@ -765,3 +773,4 @@ exports.backoffice_admin_managediscount_post = function (req, res) {
     });
 }; // Update the discount table
 
+//#endregion

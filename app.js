@@ -22,6 +22,7 @@ var path = require('path');
 // Dotenv config
 require('dotenv').config();
 
+
 var app = express();
 
 // Icons and bootstrap
@@ -30,7 +31,18 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 
 // MongoDB Config
 var mongoDBURL = process.env.MONGOURL;
-mongoose.connect(mongoDBURL, {useNewUrlParser: true, useUnifiedTopology: true});
+
+// Detect if dotenv exists
+if (!mongoDBURL) {
+  console.log('Please set a dotenv config file first...\nExample used:\n');
+  console.log('MONGOURL=\'mongodb://mongoadm:AxPAi0GHVVvhijYU@paw-shard-00-00.yharo.mongodb.net:27017,paw-shard-00-01.yharo.mongodb.net:27017,paw-shard-00-02.yharo.mongodb.net:27017/pawm1?ssl=true&replicaSet=atlas-11pols-shard-0&authSource=admin&retryWrites=true&w=majority\' ');
+  console.log('ENCRYPTION=\'sha512\'');
+  console.log('SECRET_KEY=\'rg\'');
+  
+  process.exit();
+} else {
+  mongoose.connect(mongoDBURL, {useNewUrlParser: true, useUnifiedTopology: true});
+}
 
 var dbconn = mongoose.connection;
 
