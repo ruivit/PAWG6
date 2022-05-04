@@ -93,6 +93,11 @@
 				<div class="cut cut-long"></div>
 				<label for="buyPrice" class="placeholder">Buy Price</label>
 			</div>
+			<div class="input-container ic2">
+				<input name="cover" class="input" type="file" value="<%= locals.oldata.buyPrice %>" required/>
+				<div class="cut cut-long"></div>
+				<label for="cover" class="placeholder">Cover</label>
+			</div>
 			<button type="text" class="submit">Create</button>
 		</form>
 		<form action="/backoffice/employee/book" method="get">
@@ -183,6 +188,11 @@
 					pattern="^[1-9]{1}[0-9]{0,9}" minlength="1" maxlength="5">
 					<div class="cut cut-long"></div>
 					<label for="buyPrice" class="placeholder">Buy Price</label>
+				</div>
+				<div class="input-container ic2">
+					<input name="cover" class="input" type="file" placeholder=" " required/>
+					<div class="cut cut-long"></div>
+					<label for="cover" class="placeholder">Cover</label>
 				</div>
 				<button type="text" class="submit">Create</button>
 			</form>

@@ -75,7 +75,7 @@ exports.backoffice_admin_employee_get = async function (req, res) {
         { employees: employees, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
 
     } catch (error) {
-        res.render("error/error", { message: "Error searching sale", error: error });
+        res.render("error/error", { message: "Error searching employee", error: error });
     }
 }; // Get the employee list
 
@@ -447,8 +447,7 @@ exports.backoffice_admin_book_create_get = function (req, res) {
     res.render('backoffice/admin/book/createBook');
 }; // Get the form to create a new book
 
-/* We only check for the ISBN, because if there is a sale by the client,
-the "forSale" field will be false and the status will be "pending" */
+
 exports.backoffice_admin_book_create_post = function (req, res) {
     var isbnPromise = Book.findOne({ isbn: req.body.isbn });
     
@@ -617,6 +616,9 @@ exports.backoffice_admin_sales_get = async function (req, res) {
         pageNumber = parseInt(pageNumber);
         return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
     }
+
+    // 
+    //pD=pagination data
 
     var pD, totalDocs, sales;
     try {

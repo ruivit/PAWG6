@@ -92,6 +92,11 @@
 				<div class="cut cut-long"></div>
 				<label for="buyPrice" class="placeholder">Buy Price</label>
 			</div>
+			<div class="input-container ic2">
+				<input name="cover" class="input" type="file" value="<%= locals.oldata.buyPrice %>" required/>
+				<div class="cut cut-long"></div>
+				<label for="cover" class="placeholder">Cover</label>
+			</div>
 			<button type="text" class="submit">Create</button>
 			</form>
 		<form action="/backoffice/admin/book" method="get">
@@ -183,11 +188,10 @@
 					<div class="cut cut-long"></div>
 					<label for="buyPrice" class="placeholder">Buy Price</label>
 				</div>
-				<br>
-				<div>
-					<input name="cover" class="input" type="file" placeholder=" " required/>
+				<div class="custom-file input-container ic2">
+					<input name="cover" class="custom-file-input" type="file" required/>
 					<div class="cut cut-long"></div>
-					<label for="cover" class="placeholder">Cover</label>
+					<label for="cover" class="custom-file-label">Choose Book Cover Image</label>
 				</div>
 				<button type="text" class="submit">Create</button>
 			</form>
