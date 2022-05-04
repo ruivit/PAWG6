@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/stylesheets/portals/backoffice.css">
   <link rel="stylesheet" href="/stylesheets/listing/tableListingBackoffice.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -34,12 +33,15 @@
         </thead>
         <tbody>
           <% for(var i=0; i<books.length;i++) { %>
-            <form action="/backoffice/employee/sales/makesale" method="post">
+            <form action="/backoffice/employee/sales/makeSale" method="post">
             <tr>
-              <td data-label="Title"> <%=books[i].title%> </td>
-              <td data-label="Image"> <%=books[i].image%> </td>
+              <td data-label="Title"><br><br> <%=books[i].title%> </td>
+              <td data-label="Image"> <!-- public/images/books/id.jpg -->
+                <img src="/images/books/<%=books[i].id%>.jpg" width="100" height="100">
               <td data-label="operations">
-                <input type="checkbox" name="bookId" value="<%=books[i]._id%>">
+                <br><br>
+                <span class="material-icons">shopping_cart</span>
+                <input type="checkbox" name="bookId" value="<%=books[i].id%>">
               </td>
             </tr>
           <% } %>

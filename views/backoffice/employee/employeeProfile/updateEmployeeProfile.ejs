@@ -20,8 +20,7 @@
 			</div>
 			<div class="input-container ic2">
 				<input name="email" class="input" type="email" placeholder=" "
-				value="<%= locals.employee.email %>" required oninput="updatedValue()"
-				minlength="2" maxlength="100" pattern="[a-zA-z0-9]+@+((.+)[a-zA-z0-9]){1,3}"/>
+				value="<%= locals.employee.email %>" readonly>
 				<div class="cut cut-short"></div>
 				<label for="email" class="placeholder">Email</label>
 			</div>
@@ -45,16 +44,11 @@
 				<div class="cut"></div>
 				<label for="address" class="placeholder">Adresss</label>
 			</div>
-			<div class="input-container ic2"> <!-- enforce the policy -->
-				<input name="password" class="input" type="password" placeholder="" id="password" required/>
-				<div class="cut passwordpolicy"></div>
-				<label for="password" class="placeholder">Password</label>
-				<span class="passwordpolicy">
-Minimum 8 characters, at least 1 letter, 1 number and 1 special character
-				</span>
-			</div>
-			<p></p>
 			<button type="text" class="submit">Update</button>
+		</form>
+		<form action="/backoffice/employee/update/password/<%= locals.employee.id %>" 
+			method="get" enctype="multipart/form-data">
+			<button type="text" class="updatePassword">Change Password</button>
 		</form>
 		<form action="/backoffice/employee/" method="get">
 			<button type="text" class="back">Back</button>

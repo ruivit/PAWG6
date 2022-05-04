@@ -86,4 +86,7 @@ router.get('/profile/update/', controller.backoffice_employee__profile_update_ge
 
 router.post('/profile/update', multer().none(), controller.backoffice_employee_profile_update_post);
 
+router.get('/update/password/:id', multer().none(), controller.backoffice_employee_update_password_get);
+router.post('/update/password', multer().none(), controller.backoffice_employee_update_password_post);
+
 module.exports = router;

@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 // ----------------------- Models ------------------------------
 var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
@@ -463,7 +465,7 @@ exports.backoffice_employee_sale_get = async function (req, res) {
             await getTitleBooks(req, res, sales);
             await getEmployeeUsername(req, res, sales);
 
-            res.render('backoffice/admin/sales/manageSales',
+            res.render('backoffice/employee/sales/employeeManageSales',
             { sales: sales, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         
         // General Listing
@@ -475,7 +477,7 @@ exports.backoffice_employee_sale_get = async function (req, res) {
             await getTitleBooks(req, res, sales);
             await getEmployeeUsername(req, res, sales);
 
-            res.render('backoffice/admin/sales/manageSales',
+            res.render('backoffice/employee/sales/employeeManageSales',
             { sales: sales, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         }
 
@@ -593,6 +595,8 @@ exports.backoffice_employee_sale_search = async function (req, res) {
 
 exports.backoffice_employee_manageProfile_get = async function (req, res) {
     try {
+        console.log(req.session);
+        console.log(res.cookie);
         var employee = await Employee.findById(req.session.employeeID);
         res.render('backoffice/employee/employeeProfile/manageEmployeeProfile', { employee: employee });
     } catch (error) {
@@ -621,3 +625,32 @@ exports.backoffice_employee_profile_update_post = async function (req, res) {
         }
     });
 }; // Update the profile
+
+exports.backoffice_employee_update_password_get = async function (req, res) {
+    try {
+        var employee = await Employee.findById(req.params.id);
+        res.render('backoffice/employee/employeeProfile/updateEmployeePassword', { employee: employee });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating employee", error: error });
+    }
+}; // Form to update an employee's password
+
+exports.backoffice_employee_update_password_post = async function (req, res) {
+    // Update the client
+    var salt = crypto.randomBytes(16).toString('hex'); 
+    
+    // Hashing user's salt and password with 1000 iterations, 
+    var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
+    1000, 64, process.env.ENCRYPTION).toString('hex');
+    
+    Employee.findOneAndUpdate({ username: req.body.username }, 
+        { salt: salt, passwordHash: newPasswordHash }, { new: true },
+        function (err, employee) {
+        if (err) {
+            res.render('error/error', { message: "Error updating employee", error: err });
+        } else {
+            // Milestone2 - add message of success
+            res.redirect('/backoffice/employee');
+        }
+    });
+}; // Update an employee's password
