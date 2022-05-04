@@ -25,6 +25,7 @@ exports.backoffice_employee_get = function (req, res) {
 
 
 // --------------------- Backoffice/employee/Client ---------------------------
+//#region Client
 
 exports.backoffice_employee_client_get = async function (req, res) {
     async function pagination(req) {
@@ -187,9 +188,10 @@ exports.backoffice_employee_client_delete_post = function (req, res) {
         }
     });
 }; // Delete a client
-
+//#endregion
 
 // --------------------- Backoffice/employee/Book ---------------------------
+//#region Book
 
 exports.backoffice_employee_book_get = async function (req, res) {
     async function pagination(req, totalDocs) {
@@ -405,10 +407,10 @@ exports.backoffice_employee_book_delete_post = function (req, res) {
         }
     });
 }; // Delete book
-
+//#endregion
 
 // --------------------- Backoffice/employee/Sale ---------------------------
-
+//#region sale
 exports.backoffice_employee_sale_get = async function (req, res) {
     async function getTitleBooks (req, res, sales) {
         for (var i = 0; i < sales.length; i++) {
@@ -589,9 +591,10 @@ exports.backoffice_employee_sale_search = async function (req, res) {
         res.render("error/error", { message: "Error searching sale", error: error });
     }
 }; // Search sales
+//#endregion
 
 // --------------------- Backoffice/employee/profile ---------------------------
-
+//#region profile
 
 exports.backoffice_employee_manageProfile_get = async function (req, res) {
     try {
@@ -654,3 +657,4 @@ exports.backoffice_employee_update_password_post = async function (req, res) {
         }
     });
 }; // Update an employee's password
+//#endregion

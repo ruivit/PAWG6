@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 
 // -------------------- Client/ ---------------------------
-
+//#region login/index
 exports.client_login_get = function (req, res) {
     res.render('client/loginClient');
 }; // Login Portal
@@ -82,9 +82,10 @@ exports.client_logout = function (req, res) {
 
     res.redirect('/');
 }; // Logout Process
-
+//#endregion
 
 // -------------------- Client/Create ---------------------------
+//#region createClient
 
 exports.client_create_get = function (req, res) {
     res.render('client/createClient');
@@ -138,9 +139,10 @@ exports.client_create_post = function (req, res) {
     }
     });
 }; // Create a client
-
+//#endregion
 
 // -------------------- Client/Sell Book ---------------------------
+//#region sellBookClient
 
 exports.client_sell_get = function (req, res) {
     res.render('client/sellBookClient');
@@ -155,10 +157,10 @@ exports.client_sell_post = function (req, res) {
     No admin, fazer filtragem de books com forSale false
     Se aceitar, mudar para true e mudar preco etc */
 };
-
+//#endregion
 
 // -------------------- Client/Profile ---------------------------
-
+//#region profileClient
 exports.client_profile_get = function (req, res) {
     var client = Client.findById(req.session.client._id, function (err, client) {
         if (err) {
@@ -222,3 +224,4 @@ exports.client_updatepassword_post = function (req, res) {
         res.render('error/error', { message: "Error updating client password", error: err });
     }
 }; // Update the client password
+//#endregion
