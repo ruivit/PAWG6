@@ -4,6 +4,7 @@ var Book = require('../models/bookModel');
 var Sale = require('../models/saleModel');
 
 var jwt = require('jsonwebtoken');
+var crypto = require('crypto');
 
 // -------------------- Client/ ---------------------------
 
@@ -196,32 +197,28 @@ exports.client_updatepassword_get = function (req, res) {
         if (err) {
             res.redirect('error/error', { error: err });
         } else {
-            res.render('client/updatePasswordClient', { client: client });
+            res.render('client/updatePassword', { client: client });
         }
     });
 }; // Get the form to update the client password
 
 exports.client_updatepassword_post = function (req, res) {
     try {
-        Client.findById(req.session.client._id, function (err, client) {
+        var salt = crypto.randomBytes(16).toString('hex'); 
+        var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
+        1000, 64, process.env.ENCRYPTION).toString('hex');
+
+        Client.findOneAndUpdate({ username: req.body.username }, 
+            { salt: salt, passwordHash: newPasswordHash }, { new: true },
+            function (err, employee) {
             if (err) {
-                res.redirect('error/error', { error: err });
+                res.render('error/error', { message: "Error updating client password", error: err });
             } else {
-                if (client.validPassword(req.body.oldPassword)) {
-                    client.setPassword(req.body.newPassword);
-                    client.save(function (err) {
-                        if (err) {
-                            res.redirect('error/error', { error: err });
-                        } else {
-                            res.redirect('/client');
-                        }
-                    });
-                } else {
-                    res.redirect('/client/updatepassword', { message: "Wrong password" });
-                }
+                // Milestone2 - add message of success
+                res.redirect('/client');
             }
         });
     } catch (err) {
-        res.redirect('error/error', { error: err });
+        res.render('error/error', { message: "Error updating client password", error: err });
     }
 }; // Update the client password
