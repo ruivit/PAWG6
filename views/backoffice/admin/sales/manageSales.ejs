@@ -27,7 +27,7 @@
   <br>
   <div class="container">
   <% if(sales.length>0) { %>
-    <table class="table">
+    <table class="table table-hover table-dark">
       <thead>
         <tr>
           <th scope="col">Client Username</th>
@@ -43,19 +43,19 @@
       <tbody>
         <% for(var i=0; i<sales.length;i++) { %>
           <tr>
-            <td data-label="Client Username"> <%=sales[i].clientUsername%> </td>
+            <td data-label="Client Username"><br> <%=sales[i].clientUsername%> </td>
             <td data-label="Books">
               <% for(var j=0; j<sales[i].books.length; j++) { %>
                 - <%=sales[i].books[j].title%>
                 <br>
               <% } %>
             </td>
-            <td data-label="Total"> <%=sales[i].total%> </td>
-            <td data-label="Shipping"> <%=sales[i].shipping%> </td>
-            <td data-label="Gained Points"> <%=sales[i].gainedPoints%> </td>
-            <td data-label="Date"> <%=sales[i].dateString%> </td>
-            <td data-label="Online"> <%=sales[i].online%> </td>
-            <td data-label="Employee Username"> <%=sales[i].employeeUsername%> </td>
+            <td data-label="Total"><br> <%=sales[i].total%> </td>
+            <td data-label="Shipping"><br> <%=sales[i].shipping%> </td>
+            <td data-label="Gained Points"><br> <%=sales[i].gainedPoints%> </td>
+            <td data-label="Date"><br> <%=sales[i].dateString%> </td>
+            <td data-label="Online"><br> <%=sales[i].online%> </td>
+            <td data-label="Employee Username"><br> <%=sales[i].employeeUsername%> </td>
           </tr>
         <% } %>
       </tbody>

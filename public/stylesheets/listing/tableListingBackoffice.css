@@ -14,7 +14,7 @@ table caption {
 
 table tr {
     background-color: #1b2631;
-    border: 1px solid #ddd;
+    border: 1.5px solid #ccc;
 	color: rgb(255, 255, 255);
     padding: .35em;
 }
@@ -22,7 +22,8 @@ table tr {
 table th,
 table td {
     padding: .625em;
-    text-align: center;
+    text-align: center; 
+    vertical-align: middle;
     font-size: .75em;
 }
 
