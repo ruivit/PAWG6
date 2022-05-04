@@ -48,8 +48,6 @@ router.post('/client/update/:id', multer().none(), controller.backoffice_employe
 // employee Client Delete
 router.post('/client/delete/:id', controller.backoffice_employee_client_delete_post);
 
-//employee Client search
-router.post('/client/search', multer().none(), controller.backoffice_employee_client_search_post);
 
 
 
@@ -69,8 +67,6 @@ router.post('/book/update/:id', multer().none(), controller.backoffice_employee_
 // employee Book Delete
 router.post('/book/delete/:id', controller.backoffice_employee_book_delete_post);
 
-router.post('/book/search', multer().none(), controller.backoffice_employee_book_search_post);
-
 // ------------------------------ employee/Sale URL
 
 // employee Sale Index
@@ -80,8 +76,6 @@ router.get('/sales', controller.backoffice_employee_sale_get);
 router.get('/sales/makesale', controller.backoffice_employee_make_sale_get);
 router.post('/sales/makesale', multer().none(), controller.backoffice_employee_make_sale_post);
 
-// employee Sale Search
-router.post('/sales/search', multer().none(), controller.backoffice_employee_sale_search);
 
 // ------------------------------ employee/ProfileUpdate URL
 
