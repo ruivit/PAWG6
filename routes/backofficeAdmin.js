@@ -90,7 +90,7 @@ router.post('/book/create', multer().single('cover'), controller.backoffice_admi
 
 // Admin Book Update
 router.get('/book/update/:id', multer().none(), controller.backoffice_admin_book_update_get);
-router.post('/book/update', multer().none(), controller.backoffice_admin_book_update_post);
+router.post('/book/update/:id', multer().none(), controller.backoffice_admin_book_update_post);
 
 // Admin Book Delete
 router.post('/book/delete/:id', multer().none(), controller.backoffice_admin_book_delete_post);

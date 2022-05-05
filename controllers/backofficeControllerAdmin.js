@@ -563,7 +563,7 @@ exports.backoffice_admin_book_update_get = async function (req, res) {
 }; // Get the form to update a book
 
 exports.backoffice_admin_book_update_post = function (req, res) {
-    Book.findOneAndUpdate( {"_id.$oid": req.params.id}, req.body, { new: true }, 
+    Book.findByIdAndUpdate( { _id: req.params.id }, req.body, { new: true }, 
         function (err, book) {
         if (err) {
             res.render('error/error', { message: "Error updating book", error: err });
