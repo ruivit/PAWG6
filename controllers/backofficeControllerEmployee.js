@@ -598,8 +598,6 @@ exports.backoffice_employee_sale_search = async function (req, res) {
 
 exports.backoffice_employee_manageProfile_get = async function (req, res) {
     try {
-        console.log(req.session);
-        console.log(res.cookie);
         var employee = await Employee.findById(req.session.employeeID);
         res.render('backoffice/employee/employeeProfile/manageEmployeeProfile', { employee: employee });
     } catch (error) {

@@ -33,9 +33,9 @@ exports.backoffice_login_post = function (req, res) {
 
                         res.cookie('token', token, {
                             maxAge: 3600000,
-                            httpOnly: true,
                             samesite: 'Strict',
                             secure: true,
+                            httpOnly: true,
                         });
                         res.redirect('/backoffice/admin');
                         
@@ -51,9 +51,9 @@ exports.backoffice_login_post = function (req, res) {
 
                         res.cookie('token', token, {
                             maxAge: 3600000,
-                            httpOnly: true,
                             samesite: 'Strict',
                             secure: true,
+                            httpOnly: true,
                         });
                         res.redirect('/backoffice/employee');
                     }

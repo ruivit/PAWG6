@@ -49,21 +49,11 @@
 			</div>
 			<div class="input-container ic2">
 				<input name="birthDate" class="input" type="date" placeholder=" "
-				value="<%= locals.client.birthDate %>" required oninput="updatedValue()"
+				value="<%= locals.client.dateString %>" required oninput="updatedValue()"
 				required pattern="\d{4}-\d{2}-\d{2}"/>
 				<div class="cut"></div>
 				<label for="birthDate" class="placeholder">Birth Date</label>
 			</div>
-			<div class="input-container ic2">
-				<input name="password" class="input" type="password" placeholder=" "
-				value="<%= locals.client.password %>" required
-				minlength="2" maxlength="20" pattern="[a-zA-Z0-9].+" />
-				<div class="cut"></div>
-				<label for="password" class="placeholder">Password</label>
-			</div>
-			<span class="passwordpolicy">
-Minimum 8 characters, at least 1 letter, 1 number and 1 special character
-			</span>
 			<button type="text" class="submit">Submit changes</button>	
 		</form>
 		<form action="/backoffice/employee/client" method="get">

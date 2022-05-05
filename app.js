@@ -18,12 +18,16 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var path = require('path');
 
-
 // Dotenv config
 require('dotenv').config();
 
 
 var app = express();
+
+// Use helmet for incresead security
+var helment = require('helmet');
+app.use(helment());
+
 
 // Icons and bootstrap
 app.use('/favicon.ico', express.static('public/images/favicon.ico'));
@@ -32,12 +36,14 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 // MongoDB Config
 var mongoDBURL = process.env.MONGOURL;
 
+
 // Detect if dotenv exists
 if (!mongoDBURL) {
   console.log('Please set a dotenv config file first...\nExample used:\n');
-  console.log('MONGOURL=\'mongodb://mongoadm:AxPAi0GHVVvhijYU@paw-shard-00-00.yharo.mongodb.net:27017,paw-shard-00-01.yharo.mongodb.net:27017,paw-shard-00-02.yharo.mongodb.net:27017/pawm1?ssl=true&replicaSet=atlas-11pols-shard-0&authSource=admin&retryWrites=true&w=majority\' ');
+  console.log('MONGOURL=\'mongodb://<user>:<password>@<host>:<port>/<database>\'');
   console.log('ENCRYPTION=\'sha512\'');
   console.log('SECRET_KEY=\'rg\'');
+  console.log('\n!> Check the report of milestone1 for the credentials of mongodb');
   
   process.exit();
 } else {
@@ -63,11 +69,39 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session related
 app.use(session({
+  // use a random string as the session id
   secret: 'dskma92847ya7wyd0awd',
   resave: true,
   saveUninitialized: true
 }));
 app.use(cookieParser());
+
+
+// Anti Brute Force Config
+const { RateLimiterMemory } = require('rate-limiter-flexible');
+
+const opts = {
+  points: 10, // 10 points
+  duration: 1, // Per second
+  blockDuration: 300, // block for 5 minutes if more than points consumed 
+};
+
+const rateLimiter = new RateLimiterMemory(opts);
+
+const rateLimiterMiddleware = (req, res, next) => {
+  // Consume 1 point for each request
+  rateLimiter.consume(req.connection.remoteAddress)
+    .then(() => {
+      next();
+    })
+    .catch((rejRes) => {
+      // Fake a 404 error
+      res.status(404).render('error/404');
+    });
+};
+
+app.use(rateLimiterMiddleware);
+
 
 // Use the public folder to serve static files
 app.use(express.static(path.join(__dirname, 'public')));

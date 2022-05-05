@@ -8,18 +8,38 @@ var app = require('../app');
 var debug = require('debug')('milestone1:server');
 var http = require('http');
 
+// HTTPs Config
+var fs = require('fs');
+var https = require('https');
+var key = fs.readFileSync(__dirname + '/../certs/selfsigned.key');
+var cert = fs.readFileSync(__dirname + '/../certs/selfsigned.crt');
+var options = {
+  key: key,
+  cert: cert
+};
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTPs server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(options, app);
+
+// Redirect all HTTP requests to HTTPS
+var httpserver = http.createServer((req, res) => {
+  res.writeHead(301, {
+    Location: 'https://' + req.headers.host + req.url
+  });
+  res.end();
+});
+httpserver.listen(80);
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -87,4 +107,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }
