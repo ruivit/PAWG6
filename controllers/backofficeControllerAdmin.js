@@ -168,7 +168,7 @@ exports.backoffice_admin_employee_update_password_get = async function (req, res
 }; // Form to update an employee's password
 
 exports.backoffice_admin_employee_update_password_post = async function (req, res) {
-    // Update the client
+    // Update the employee's password
     var salt = crypto.randomBytes(16).toString('hex'); 
     
     // Hashing user's salt and password with 1000 iterations, 

@@ -24,9 +24,9 @@ require('dotenv').config();
 
 var app = express();
 
-// Use helmet for incresead security
-var helment = require('helmet');
-app.use(helment());
+// Use helmet for incresead security 
+var helmet = require('helmet');
+app.use(helmet());
 
 
 // Icons and bootstrap
@@ -82,7 +82,7 @@ app.use(cookieParser());
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
 const opts = {
-  points: 10, // 10 points
+  points: 10, // 10 requests per second per IP and IP will be blocked for 5 minutes
   duration: 1, // Per second
   blockDuration: 300, // block for 5 minutes if more than points consumed 
 };

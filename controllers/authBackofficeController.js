@@ -18,7 +18,7 @@ exports.backoffice_login_post = function (req, res) {
     var token;
     Employee.findOne({ username: req.body.username }, function (err, employee) {
         if (err) {
-            res.redirect('error', { error: err });
+            res.redirect('error/error', { error: err });
         } else {
             if (employee) {
                 if (employee.checkPassword(req.body.password)) {
@@ -65,13 +65,13 @@ exports.backoffice_login_post = function (req, res) {
                 }
             } else {
                 res.render('backoffice/backofficeLogin', 
-                { oldata: req.body, message: 'Invalid password' });
+                { oldata: req.body, message: 'Invalid Username' });
             }
         }
     });
 };
 
-// Logout Process
+// Logout Process (destroy the session) clear the cookies and redirect to the login page
 exports.backoffice_logout = function (req, res) {
     req.session.destroy();
 
