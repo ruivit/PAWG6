@@ -70,7 +70,8 @@ app.use(express.urlencoded({ extended: true }));
 // Session related
 app.use(session({
   // use a random string as the session id
-  secret: 'dskma92847ya7wyd0awd',
+  name: crypto.randomBytes(20).toString('hex'),
+  secret: crypto.randomBytes(64).toString('hex'),
   resave: true,
   saveUninitialized: true
 }));

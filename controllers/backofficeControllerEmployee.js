@@ -514,8 +514,8 @@ exports.backoffice_employee_make_sale_post = async function (req, res) {
             res.render('error/error', { message: "Error finding user", error: err });
         } else {
             if (!client) {
-                res.render('backoffice/employee/sales/employeeMakeSale', 
-                { message: "User not found", books: books });
+                res.render('backoffice/employee/sales/manageSales', 
+                { message: "User not found", sales: [] });
             } else {
                 // Format the date in DD/MM/YYYY HH:MM
                 var d = new Date();

@@ -694,8 +694,8 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
             res.render('error/error', { message: "Error finding user", error: err });
         } else {
             if (!client) {
-                res.render('backoffice/admin/sales/makeSale', 
-                { message: "User not found", books: books });
+                res.render('backoffice/admin/sales/manageSales', 
+                { message: "User not found", sales: [] });
             } else {
                 // make the sale
                 var sale = new Sale({
