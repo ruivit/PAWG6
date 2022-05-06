@@ -687,7 +687,7 @@ exports.backoffice_admin_make_sale_post = async function (req, res) {
         return 0;
     } // Milestone 2
     
-    // get the ID based on the username
+    // A implementar: Based on the username verify if the client exists and get the clientId, ageType and points
     var books = await Book.find();
     Client.findOne({ username: req.body.clientUsername }, function (err, client) {
         if (err) {
