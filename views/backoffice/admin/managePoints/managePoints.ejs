@@ -15,11 +15,11 @@
 			<div class="input-container ic2">
 				<input name="pointValue" class="input" type="text" placeholder=" "
 				value="<%= locals.points.pointValue %>" oninput="updatedValue()"
-				minlength="1" maxlength="50" pattern="[0-9]{1,50}+" />
-				<div class="cut"></div>
-				<label for="pointValue" class="placeholder">Point Value</label>
+				pattern="0\.00[0-9]" required/>
+				<div class="cut cut-long"></div>
+				<label for="pointValue" class="placeholder">Point To Money </label>
 				<span class="info">
-				Point value multiplies by the Percentage Per Purschase
+				Points used to buy books (0.00*)
 				</span>
 			</div>
 			<br>
@@ -32,17 +32,6 @@
 				<strong>Percentage</strong> Per Purschase</label>
 				<span class="info">
 				[X] % of the value of the purchase will be added to the user's points
-				</span>
-			</div>
-			<br>
-			<div class="input-container ic2">
-				<input name="bonusPoints" class="input" type="text" placeholder=" "
-				value="<%= locals.points.bonusPoints %>" oninput="updatedValue()"
-				minlength="1" maxlength="50" pattern="[0-9]{1,50}+" />
-				<div class="cut"></div>
-				<label for="bonusPoints" class="placeholder">Bonus Points</label>
-				<span class="info">
-				When the user has 100 points, they will receive [X] bonus points
 				</span>
 			</div>
 			<br>

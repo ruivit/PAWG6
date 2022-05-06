@@ -11,11 +11,6 @@ var PointsSchema = new Schema({
   // Quando o cliente compra um livro, pe, 5% do valor da 
   // compra é transformado em pontos
 
-  bonusPoints : { type: Number, required: true, default: 10 },
-  /* Quando o cliente tiver 100 pontos atribuir este bonus
-  Propor substituir quantidade de aquisicoes realizadas (enunciado),
-  por este bonus. <---- */ 
-
   shippingPoints : { type: Number, required: true, default: 1000 },
   // Quando o cliente tiver 1000 pontos, os portes sao gratis
 
