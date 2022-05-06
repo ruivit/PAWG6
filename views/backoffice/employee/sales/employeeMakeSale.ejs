@@ -17,11 +17,6 @@
     </li>
   </ul>
   <br>
-    <% if(locals.message) { %>
-      <div class="message">
-        <%= locals.message %>
-      </div>
-    <% } %>
     <% if(books.length>0 && !locals.message) { %>
       <table class="table table-hover table-dark">
         <thead>
@@ -59,16 +54,27 @@
         </tbody>
       </table>
       </form>
-    <% } else { %>
-      <% if(!locals.message) { %>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">No Books were found</th>
-            </tr>
-          </thead>
-        </table>
+      <% } else { %>
+        <% if(!locals.message) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">No Books were found</th>
+              </tr>
+            </thead>
+          </table>
+        <% } %>
       <% } %>
-    <% } %>
+      <% if(locals.message) { %>
+        <div class="message">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"><%= message %></th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      <% } %>
 </body>
 </html>
