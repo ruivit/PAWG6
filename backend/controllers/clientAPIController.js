@@ -1,6 +1,6 @@
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
-var Book = require('../models/bookModel');
+var UsedBook = require('../models/UsedBookModel');
 var Sale = require('../models/saleModel');
 
 var jwt = require('jsonwebtoken');
@@ -24,9 +24,9 @@ exports.client_login_post = function (req, res) {
                     // save the client in the session
                     req.session.client = client;
                     req.session.client._id = client._id;
-                    
-                    token = jwt.sign({ clientID: client._id }, 
-                        process.env.SECRET_KEY, 
+
+                    token = jwt.sign({ clientID: client._id },
+                        process.env.SECRET_KEY,
                         { expiresIn: '6h' });
 
                     res.cookie('token', token, {
@@ -37,7 +37,7 @@ exports.client_login_post = function (req, res) {
                     });
 
                     res.redirect('/client');
-                    
+
                 } else {
                     res.render('client/loginClient', { message: 'Wrong password' });
                 }
@@ -50,7 +50,7 @@ exports.client_login_post = function (req, res) {
 
 exports.client_logout = function (req, res) {
     req.session.destroy();
-    
+
     res.clearCookie('token');
 
     res.redirect('/');
@@ -76,40 +76,40 @@ exports.client_create_post = function (req, res) {
 
     var usernamePromise = Client.findOne({ username: req.body.username });
     var emailPromise = Client.findOne({ email: req.body.email });
-    
+
     Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
         // If the username or email already exists, redirect to the create page
         if (promisesToDo[0]) {
-            res.render('client/createClient', 
-            { oldata: req.body, message: "Username already exists" });
+            res.render('client/createClient',
+                { oldata: req.body, message: "Username already exists" });
         } else if (promisesToDo[1]) {
-            res.render('client/createClient', 
-            { oldata: req.body, message: "Email already exists" });
+            res.render('client/createClient',
+                { oldata: req.body, message: "Email already exists" });
         } else {
-        // If the username and email are not already in use, create the client
-        var client = new Client({
-            username: req.body.username,
-            password: req.body.password,
-            name: req.body.name,
-            address: req.body.address,
-            email: req.body.email,
-            phone: req.body.phone,
-            points: calculatePoints(req.body.points),
-            birthDate: req.body.birthDate,
-            dateString: req.body.birthDate,
-        });
+            // If the username and email are not already in use, create the client
+            var client = new Client({
+                username: req.body.username,
+                password: req.body.password,
+                name: req.body.name,
+                address: req.body.address,
+                email: req.body.email,
+                phone: req.body.phone,
+                points: calculatePoints(req.body.points),
+                birthDate: req.body.birthDate,
+                dateString: req.body.birthDate,
+            });
 
-        client.setPassword(req.body.password);        
-        client.setAgeType(req.body.birthDate);
+            client.setPassword(req.body.password);
+            client.setAgeType(req.body.birthDate);
 
-        client.save(function (err) {
-            if (err) {
-                res.render('error/error', { message: "Error creating client", error: err });
-            } else {
-                res.redirect('/client');
-            }
-        });
-    }
+            client.save(function (err) {
+                if (err) {
+                    res.render('error/error', { message: "Error creating client", error: err });
+                } else {
+                    res.redirect('/client');
+                }
+            });
+        }
     });
 }; // Create a client
 //#endregion
@@ -132,6 +132,35 @@ exports.client_sell_post = function (req, res) {
     No admin, fazer filtragem de books com forSale false
     Se aceitar, mudar para true e mudar preco etc */
 };
+
+exports.client_sell_used_book_create_post = function (req, res) {
+
+    var usedBook = new UsedBook({
+        title: req.body.title,
+        author: req.body.author,
+        genre: req.body.genre,
+        editor: req.body.editor,
+        resume: req.body.resume,
+        isbn: req.body.isbn,
+        dateString: getDateNow(),
+        stock: 1,
+        //provider: req.session.client._id,
+        sellPrice: req.body.sellPrice,
+    });
+
+    usedBook.save(function (err) {
+        if (err) {
+            res.render('error/error', { message: "Error creating book", error: err });
+        } else {
+            // save the cover
+            if (req.file) {
+                fs.writeFileSync("./public/images/tempbooks/" + usedBook._id + ".jpg", req.file.buffer);
+            }
+        }
+    }); // Book save end
+    res.status(200).send({ message: "Proposel Submited" });
+};
+
 //#endregion
 
 // -------------------- Client/Profile ---------------------------
@@ -147,7 +176,7 @@ exports.client_profile_get = function (req, res) {
 }; // Get the Client Profile
 
 exports.client_profile_post = function (req, res) {
-    try{
+    try {
         Client.findByIdAndUpdate(req.session.client._id, {
             username: req.body.username,
             name: req.body.name,
@@ -181,20 +210,20 @@ exports.client_updatepassword_get = function (req, res) {
 
 exports.client_updatepassword_post = function (req, res) {
     try {
-        var salt = crypto.randomBytes(16).toString('hex'); 
-        var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
-        1000, 64, process.env.ENCRYPTION).toString('hex');
+        var salt = crypto.randomBytes(16).toString('hex');
+        var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,
+            1000, 64, process.env.ENCRYPTION).toString('hex');
 
-        Client.findOneAndUpdate({ username: req.body.username }, 
+        Client.findOneAndUpdate({ username: req.body.username },
             { salt: salt, passwordHash: newPasswordHash }, { new: true },
             function (err, employee) {
-            if (err) {
-                res.render('error/error', { message: "Error updating client password", error: err });
-            } else {
-                // Milestone2 - add message of success
-                res.redirect('/client');
-            }
-        });
+                if (err) {
+                    res.render('error/error', { message: "Error updating client password", error: err });
+                } else {
+                    // Milestone2 - add message of success
+                    res.redirect('/client');
+                }
+            });
     } catch (err) {
         res.render('error/error', { message: "Error updating client password", error: err });
     }
