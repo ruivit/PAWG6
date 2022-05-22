@@ -14,20 +14,26 @@ import { FormsModule } from '@angular/forms';
 import { IndexComponent } from './index/index.component';
 import { CartComponent } from './cart/cart.component';
 import { TopbarComponent } from './topbar/topbar.component';
-import { FormSellBookComponent } from './form-sell-book/form-sell-book.component';
-
+import { SellBookComponent } from './sell-book/sell-book.component';
 
 
 const appRoutes: Routes = [
   {
+  //url: localhost:4200/
   path: '',
   component: IndexComponent,
   data: { title: 'New Books' }
   },
   {
+  //url: localhost:4200/cart
   path: 'cart',
   component: CartComponent,
   data: { title: 'My Shopping Cart' }
+  },
+  {
+    path: 'sellbook',
+    component: SellBookComponent,
+    data: { title: 'Sell Book' }
   }
 ];
 
@@ -37,8 +43,8 @@ const appRoutes: Routes = [
     BooksComponent,
     CartComponent,
     TopbarComponent,
-    FormSellBookComponent,
     IndexComponent,
+    SellBookComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

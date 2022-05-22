@@ -6,7 +6,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 
 import { Book } from '../Models/Book';
 
-const endpoint = 'https://localhost/';
+const endpoint = 'https://localhost/clientapi';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -26,8 +26,9 @@ export class RestService {
     return body || {};
   }
 
-  getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(endpoint);
+  index(): Observable<Book[]> {
+    // url: https://localhost/clientapi/index
+    return this.http.get<Book[]>(endpoint + '/index');
   }
 
 }

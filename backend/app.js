@@ -115,13 +115,13 @@ var indexRouter = require('./routes/index');
 var authBackofficeRouter = require('./routes/authBackoffice');
 var backofficeAdminRouter = require('./routes/backofficeAdmin');
 var backofficeEmployeeRouter = require('./routes/backofficeEmployee');
-var clientRouter = require('./routes/client');
+var clientAPIRouter = require('./routes/clientapi');
 
 app.use('/', indexRouter);
 app.use('/backoffice', authBackofficeRouter);
 app.use('/backoffice/admin', backofficeAdminRouter);
 app.use('/backoffice/employee', backofficeEmployeeRouter);
-app.use('/client', clientRouter);
+app.use('/clientapi', clientAPIRouter);
 // -----------------------------------------------------
 
 

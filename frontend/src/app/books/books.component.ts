@@ -7,7 +7,7 @@ import { CartService } from '../cart/cart.service';
 
 
 @Component({
-  selector: 'app-book',
+  selector: 'app-books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css']
 })
@@ -26,7 +26,7 @@ export class BooksComponent implements OnInit {
   
   getBooks() {
     this.books = [];
-    this.rest.getBooks().subscribe((data: {}) => {
+    this.rest.index().subscribe((data: {}) => {
       this.books = data;
     });
   }

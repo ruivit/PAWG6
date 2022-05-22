@@ -8,12 +8,7 @@ var Book = require('../models/bookModel');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {  
-    Book.find({}, function (err, books) {
-        if (err) {
-            res.redirect('error', { error: err });
-        } else {
-            res.status(200).json(books);
-        }}).sort({ title: 1 });
+    res.render('index', { title: 'Express' });
 });
 
 

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormSellBookComponent } from './form-sell-book.component';
+import { SellBookComponent } from './sell-book.component';
 
-describe('FormSellBookComponent', () => {
-  let component: FormSellBookComponent;
-  let fixture: ComponentFixture<FormSellBookComponent>;
+describe('SellBookComponent', () => {
+  let component: SellBookComponent;
+  let fixture: ComponentFixture<SellBookComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormSellBookComponent ]
+      declarations: [ SellBookComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormSellBookComponent);
+    fixture = TestBed.createComponent(SellBookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

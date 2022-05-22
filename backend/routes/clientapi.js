@@ -4,7 +4,7 @@ var router = express.Router();
 
 var jwt = require('jsonwebtoken');
 
-var clientController = require('../controllers/clientController');
+var clientController = require('../controllers/clientAPIController');
 
 // ------------------------------ Login/Logout Process
 // Login Portal
@@ -34,6 +34,13 @@ router.post('/password', multer().none(), clientController.client_updatepassword
 
 
 // ------------------------------ Angular/ ---------------------------
+
+// Get Books: https://localhost/clientapi/newbooks
+// Search Books: https://localhost/clientapi/search/
+
+// URL Angular/FrontEnd: http://localhost:4200/client/
+
+router.get('/index', clientController.client_index_get);
 
 // Procurar livros 
 //router.get('/search', clientController.client_search_get);

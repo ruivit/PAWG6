@@ -10,7 +10,9 @@
         <h3>Editor: {{book.editor}}</h3>
         <h3>Genre: {{book.genre}}</h3>
         <br>
-        <h2>{{book.sellPrice}} €</h2>
+        <h2>{{book.sellPrice}} €
+            <p>Available: {{book.stock}}</p>
+        </h2>
         <div>
             <button class="button fancy-button" (click)="addToCart(book)">
                 <i class="material-icons-outlined">shopping_cart</i>

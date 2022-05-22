@@ -200,3 +200,20 @@ exports.client_updatepassword_post = function (req, res) {
     }
 }; // Update the client password
 //#endregion
+
+
+
+
+
+
+// -------------------- Client/API ---------------------------
+
+exports.client_index_get = function (req, res) {
+    Book.find({ forSale: true }, function (err, books) {
+        if (err) {
+            res.render('error/error', { error: err });
+        } else {
+            res.status(200).json(books);
+        }
+    }).sort({ dateAdded: -1 }).limit(5);
+}; // Get all the books for sale
