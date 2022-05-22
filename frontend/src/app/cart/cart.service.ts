@@ -10,25 +10,25 @@ import { RestService } from '../rest/rest.service';
 })
 export class CartService {
 
-  items: Book[] = [];
+  books: Book[] = [];
 
   constructor(private rest: RestService) { }
 
   addToCart(book: Book) {
-    this.items.push(book);
+    this.books.push(book);
   }
 
-  getItems() {
-    return this.items;
+  getBooksInCart() {
+    return this.books;
   }
 
   clearCart() {
-    this.items = [];
-    return this.items;
+    this.books = [];
+    return this.books;
   }
   
   removeItem(book: Book) {
-    this.items.splice(this.items.indexOf(book), 1);
+    this.books.splice(this.books.indexOf(book), 1);
   }
 
   // ----------- Points
@@ -43,28 +43,32 @@ export class CartService {
 
   calculateTotal() {
     let total = 0;
-    for (let item of this.items) {
+    for (let item of this.books) {
       total += item.sellPrice;
     }
     return total;
   }
 
   calculateShipping(): Number {
-    let clientPoints = this.getClientPoints();
-    let pointsData = this.getPointsData();
+    let clientPoints: any = this.getClientPoints();
+    let pointsData: any = this.getPointsData();
     let shipping = 0;
+
+    if (!(clientPoints == pointsData.shippingPoints)) {
+      return this.books.length * 0.85;
+    }
     return shipping;
   }
   
   calculateGainedPoints(): Number {
-    let clientPoints = this.getClientPoints();
-    let pointsData = this.getPointsData();
+    let clientPoints: any = this.getClientPoints();
+    let pointsData: any = this.getPointsData();
     let gainedPoints = 0;
     return gainedPoints;
   }
 
   makeSale(books: Book[]) {
-    let sale = new Sale(
+    let sale: Sale = new Sale(
       "client1",
       books,
       this.calculateTotal(),

@@ -36,14 +36,15 @@ export class RestService {
     return this.http.get(endpoint + '/clientPoints');
   }
 
-  getPointsData(): Observable<Object> {
+  getPointsData(): Observable<any> {
     // url: https://localhost/clientapi/pointsData
     return this.http.get(endpoint + '/pointsData');
   }
 
-  makeSale(sale: any): Observable<any> {
-    // url: https://localhost/clientapi/makeSale
+  // make the sale to the API
+  makeSale(sale: Sale) {
     console.log(sale);
-    return this.http.post<any>(endpoint + '/makeSale', sale, httpOptions);
+    // url: https://localhost/clientapi/makeSale
+    return this.http.post(endpoint + '/asd', sale, httpOptions);
   }
 }

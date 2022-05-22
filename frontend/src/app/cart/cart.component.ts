@@ -11,7 +11,7 @@ import { Book } from '../Models/Book';
 })
 export class CartComponent implements OnInit {
 
-  items = this.cartService.getItems();
+  items = this.cartService.getBooksInCart();
   total = this.cartService.calculateTotal();
   shipping = this.cartService.calculateShipping();
 

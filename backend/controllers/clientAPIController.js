@@ -1,240 +1,19 @@
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
+var Book = require('../models/bookModel');
 var UsedBook = require('../models/UsedBookModel');
 var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 
-var jwt = require('jsonwebtoken');
-var crypto = require('crypto');
-
-// -------------------- Client/ ---------------------------
-//#region login/index
-exports.client_login_get = function (req, res) {
-    res.render('client/loginClient');
-}; // Login Portal
-
-exports.client_login_post = function (req, res) {
-    // search the username in the database
-    Client.findOne({ username: req.body.username }, function (err, client) {
-        if (err) {
-            res.redirect('error/error', { error: err });
-        } else {
-            if (client) {
-                // check if the password is correct
-                if (client.checkPassword(req.body.password, client.password)) {
-                    // save the client in the session
-                    req.session.client = client;
-                    req.session.client._id = client._id;
-
-                    token = jwt.sign({ clientID: client._id },
-                        process.env.SECRET_KEY,
-                        { expiresIn: '6h' });
-
-                    res.cookie('token', token, {
-                        maxAge: 3600000,
-                        httpOnly: true,
-                        samesite: 'Strict',
-                        secure: true,
-                    });
-
-                    res.redirect('/client');
-
-                } else {
-                    res.render('client/loginClient', { message: 'Wrong password' });
-                }
-            } else {
-                res.render('client/loginClient', { message: 'Wrong username' });
-            }
-        }
-    });
-};
-
-exports.client_logout = function (req, res) {
-    req.session.destroy();
-
-    res.clearCookie('token');
-
-    res.redirect('/');
-}; // Logout Process
-//#endregion
-
-// -------------------- Client/Create ---------------------------
-//#region createClient
-
-exports.client_create_get = function (req, res) {
-    res.render('client/createClient');
-}; // Create client form
-
-exports.client_create_post = function (req, res) {
-    function calculatePoints(points) {
-        var totalPoints = 0;
-        if (points == "" || points == null) {
-            return 10;
-        } else {
-            return totalPoints;
-        }// else, logica de negocio
-    }
-
-    var usernamePromise = Client.findOne({ username: req.body.username });
-    var emailPromise = Client.findOne({ email: req.body.email });
-
-    Promise.all([usernamePromise, emailPromise]).then(function (promisesToDo) {
-        // If the username or email already exists, redirect to the create page
-        if (promisesToDo[0]) {
-            res.render('client/createClient',
-                { oldata: req.body, message: "Username already exists" });
-        } else if (promisesToDo[1]) {
-            res.render('client/createClient',
-                { oldata: req.body, message: "Email already exists" });
-        } else {
-            // If the username and email are not already in use, create the client
-            var client = new Client({
-                username: req.body.username,
-                password: req.body.password,
-                name: req.body.name,
-                address: req.body.address,
-                email: req.body.email,
-                phone: req.body.phone,
-                points: calculatePoints(req.body.points),
-                birthDate: req.body.birthDate,
-                dateString: req.body.birthDate,
-            });
-
-            client.setPassword(req.body.password);
-            client.setAgeType(req.body.birthDate);
-
-            client.save(function (err) {
-                if (err) {
-                    res.render('error/error', { message: "Error creating client", error: err });
-                } else {
-                    res.redirect('/client');
-                }
-            });
-        }
-    });
-}; // Create a client
-//#endregion
 
 
-
-// -------------------- Client/Sell Book ---------------------------
-//#region sellBookClient
-
-exports.client_sell_get = function (req, res) {
-    res.render('client/sellBookClient');
-}; // // Get the form to sell a book
-
-exports.client_sell_post = function (req, res) {
-    /* Ver se ISBN existe
-    Se sim, criar livro USADO
-    Se nao, criar livro USADO E NOVO com stock a 0 
-    Alterar estado forSale para false, ou seja validação do novo livro pelo admin
-    
-    No admin, fazer filtragem de books com forSale false
-    Se aceitar, mudar para true e mudar preco etc */
-};
-
-exports.client_sell_used_book_create_post = function (req, res) {
-
-    var usedBook = new UsedBook({
-        title: req.body.title,
-        author: req.body.author,
-        genre: req.body.genre,
-        editor: req.body.editor,
-        resume: req.body.resume,
-        isbn: req.body.isbn,
-        dateString: getDateNow(),
-        stock: 1,
-        //provider: req.session.client._id,
-        sellPrice: req.body.sellPrice,
-    });
-
-    usedBook.save(function (err) {
-        if (err) {
-            res.render('error/error', { message: "Error creating book", error: err });
-        } else {
-            // save the cover
-            if (req.file) {
-                fs.writeFileSync("./public/images/tempbooks/" + usedBook._id + ".jpg", req.file.buffer);
-            }
-        }
-    }); // Book save end
-    res.status(200).send({ message: "Proposel Submited" });
-};
-
-//#endregion
-
-// -------------------- Client/Profile ---------------------------
-//#region profileClient
-exports.client_profile_get = function (req, res) {
-    var client = Client.findById(req.session.client._id, function (err, client) {
-        if (err) {
-            res.redirect('error', { error: err });
-        } else {
-            res.render('client/profileClient', { client: client });
-        }
-    });
-}; // Get the Client Profile
-
-exports.client_profile_post = function (req, res) {
-    try {
-        Client.findByIdAndUpdate(req.session.client._id, {
-            username: req.body.username,
-            name: req.body.name,
-            address: req.body.address,
-            email: req.body.email,
-            phone: req.body.phone,
-            points: req.body.points,
-            birthDate: req.body.birthDate,
-        }, function (err, client) {
-            if (err) {
-                res.redirect('error/error', { error: err });
-            } else {
-                res.redirect('/client');
-            }
-        });
-    } catch (err) {
-        res.redirect('error/error', { error: err });
-    }
-}; // Update the client information
-
-
-exports.client_updatepassword_get = function (req, res) {
-    var client = Client.findById(req.session.client._id, function (err, client) {
-        if (err) {
-            res.redirect('error/error', { error: err });
-        } else {
-            res.render('client/updatePassword', { client: client });
-        }
-    });
-}; // Get the form to update the client password
-
-exports.client_updatepassword_post = function (req, res) {
-    try {
-        var salt = crypto.randomBytes(16).toString('hex');
-        var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,
-            1000, 64, process.env.ENCRYPTION).toString('hex');
-
-        Client.findOneAndUpdate({ username: req.body.username },
-            { salt: salt, passwordHash: newPasswordHash }, { new: true },
-            function (err, employee) {
-                if (err) {
-                    res.render('error/error', { message: "Error updating client password", error: err });
-                } else {
-                    // Milestone2 - add message of success
-                    res.redirect('/client');
-                }
-            });
-    } catch (err) {
-        res.render('error/error', { message: "Error updating client password", error: err });
-    }
-}; // Update the client password
-//#endregion
-
-
-
-
-
+// ------------------- Auxiliary Functions ---------------------------
+function getDateNow(date) {
+    var d = new Date();
+    dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    return dateNowString;
+}
 
 // -------------------- Client/API ---------------------------
 
@@ -260,7 +39,7 @@ exports.client_points_get = function (req, res) {
 }
 
 exports.points_data_get = function (req, res) {
-    Points.find({}, function (err, points) {
+    Points.findById("62650c0098b8a1abe1af3bdc", function (err, points) {
         if (err) {
             res.render('error/error', { error: err });
         } else {

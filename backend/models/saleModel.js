@@ -10,7 +10,7 @@ var SaleSchema = new Schema({
   date: { type: Date, default: Date.now },
   dateString: { type: String, default: '' },
   online: { type: Boolean, default: false },
-  employee_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
+  employee_id: { type: Schema.Types.ObjectId, ref: 'Employee', required: false },
   shipping: { type: Number, default: 0 }
 }, { collection: 'Sales' });
 
