@@ -35,26 +35,12 @@ router.post('/password', multer().none(), clientController.client_updatepassword
 
 // ------------------------------ Angular/ ---------------------------
 
-// Get Books: https://localhost/clientapi/newbooks
-// Search Books: https://localhost/clientapi/search/
-
-// URL Angular/FrontEnd: http://localhost:4200/client/
-
 router.get('/index', clientController.client_index_get);
 
-// Procurar livros 
-//router.get('/search', clientController.client_search_get);
-//router.post('/search:id', multer().none(), clientController.client_search_post);
+router.get('/clientPoints', clientController.client_points_get);
+router.get('/pointsData', clientController.points_data_get);
 
-
-// Vender um livro - nota, falta parte backend collecao temporario e acabar proposolas no admin
-//router.get('/sellbook', clientController.client_sell_get);
-//router.post('/sellbook', multer().none(), clientController.client_sell_post);
-
-
-// Comprar livros
-//router.get('/buy', clientController.client_buy_get);
-//router.post('/buy', multer().none(), clientController.client_buy_post);
+router.post('/PUTA', multer().none(), clientController.client_make_sale_post);
 
 
 module.exports = router;

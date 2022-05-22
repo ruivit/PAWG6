@@ -24,15 +24,27 @@
 		  <th>Price</th>
 		  <th>Quantity</th>
 		  <th>Total</th>
+		  <th></th>
 		</tr>
 		<tr *ngFor="let item of items">
 		  <td>{{item.title}}</td>
 		  <td>{{item.sellPrice}}</td>
 		  <td>{{item.stock}}</td>
 		  <td>{{item.sellPrice * item.stock}}</td>
+		  <td>
+			  <button class="button fancy-button" (click)="removeFromCart(item)">
+				  <i class="material-icons-outlined">delete</i></button>
+		  </td>
 		</tr>
 	  </table><br>
-	  <button type="button">Place Order</button>
+	  <div class="total">
+		<h3>Total: {{total}} €</h3>
+		<h1>Shipping: {{shipping}} €</h1>
+	  </div>
+	  <button type="button" class="button fancy-button" (click)="makeSale(items)">
+		  <i class="material-icons-outlined">shopping_cart</i>
+		  Checkout
+	  </button>
 	</div>
    </div>
   </div>
