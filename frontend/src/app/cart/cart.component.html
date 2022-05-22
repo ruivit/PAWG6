@@ -26,13 +26,13 @@
 		  <th>Total</th>
 		  <th></th>
 		</tr>
-		<tr *ngFor="let item of items">
-		  <td>{{item.title}}</td>
-		  <td>{{item.sellPrice}}</td>
-		  <td>{{item.stock}}</td>
-		  <td>{{item.sellPrice * item.stock}}</td>
+		<tr *ngFor="let book of books">
+		  <td>{{book.title}}</td>
+		  <td>{{book.sellPrice}}</td>
+		  <td>{{book.stock}}</td>
+		  <td>{{book.sellPrice * book.stock}}</td>
 		  <td>
-			  <button class="button fancy-button" (click)="removeFromCart(item)">
+			  <button class="button fancy-button" (click)="removeFromCart(book)">
 				  <i class="material-icons-outlined">delete</i></button>
 		  </td>
 		</tr>
@@ -41,7 +41,7 @@
 		<h3>Total: {{total}} €</h3>
 		<h1>Shipping: {{shipping}} €</h1>
 	  </div>
-	  <button type="button" class="button fancy-button" (click)="makeSale(items)">
+	  <button type="button" class="button fancy-button" (click)="makeSale(books)">
 		  <i class="material-icons-outlined">shopping_cart</i>
 		  Checkout
 	  </button>

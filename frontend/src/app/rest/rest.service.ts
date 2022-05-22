@@ -31,20 +31,23 @@ export class RestService {
     return this.http.get<Book[]>(endpoint + '/index');
   }
 
-  getClientPoints(): Observable<any> {
+  searchBooks(term: string): Observable<Book[]> {
+    // url: https://localhost/clientapi/search?term=term
+    return this.http.get<Book[]>(endpoint + '/search?term=' + term);
+  }
+
+  getClientPoints() {
     // url: https://localhost/clientapi/clientPoints
     return this.http.get(endpoint + '/clientPoints');
   }
 
-  getPointsData(): Observable<any> {
+  getPointsData() {
     // url: https://localhost/clientapi/pointsData
     return this.http.get(endpoint + '/pointsData');
   }
 
-  // make the sale to the API
-  makeSale(sale: Sale) {
-    console.log(sale);
-    // url: https://localhost/clientapi/makeSale
-    return this.http.post(endpoint + '/asd', sale, httpOptions);
+  addSale(sale: Sale) {
+    // url: https://localhost/clientapi/addSale
+    return this.http.post(endpoint + '/makeSale', sale, httpOptions).subscribe(data => {});
   }
 }

@@ -15,5 +15,6 @@ router.get('/pointsData', clientAPIController.points_data_get);
 
 router.post('/makeSale', multer().none(), clientAPIController.client_make_sale_post);
 
+router.get('/search', multer().none(), clientAPIController.client_search_get);
 
 module.exports = router;
