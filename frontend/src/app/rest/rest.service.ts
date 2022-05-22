@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
 
 
 import { Book } from '../Models/Book';
+import { Sale } from '../Models/Sale';
 
 const endpoint = 'https://localhost/clientapi';
 
@@ -31,4 +31,19 @@ export class RestService {
     return this.http.get<Book[]>(endpoint + '/index');
   }
 
+  getClientPoints(): Observable<any> {
+    // url: https://localhost/clientapi/clientPoints
+    return this.http.get(endpoint + '/clientPoints');
+  }
+
+  getPointsData(): Observable<Object> {
+    // url: https://localhost/clientapi/pointsData
+    return this.http.get(endpoint + '/pointsData');
+  }
+
+  makeSale(sale: any): Observable<any> {
+    // url: https://localhost/clientapi/makeSale
+    console.log(sale);
+    return this.http.post<any>(endpoint + '/makeSale', sale, httpOptions);
+  }
 }

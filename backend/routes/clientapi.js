@@ -35,6 +35,7 @@ router.post('/password', multer().none(), clientAPIController.client_updatepassw
 
 // ------------------------------ Angular/ ---------------------------
 
+<<<<<<< HEAD
 // Get Books: https://localhost/clientapi/newbooks
 // Search Books: https://localhost/clientapi/search/
 
@@ -57,6 +58,14 @@ router.post('/sellbook', multer().none(), clientAPIController.client_sell_used_b
 // Comprar livros
 //router.get('/buy', clientAPIController.client_buy_get);
 //router.post('/buy', multer().none(), clientAPIController.client_buy_post);
+=======
+router.get('/index', clientController.client_index_get);
+
+router.get('/clientPoints', clientController.client_points_get);
+router.get('/pointsData', clientController.points_data_get);
+
+router.post('/PUTA', multer().none(), clientController.client_make_sale_post);
+>>>>>>> 841d74cac41ebfad82510b5bb131ba9562c4265c
 
 
 module.exports = router;
