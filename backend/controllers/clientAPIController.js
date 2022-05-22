@@ -49,7 +49,6 @@ exports.points_data_get = function (req, res) {
 }
 
 exports.client_make_sale_post = function (req, res) {
-    console.log(req.body);
     try {
         var sale = new Sale({
             clientUsername: "client1",
@@ -65,11 +64,38 @@ exports.client_make_sale_post = function (req, res) {
         sale.save(function (err) {
             if (err) {
                 res.render('error/error', { message: "Error creating sale", error: err });
-            } else {
-                res.status(200).json(sale);
             }
         });
+        
+        // Update the client points
+        Client.findOneAndUpdate(
+            { username: "client1" }, 
+            { $inc: { points: req.body.gainedPoints } }
+        , function (err, client) {
+            if (err) {
+                res.render('error/error', { error: err });
+            } else {
+                res.status(200).json( { message: "Sale created successfully" } );
+            }
+        });
+
     } catch (err) {
         res.render('error/error', { message: "Error creating sale", error: err });
     }
 }; // Make a sale
+
+exports.client_search_get = function (req, res) {
+    var term = req.query.term;
+    Book.find({
+        $or: [
+            { title: { $regex: term, $options: 'i' } }
+        ]}, function (err, books) {
+            if (err) {
+                res.render('error/error', { error: err });
+            } else {
+                res.status(200).json(books);
+            }
+        }
+    );
+}; // Search for books
+            

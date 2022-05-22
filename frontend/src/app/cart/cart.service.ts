@@ -18,6 +18,10 @@ export class CartService {
     this.books.push(book);
   }
 
+  removeInCart(book: Book) {
+    this.books = this.books.filter(b => b._id !== book._id);
+  }
+
   getBooksInCart() {
     return this.books;
   }
@@ -26,20 +30,9 @@ export class CartService {
     this.books = [];
     return this.books;
   }
+
   
-  removeItem(book: Book) {
-    this.books.splice(this.books.indexOf(book), 1);
-  }
 
-  // ----------- Points
-  getClientPoints() {
-    return this.rest.getClientPoints();
-  }
-
-  getPointsData() {
-    return this.rest.getPointsData();
-  }
-    
 
   calculateTotal() {
     let total = 0;
@@ -50,8 +43,8 @@ export class CartService {
   }
 
   calculateShipping(): Number {
-    let clientPoints: any = this.getClientPoints();
-    let pointsData: any = this.getPointsData();
+    let clientPoints: any = this.rest.getClientPoints();
+    let pointsData: any = this.rest.getPointsData();
     let shipping = 0;
 
     if (!(clientPoints == pointsData.shippingPoints)) {
@@ -59,23 +52,27 @@ export class CartService {
     }
     return shipping;
   }
-  
+
   calculateGainedPoints(): Number {
-    let clientPoints: any = this.getClientPoints();
-    let pointsData: any = this.getPointsData();
+    let pointsData: any = this.rest.getPointsData();
     let gainedPoints = 0;
+
+    gainedPoints += this.calculateTotal() * pointsData.percentagePerPurschase;
+    
+    // If there is a promotion active, the client gains even more points
+    if (pointsData.salePromotionActive) {
+      gainedPoints += pointsData.pointsPerPromotion;
+    }
+
     return gainedPoints;
   }
 
   makeSale(books: Book[]) {
     let sale: Sale = new Sale(
-      "client1",
-      books,
-      this.calculateTotal(),
-      this.calculateGainedPoints(),
-      new Date(),
-      this.calculateShipping()
+      "client1", books, this.calculateTotal(),
+      this.calculateGainedPoints(), new Date(), this.calculateShipping()
     );
-    return this.rest.makeSale(sale);
+    this.rest.addSale(sale);
   }
+
 }

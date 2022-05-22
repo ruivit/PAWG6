@@ -15,6 +15,7 @@ import { IndexComponent } from './index/index.component';
 import { CartComponent } from './cart/cart.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { SellBookComponent } from './sell-book/sell-book.component';
+import { SearchComponent } from './search/search.component';
 
 
 const appRoutes: Routes = [
@@ -25,12 +26,19 @@ const appRoutes: Routes = [
   data: { title: 'New Books' }
   },
   {
+  //url: localhost:4200/search
+  path: 'search',
+  component: SearchComponent,
+  data: { title: 'Search Books' }
+  },
+  {
   //url: localhost:4200/cart
   path: 'cart',
   component: CartComponent,
   data: { title: 'My Shopping Cart' }
   },
   {
+    //url: localhost:4200/sellbook
     path: 'sellbook',
     component: SellBookComponent,
     data: { title: 'Sell Book' }
@@ -45,6 +53,7 @@ const appRoutes: Routes = [
     TopbarComponent,
     IndexComponent,
     SellBookComponent,
+    SearchComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
