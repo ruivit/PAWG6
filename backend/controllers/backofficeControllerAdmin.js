@@ -10,6 +10,7 @@ var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
 
 var Book = require('../models/bookModel');
+var UsedBook = require('../models/usedBookModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
 
@@ -774,3 +775,61 @@ exports.backoffice_admin_managediscount_post = function (req, res) {
 }; // Update the discount table
 
 //#endregion
+
+// --------------------- Backoffice/Admin/proposals ---------------------------
+
+exports.backoffice_admin_proposals_get = async function (req, res) {
+    async function pagination(req, totalDocs) {
+        var perPage = 5;
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+        
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
+
+    var pD, totalDocs, books;
+    try {
+        if (req.query.search) {
+            // ISBN Search
+            if (RegExp(/^[0-9]+$/).test(req.query.search)) {
+                totalDocs = await UsedBook.countDocuments().where('isbn').equals(req.query.search);
+                pD = await pagination(req, totalDocs);
+                
+                books = await UsedBook.find({ isbn: req.query.search })
+                .skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+            
+            // Title, Author, Editor Search
+            } else {
+                totalDocs = await UsedBook.find({ $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { author: { $regex: req.query.search, $options: 'i' } },
+                    { editor: { $regex: req.query.search, $options: 'i' } }
+                ] }).countDocuments();
+                pD = await pagination(req, totalDocs);
+
+                books = await UsedBook.find({ $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { author: { $regex: req.query.search, $options: 'i' } },
+                    { editor: { $regex: req.query.search, $options: 'i' } }
+                ] })
+                .skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+            }
+
+        // General listing
+        } else {
+            totalDocs = await UsedBook.countDocuments();
+            pD = await pagination(req, totalDocs);
+            books = await UsedBook.find().skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+        }
+        
+        res.render('backoffice/admin/book/manageBooks', 
+        { books: books, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
+        // Milestone2 - add message of success
+    } catch (error) {
+        res.render("error/error", { message: "Error listing books", error: error });
+    }
+}; // List/show the books

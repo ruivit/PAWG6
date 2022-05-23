@@ -127,5 +127,12 @@ router.post('/manageDiscount', multer().none(), controller.backoffice_admin_mana
 
 //#endregion
 
+
+//#region proposals
+// ------------------------------ /Backoffice/Admin/Proposals
+
+router.get('/proposals', controller.backoffice_admin_proposals_get);
+
+
 module.exports = router;
 

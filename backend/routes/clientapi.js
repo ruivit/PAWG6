@@ -17,4 +17,6 @@ router.post('/makeSale', multer().none(), clientAPIController.client_make_sale_p
 
 router.get('/search', multer().none(), clientAPIController.client_search_get);
 
+router.post('/sellBook', multer().none(), clientAPIController.client_sell_usedbook_post);
+
 module.exports = router;

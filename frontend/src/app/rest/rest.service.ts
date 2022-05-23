@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 
 
 import { Book } from '../Models/Book';
+import { UsedBook } from '../Models/used-book';
 import { Sale } from '../Models/Sale';
 
 const endpoint = 'https://localhost/clientapi';
@@ -49,5 +50,10 @@ export class RestService {
   addSale(sale: Sale) {
     // url: https://localhost/clientapi/addSale
     return this.http.post(endpoint + '/makeSale', sale, httpOptions).subscribe(data => {});
+  }
+
+  sellBook(usedBook: UsedBook) {
+    // url: https://localhost/clientapi/sellBook
+    return this.http.post(endpoint + '/sellBook', usedBook, httpOptions).subscribe(data => {});
   }
 }

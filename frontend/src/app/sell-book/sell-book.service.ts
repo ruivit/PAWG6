@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+import { RestService } from '../rest/rest.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SellBookService {
 
-  //Ver cart
+  _url = '';
 
-  constructor() { }
+  constructor(private restService: RestService) { }
+
+  onSubmit(usedBookModel: any) {
+    this.restService.sellBook(usedBookModel);
+  }
 }

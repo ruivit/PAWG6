@@ -1,9 +1,11 @@
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
-var UsedBook = require('../models/UsedBookModel');
+var UsedBook = require('../models/usedBookModel');
 var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
+var nodemailer = require('nodemailer');
+
 
 
 
@@ -13,6 +15,32 @@ function getDateNow(date) {
     dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
     d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
     return dateNowString;
+}
+
+function sendMail(text) {
+    var transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+          user: 'tugatobito@outlook.pt',
+          pass: 'bah54321'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'tugatobito@outlook.pt',
+        to: '8210227@estg.ipp.pt',
+        subject: 'Sending Email using Node.js',
+        text: 'O cliente' + text.provider + ' pretende vender o livro ' + 
+        text.title + ' a um preço de ' + text.sellPrice + '€'
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
 }
 
 // -------------------- Client/API ---------------------------
@@ -98,4 +126,28 @@ exports.client_search_get = function (req, res) {
         }
     );
 }; // Search for books
-            
+
+exports.client_sell_usedbook_post = function (req, res) {
+    console.log(req.body);
+
+        var usedBook = new UsedBook({
+            title: req.body.title,
+            author: req.body.author,
+            genre: req.body.genre,
+            editor: req.body.editor,
+            resume: req.body.resume,
+            isbn: req.body.isbn,
+            provider: 'cliente1',
+            sellPrice: req.body.sellPrice
+        });
+        console.log(usedBook);
+
+        usedBook.save(function (err) {
+            if (err) {
+                res.render('error/error', { message: "Error creating used book", error: err });
+            }
+        });
+
+        sendMail(usedBook);
+        res.status(200).json( { message: "Used book created successfully" } );
+}; // Sell a used book

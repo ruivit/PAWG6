@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-const { schema } = require('./clientModel');
+//var schema  = require('./clientModel');
 
 var Schema = mongoose.Schema;
 
@@ -17,4 +17,4 @@ var UsedBookSchema = new Schema({
 }, { collection: 'TempBooks' });
 
 // Export model.
-module.exports = mongoose.model('TempBooks', UsedBookSchema);
+module.exports = mongoose.model('TempBook', UsedBookSchema);
