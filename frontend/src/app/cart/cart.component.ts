@@ -15,7 +15,7 @@ export class CartComponent implements OnInit {
 
   booksInCart: Book[] = [];
   clientPoints: number = 0;
-  pointsData: any;
+  pointsData: any = {};
 
   constructor(
     private restService: RestService,
@@ -82,7 +82,7 @@ export class CartComponent implements OnInit {
     let gainedPoints: number = 0;
 
     gainedPoints += (this.pointsData.percentagePerPurschase
-    * this.booksInCart.length);
+    * (this.booksInCart.length * 2));
     
     // If there is a promotion active, the client gains even more points
     if (this.pointsData.salePromotionActive) {

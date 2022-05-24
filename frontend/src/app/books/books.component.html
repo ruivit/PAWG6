@@ -10,7 +10,7 @@
         <h3 *ngIf="book.stock == 0">Out of stock</h3>
         <p>Available: {{book.stock}}</p>
         <div>
-            <div class="quantity" *ngIf="book.stock > 0">
+            <div class="quantity{{book._id}}" *ngIf="book.stock > 0">
                 <input type="number" min="1" max="{{book.stock}}"
                 value="{{book.stock}}" name="quantity" [(ngModel)]="quantity">
             </div>

@@ -42,9 +42,9 @@ export class RestService {
     return this.http.get<any>(endpoint + '/clientPoints');
   }
 
-  getPointsData() {
+  getPointsData(): Observable<any> {
     // url: https://localhost/clientapi/pointsData
-    return this.http.get(endpoint + '/pointsData');
+    return this.http.get<any>(endpoint + '/pointsData');
   }
 
   addSale(sale: Sale) {

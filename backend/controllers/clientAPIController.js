@@ -103,30 +103,22 @@ exports.client_make_sale_post = function (req, res) {
         { $inc: { points: req.body.gainedPoints } }
         , function (err, client) {
             if (err) {
-                res.render('error/error', { error: err });
+                res.render('error/error', { message: "Error updating client points", error: err });
             }
         });
 
     // Update the books with the quantity
-    for (var i = 0; i < req.body.books.length; i++) {
-        var bookId = req.body.books._id[i];
-        var quantity = req.body.quantity[i];
-        console.log(bookId);
-        console.log(quantity);
-        Book.findById(bookId, function (err, book) {
-            if (err) { res.render('error/error', { error: err });
-            } else {
-                if (! (book.stock - quantity <= 0)) {
-                    book.stock -= quantity;
-                } else {
-                    book.stock = 0;
-                }
+    for (var book = 0; book < req.body.books.length; book++) {
+        for (var qnt = 0; qnt < req.body.quantity.length; qnt++) {
+            Book.findOneAndUpdate({ _id: req.body.books[book]._id }, 
+                { $inc: { stock: -req.body.quantity[qnt] } }
+                , function (err, book) {
+                    if (err) {
+                        res.render('error/error', { message: "Error updating book quantity", error: err });
+                    }
+                });
             }
-            book.save(function (err) {
-                if (err) { res.render('error/error', { error: err }); }
-            });
-        });
-    }
+        }
 
     res.status(200).json({ message: "Sale made" });
 }; // Make a sale

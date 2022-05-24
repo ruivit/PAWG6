@@ -47,7 +47,6 @@ export class BooksComponent implements OnInit {
     else {
       book.quantityToBuy = quantity;
       this.cartService.addToCart(book, quantity);
-      window.alert("[" + quantity + "] Book " + book.title + " added to cart!");
     }
   }
 
