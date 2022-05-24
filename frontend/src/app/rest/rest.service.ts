@@ -37,9 +37,9 @@ export class RestService {
     return this.http.get<Book[]>(endpoint + '/search?term=' + term);
   }
 
-  getClientPoints() {
+  getClientPoints(): Observable<any> {
     // url: https://localhost/clientapi/clientPoints
-    return this.http.get(endpoint + '/clientPoints');
+    return this.http.get<any>(endpoint + '/clientPoints');
   }
 
   getPointsData() {
