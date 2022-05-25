@@ -4,6 +4,7 @@ var fs = require('fs');
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
 var TempBook = require('../models/tempBookModel');
+var UsedBook = require('../models/usedBookModel');
 var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var nodemailer = require('nodemailer');
@@ -169,7 +170,7 @@ exports.client_make_sale_post = function (req, res) {
 
 exports.client_search_get = function (req, res) {
     var term = req.query.term;
-    Book.find({
+    UsedBook.find({
         $or: [
             { title: { $regex: term, $options: 'i' } }
         ]
@@ -203,7 +204,7 @@ exports.client_sell_tempbook_post = function (req, res) {
 
      // save the cover
      if (req.file) {
-        fs.writeFileSync("./public/images/tempBooks/" + tempBook._id + ".jpg", req.file.buffer);
+        fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
     }
 
     //sendMailClient(tempBook);

@@ -911,7 +911,6 @@ exports.backoffice_admin_usedbook_create_get = async function (req, res) {
 
 
 exports.backoffice_admin_usedbook_create_post = function (req, res) {
-    console.log(req.body);
     var isbnPromise = UsedBook.findOne({ isbn: req.body.isbn });
     
     // Use promises to search for ISBN already in use
@@ -1002,12 +1001,18 @@ exports.backoffice_admin_usedbook_create_post = function (req, res) {
                             });
                         }
                     }
-                }); // Editor end
+                }); // Editor end               
+                
+                // Get the id from the url
+                // url : /usedbook/create/628e60c40d10ec91221ddf02
+                var tempID = req.url;
+                tempID = tempID.split("/");
+                tempID = tempID[tempID.length - 1];
 
-                // save the cover
-                if (req.file) {
-                    fs.writeFileSync("./public/images/usedbooks/" + book._id + ".jpg", req.file.buffer);
-                }
+                // Rename the file of this id to the new id
+                fs.rename('./public/images/books/' + tempID + '.jpg', './public/images/books/' + book._id + '.jpg', function (err) {
+                    if (err) { console.log(err); }
+                });
             }
         }); // UsedBook save end
         res.redirect('/backoffice/admin/usedbook');
