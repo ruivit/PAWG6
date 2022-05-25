@@ -922,7 +922,7 @@ exports.backoffice_admin_usedbook_create_post = function (req, res) {
             books = [];
             console.log(oldata,"erro de isbn");
             res.render('backoffice/admin/proposels/indexProposels',
-            { books: books, message: "ISBN already exists" });
+            { books: books, message: "We already have this book in our used book stock." });
         } else {
             // If the isbn is not already in use, create the book
             var book = new UsedBook({
