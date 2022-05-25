@@ -12,7 +12,6 @@ const endpoint = 'https://localhost/clientapi';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
   })
 };
 
@@ -55,8 +54,9 @@ export class RestService {
 
   sellBook(formParams: FormData) {
     // url: https://localhost/clientapi/sellBook
+
     console.log(formParams, "RestService");
-    return this.http.post(endpoint + '/sellBook', formParams, httpOptions).subscribe(data => {
+    return this.http.post(endpoint + '/sellBook', formParams).subscribe(data => {
       console.log(data, "data");
     });
   }

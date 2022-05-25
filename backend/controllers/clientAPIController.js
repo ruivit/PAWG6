@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
@@ -5,7 +7,6 @@ var UsedBook = require('../models/usedBookModel');
 var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var nodemailer = require('nodemailer');
-
 
 
 
@@ -183,8 +184,6 @@ exports.client_search_get = function (req, res) {
 }; // Search for books
 
 exports.client_sell_usedbook_post = function (req, res) {
-    console.log(req.file);
-    console.log(req.files)
     var usedBook = new UsedBook({
         title: req.body.title,
         author: req.body.author,
@@ -205,15 +204,13 @@ exports.client_sell_usedbook_post = function (req, res) {
 
      // save the cover
      if (req.file) {
-        fs.writeFileSync("./public/images/books/ola" + ".jpg", req.file.buffer);
+        fs.writeFileSync("./public/images/tempBooks/" + usedBook._id + ".jpg", req.file.buffer);
     }
 
-        //sendMailClient(usedBook);
-        //sendMail(usedBook);
+    //sendMailClient(usedBook);
+    //sendMail(usedBook);
         
-        res.status(200).json( { message: "Used book created successfully" } );
-
-        
+    res.status(200).json( { message: "Used book created successfully" } );
 
 }; // Sell a used book
 
