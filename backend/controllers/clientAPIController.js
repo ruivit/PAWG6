@@ -3,7 +3,7 @@ var fs = require('fs');
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
-var UsedBook = require('../models/usedBookModel');
+var TempBook = require('../models/tempBookModel');
 var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var nodemailer = require('nodemailer');
@@ -182,20 +182,20 @@ exports.client_search_get = function (req, res) {
     });
 }; // Search for books
 
-exports.client_sell_usedbook_post = function (req, res) {
-    var usedBook = new UsedBook({
+exports.client_sell_tempbook_post = function (req, res) {
+    var tempBook = new TempBook({
         title: req.body.title,
         author: req.body.author,
         genre: req.body.genre,
         editor: req.body.editor,
         resume: req.body.resume,
         isbn: req.body.isbn,
-        provider: 'cliente1',
+        provider: req.body.provider,
         sellPrice: req.body.sellPrice
     });
     console.log(req.body);
 
-    usedBook.save(function (err) {
+    tempBook.save(function (err) {
         if (err) {
             res.render('error/error', { message: "Error creating used book", error: err });
         }
@@ -203,11 +203,11 @@ exports.client_sell_usedbook_post = function (req, res) {
 
      // save the cover
      if (req.file) {
-        fs.writeFileSync("./public/images/tempBooks/" + usedBook._id + ".jpg", req.file.buffer);
+        fs.writeFileSync("./public/images/tempBooks/" + tempBook._id + ".jpg", req.file.buffer);
     }
 
-    //sendMailClient(usedBook);
-    //sendMail(usedBook);
+    //sendMailClient(tempBook);
+    //sendMail(tempBook);
         
     res.status(200).json( { message: "Used book created successfully" } );
 

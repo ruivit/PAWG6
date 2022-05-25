@@ -27,7 +27,7 @@ export class SellBookComponent implements OnInit {
     }
   }
 
-  usedBookModel = new UsedBook('Title is required','','default','','');
+  tempBookModel = new UsedBook('Title is required','','default','','');
 
   selectedFile: any;
 
@@ -39,7 +39,7 @@ export class SellBookComponent implements OnInit {
 
   onSubmit(){
     this.loading = true;
-    this.sellBookService.onSubmit(this.usedBookModel, this.selectedFile);
+    this.sellBookService.onSubmit(this.tempBookModel, this.selectedFile);
   }
 
   

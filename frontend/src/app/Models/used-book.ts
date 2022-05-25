@@ -14,7 +14,7 @@ export class UsedBook {
         this.editor = editor;
         this.resume = resume;
         this.isbn = isbn;
-        this.provider = provider;
+        this.provider = "ruiv";
         this.sellPrice = sellPrice;
     }
 }
