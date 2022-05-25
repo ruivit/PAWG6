@@ -6,6 +6,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var bodyParser = require('body-parser');
 
 // Logger
 var logger = require('morgan');
@@ -23,6 +24,7 @@ require('dotenv').config();
 
 
 var app = express();
+app.use(bodyParser.json());
 
 // Use helmet for incresead security 
 var helmet = require('helmet');

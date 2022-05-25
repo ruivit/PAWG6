@@ -45,6 +45,8 @@ function sendMail(text) {
           console.log('Email sent: ' + info.response);
         }
       });
+
+      transporter.close();
 }
 
 // Quando um cliente submete um livro para avaliação, se o livro for corretamente adicionado,
@@ -66,7 +68,7 @@ function sendMailClient(text) {
         text: 'A sua proposta foi submtida com sucesso, com a seguinte informação\n\n'+
         'O cliente' + text.provider + ' pretende vender o livro ' + text.title + 
         ' a um preço de ' + text.sellPrice + '€' + '\n\n' + 
-        'Por favor, aguarde a nossa resposta, tentarempos ser breves.'
+        'Por favor, aguarde a nossa resposta, tentaremos ser breves.'
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -76,6 +78,7 @@ function sendMailClient(text) {
             console.log('Email sent: ' + info.response);
         }
     });
+    transporter.close();
 }
 
 
@@ -180,8 +183,8 @@ exports.client_search_get = function (req, res) {
 }; // Search for books
 
 exports.client_sell_usedbook_post = function (req, res) {
-    console.log(req.body);
-
+    console.log(req.file);
+    console.log(req.files)
     var usedBook = new UsedBook({
         title: req.body.title,
         author: req.body.author,
@@ -192,7 +195,7 @@ exports.client_sell_usedbook_post = function (req, res) {
         provider: 'cliente1',
         sellPrice: req.body.sellPrice
     });
-    console.log(usedBook);
+    console.log(req.body);
 
     usedBook.save(function (err) {
         if (err) {
@@ -200,10 +203,16 @@ exports.client_sell_usedbook_post = function (req, res) {
         }
     });
 
-        sendMailClient(usedBook);
-        sendMail(usedBook);
+     // save the cover
+     if (req.file) {
+        fs.writeFileSync("./public/images/books/ola" + ".jpg", req.file.buffer);
+    }
+
+        //sendMailClient(usedBook);
+        //sendMail(usedBook);
         
         res.status(200).json( { message: "Used book created successfully" } );
+
         
 
 }; // Sell a used book

@@ -72,10 +72,24 @@
             [class.is-invalid]="sellprice.invalid && sellprice.touched" name="sellprice"[(ngModel)]="usedBookModel.sellPrice">
         </div>
 
-        <div class="custom-file input-container ic2">
+        <!-- <div class="custom-file input-container ic2">
             <input name="cover" class="custom-file-input" type="file" required>
             <label>Choose Book Cover Image</label>
-        </div>
+        </div> -->
+
+        <!-- <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+        <button (click)="fileInput.click()">Select File</button> -->
+
+        <div class="container">
+            <div class="row mt-5">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="formFile" class="form-label">Upload file example</label>
+                  <input (change)="onFileChanged($event)" class="form-control" type="file" id="formFile">
+                </div>
+              </div>
+            </div>
+           </div>
 
         <button class="btn btn-primary" type="submit">Submit</button>
     </form>    

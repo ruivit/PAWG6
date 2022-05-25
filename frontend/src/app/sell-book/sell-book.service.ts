@@ -10,7 +10,12 @@ export class SellBookService {
 
   constructor(private restService: RestService) { }
 
-  onSubmit(usedBookModel: any) {
-    this.restService.sellBook(usedBookModel);
+  onSubmit(usedBookModel: any, selectedFile: any) {
+    //console.log(usedBookModel);
+    console.log(selectedFile, "onSubmit service");
+    const formParams = new FormData();
+    formParams.append('title', usedBookModel.title);
+    console.log(formParams, "onsubmitformParams");
+    this.restService.sellBook(formParams);
   }
 }
