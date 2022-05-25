@@ -1,28 +1,29 @@
-<head>
-  <link href="/path/to/material-icons/iconfont/material-icons.css" rel="stylesheet">
-</head>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,200&display=swap');
-</style>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+/>
 <section class="navigation">
   <div class="nav-container">
     <div class="brand">
-      <a href="#!">Logo</a>
+      <a href="/">Library G6</a>
     </div>
     <nav>
-      <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
       <ul class="nav-list">
         <li>
-          <!-- go to search page -->
           <a href="/search">Search</a>
         </li>
         <li>
           <a routerLink="/cart" class="button fancy-button">
-            <i class="material-icons">shopping_cart</i>
+            <span class="material-icons">
+              shop
+            </span>
           </a>
         </li>
         <li>
-          <a href="#!">My Purchases</a>
+          <a href="/mypurschases">My Purchases</a>
+        </li>
+        <li>
+          <a href="/mysoldbooks">My Sold Books</a>
         </li>
         <li>
           <a href="/sellbook">Sell a Book!</a>

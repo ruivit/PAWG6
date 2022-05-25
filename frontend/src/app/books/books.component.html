@@ -13,13 +13,11 @@
             <div class="quantity{{book._id}}" *ngIf="book.stock > 0">
                 <input type="number" min="1" max="{{book.stock}}"
                 value="{{book.stock}}" name="quantity" [(ngModel)]="quantity">
+                <button *ngIf="book.stock > 0"
+                class="button fancy-button" (click)="addToCart(book, quantity)">
+                Add To Cart
+                </button>
             </div>
-            <button *ngIf="book.stock > 0"
-            class="button fancy-button" (click)="addToCart(book, quantity)">
-                <i class="material-icons-outlined">shopping_cart</i>
-                Add to cart
-            </button>
         </div>
-        
     </div>
 </div>

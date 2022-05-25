@@ -14,6 +14,8 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { SellBookComponent } from './sell-book/sell-book.component';
 import { SearchComponent } from './search/search.component';
 import { LoginportalComponent } from './loginportal/loginportal.component';
+import { MypurschasesComponent } from './mypurschases/mypurschases.component';
+import { MysoldbooksComponent } from './mysoldbooks/mysoldbooks.component';
 
 
 const appRoutes: Routes = [
@@ -46,6 +48,18 @@ const appRoutes: Routes = [
     path: 'sellbook',
     component: SellBookComponent,
     data: { title: 'Sell Book' }
+  },
+  {
+  //url: localhost:4200/mypurschases
+  path: 'mypurschases',
+  component: MypurschasesComponent,
+  data: { title: 'My Purchases' }
+  },
+  {
+  //url: localhost:4200/mysoldbooks
+  path: 'mysoldbooks',
+  component: MysoldbooksComponent,
+  data: { title: 'My Sold Books' }
   }
 ];
 
@@ -59,6 +73,8 @@ const appRoutes: Routes = [
     SellBookComponent,
     SearchComponent,
     LoginportalComponent,
+    MypurschasesComponent,
+    MysoldbooksComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

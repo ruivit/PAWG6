@@ -37,6 +37,16 @@ export class RestService {
     return this.http.get<Book[]>(endpoint + '/search?term=' + term);
   }
 
+  getClientPurschases(): Observable<Sale[]> {
+    // url: https://localhost/clientapi/mypurschases
+    return this.http.get<Sale[]>(endpoint + '/mypurschases');
+  }
+
+  getClientBooks(): Observable<Book[]> {
+    // url: https://localhost/clientapi/mysoldbooks
+    return this.http.get<Book[]>(endpoint + '/mysoldbooks');
+  }
+
   getClientPoints(): Observable<any> {
     // url: https://localhost/clientapi/clientPoints
     return this.http.get<any>(endpoint + '/clientPoints');
