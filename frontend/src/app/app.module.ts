@@ -13,6 +13,7 @@ import { CartComponent } from './cart/cart.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { SellBookComponent } from './sell-book/sell-book.component';
 import { SearchComponent } from './search/search.component';
+import { LoginportalComponent } from './loginportal/loginportal.component';
 
 
 const appRoutes: Routes = [
@@ -23,16 +24,22 @@ const appRoutes: Routes = [
   data: { title: 'New Books' }
   },
   {
-  //url: localhost:4200/search
-  path: 'search',
-  component: SearchComponent,
-  data: { title: 'Search Books' }
+  //url: localhost:4200/login
+  path: 'login',
+  component: LoginportalComponent,
+  data: { title: 'Login' }
   },
   {
   //url: localhost:4200/cart
   path: 'cart',
   component: CartComponent,
   data: { title: 'My Shopping Cart' }
+  },
+  {
+    //url: localhost:4200/search
+    path: 'search',
+    component: SearchComponent,
+    data: { title: 'Search Books' }
   },
   {
     //url: localhost:4200/sellbook
@@ -51,6 +58,7 @@ const appRoutes: Routes = [
     IndexComponent,
     SellBookComponent,
     SearchComponent,
+    LoginportalComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
