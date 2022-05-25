@@ -17,6 +17,8 @@ function getDateNow(date) {
     return dateNowString;
 }
 
+// Quando um cliente submete um livro para avaliação, é enviado um email ao administrador
+
 function sendMail(text) {
     var transporter = nodemailer.createTransport({
         service: 'outlook',
@@ -30,8 +32,41 @@ function sendMail(text) {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
         subject: 'Sending Email using Node.js',
-        text: 'O cliente' + text.provider + ' pretende vender o livro ' + 
+        text: 'O cliente ' + text.provider + ' pretende vender o livro ' + 
         text.title + ' a um preço de ' + text.sellPrice + '€'
+      };
+      
+
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+}
+
+// Quando um cliente submete um livro para avaliação, se o livro for corretamente adicionado,
+// é enviado um email ao cliente com a informaçãosubtida
+
+function sendMailClient(text) {
+    var transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+          user: 'tugatobito@outlook.pt',
+          pass: 'bah54321'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'tugatobito@outlook.pt',
+        to: '8210227@estg.ipp.pt',
+        subject: 'Sending Email using Node.js',
+        text: 'A sua proposta foi submtida com sucesso, com a seguinte informação\n\n'+
+        'O cliente' + text.provider + ' pretende vender o livro ' + text.title + 
+        ' a um preço de ' + text.sellPrice + '€' + '\n\n' + 
+        'Por favor, aguarde a nossa resposta, tentarempos ser breves.'
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -42,6 +77,9 @@ function sendMail(text) {
         }
       });
 }
+
+
+
 
 // -------------------- Client/API ---------------------------
 
@@ -148,6 +186,11 @@ exports.client_sell_usedbook_post = function (req, res) {
             }
         });
 
+        sendMailClient(usedBook);
         sendMail(usedBook);
+        
         res.status(200).json( { message: "Used book created successfully" } );
+        
+
 }; // Sell a used book
+
