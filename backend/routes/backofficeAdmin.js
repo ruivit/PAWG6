@@ -129,9 +129,25 @@ router.post('/manageDiscount', multer().none(), controller.backoffice_admin_mana
 
 
 //#region proposals
-// ------------------------------ /Backoffice/Admin/Proposals
+// ------------------------------ /Backoffice/Admin/Proposals ------------------------
 
 router.get('/proposals', controller.backoffice_admin_proposals_get);
+
+// ------------------------------ /Backoffice/Admin/UsedBooks --------------------------
+
+router.get('/usedbook', controller.backoffice_admin_usedbook_get);
+
+
+// Admin Used Book Create
+router.get('/usedbook/create/:id', multer().none(), controller.backoffice_admin_usedbook_create_get);
+router.post('/usedbook/create/:id', multer().none(), controller.backoffice_admin_usedbook_create_post);
+
+// Admin Used Book Update
+router.get('/usedbook/update/:id', multer().none(), controller.backoffice_admin_usedbook_update_get);
+router.post('/usedbook/update/:id', multer().none(), controller.backoffice_admin_usedbook_update_post);
+
+// Admin Book Delete
+router.post('/usedbook/delete/:id', multer().none(), controller.backoffice_admin_usedbook_delete_post);
 
 
 module.exports = router;

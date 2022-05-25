@@ -10,6 +10,7 @@ var Employee = require('../models/employeeModel');
 var Client = require('../models/clientModel');
 
 var Book = require('../models/bookModel');
+var TempBook = require('../models/tempBookModel');
 var UsedBook = require('../models/usedBookModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
@@ -796,6 +797,65 @@ exports.backoffice_admin_proposals_get = async function (req, res) {
         if (req.query.search) {
             // ISBN Search
             if (RegExp(/^[0-9]+$/).test(req.query.search)) {
+                totalDocs = await TempBook.countDocuments().where('isbn').equals(req.query.search);
+                pD = await pagination(req, totalDocs);
+                
+                books = await TempBook.find({ isbn: req.query.search })
+                .skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+            
+            // Title, Author, Editor Search
+            } else {
+                totalDocs = await TempBook.find({ $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { author: { $regex: req.query.search, $options: 'i' } },
+                    { editor: { $regex: req.query.search, $options: 'i' } }
+                ] }).countDocuments();
+                pD = await pagination(req, totalDocs);
+
+                books = await TempBook.find({ $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { author: { $regex: req.query.search, $options: 'i' } },
+                    { editor: { $regex: req.query.search, $options: 'i' } }
+                ] })
+                .skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+            }
+
+        // General listing
+        } else {
+            totalDocs = await TempBook.countDocuments();
+            pD = await pagination(req, totalDocs);
+            books = await TempBook.find().skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
+        }
+        
+        res.render('backoffice/admin/proposels/indexProposels', 
+        { books: books, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
+        // Milestone2 - add message of success
+    } catch (error) {
+        res.render("error/error", { message: "Error listing books", error: error });
+    }
+}; // List/show the books
+
+
+// --------------------- Backoffice/Admin/UsedBooks ---------------------------
+
+exports.backoffice_admin_usedbook_get = async function (req, res) {
+    async function pagination(req, totalDocs) {
+        var perPage = 5;
+        var totalPages = Math.ceil(totalDocs / perPage);
+        
+        var pageNumber = (req.query.page == null) ? 1 : req.query.page;
+        var startFrom = (pageNumber - 1) * perPage;
+        
+        // convert pageNumber to integer
+        pageNumber = parseInt(pageNumber);
+        return { perPage: perPage, totalPages: totalPages, pageNumber: pageNumber, startFrom: startFrom };
+    }
+
+    var pD, totalDocs, books;
+    try {
+        if (req.query.search) {
+            // ISBN Search
+            if (RegExp(/^[0-9]+$/).test(req.query.search)) {
                 totalDocs = await UsedBook.countDocuments().where('isbn').equals(req.query.search);
                 pD = await pagination(req, totalDocs);
                 
@@ -826,10 +886,169 @@ exports.backoffice_admin_proposals_get = async function (req, res) {
             books = await UsedBook.find().skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
         }
         
-        res.render('backoffice/admin/book/manageBooks', 
+        res.render('backoffice/admin/usedbook/manageUsedBooks', 
         { books: books, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         // Milestone2 - add message of success
     } catch (error) {
         res.render("error/error", { message: "Error listing books", error: error });
     }
 }; // List/show the books
+
+// --------------------- Backoffice/Admin/UsedBooks/Create ---------------------------
+
+
+exports.backoffice_admin_usedbook_create_get = async function (req, res) {
+    try {
+        var book = await TempBook.findById(req.params.id);
+       
+        book.buyPrice = book.sellPrice;
+        console.log(book);
+        res.render('backoffice/admin/usedbook/createUsedBook', { book: book });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating book", error: error });
+    }
+}; // Get the form to create a new book
+
+
+exports.backoffice_admin_usedbook_create_post = function (req, res) {
+    console.log(req.body);
+    var isbnPromise = UsedBook.findOne({ isbn: req.body.isbn });
+    
+    // Use promises to search for ISBN already in use
+    Promise.all([isbnPromise]).then(function (promisesToDo) {
+        // If the isbn already exists
+        if (promisesToDo[0]) {
+            oldata = req.body;
+            books = [];
+            console.log(oldata,"erro de isbn");
+            res.render('backoffice/admin/proposels/indexProposels',
+            { books: books, message: "ISBN already exists" });
+        } else {
+            // If the isbn is not already in use, create the book
+            var book = new UsedBook({
+                title: req.body.title,
+                author: req.body.author,
+                genre: req.body.genre,
+                editor: req.body.editor,
+                resume: req.body.resume,
+                isbn: req.body.isbn,
+                dateString: getDateNow(),
+                stock: 1,
+                condition: req.body.condition,
+                provider: req.body.provider,
+                sellPrice: req.body.sellPrice,
+                buyPrice: req.body.buyPrice,
+            });
+
+        book.save(function (err) {
+            if (err) {
+                res.render('error/error', { message: "Error creating book", error: err });
+            } else {
+                // find or create the author
+                Author.findOne({ name: req.body.author }, function (err, author) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating book", error: err });
+                    } else {
+                        if (!author) {
+                            var author = new Author({
+                                name: req.body.author,
+                                books: [book]
+                            });
+
+                            author.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', 
+                                    { message: "Error creating author", error: err });
+                                }
+                            });
+                        } else {
+                            // Add the book to the array of books of the author
+                            author.books.push(book);
+                            author.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', 
+                                    { message: "Error creating author", error: err });
+                                }
+                            });
+                        }
+                    }
+                }); // Author end
+
+                // find or create the editor
+                Editor.findOne({ name: req.body.editor }, function (err, editor) {
+                    if (err) {
+                        res.render('error/error', { message: "Error creating book", error: err });
+                    } else {
+                        if (!editor) {
+                            var editor = new Editor({
+                                name: req.body.editor,
+                                books: [book]
+                            });
+
+                            editor.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', 
+                                    { message: "Error creating editor", error: err });
+                                }
+                            });
+                        } else {
+                            // Add the book to the array of books of the editor
+                            editor.books.push(book);
+                            editor.save(function (err) {
+                                if (err) {
+                                    res.render('error/error', 
+                                    { message: "Error creating editor", error: err });
+                                }
+                            });
+                        }
+                    }
+                }); // Editor end
+
+                // save the cover
+                if (req.file) {
+                    fs.writeFileSync("./public/images/usedbooks/" + book._id + ".jpg", req.file.buffer);
+                }
+            }
+        }); // UsedBook save end
+        res.redirect('/backoffice/admin/usedbook');
+    }
+    }); // Promise end
+}; // Create a new Usedbook
+
+
+
+exports.backoffice_admin_usedbook_update_get = async function (req, res) {
+    try {
+        var book = await UsedBook.findById(req.params.id);
+        res.render('backoffice/admin/usedbook/updateUsedBook', { book: book });
+    } catch (error) {
+        res.render("error/error", { message: "Error updating book", error: error });
+    }
+}; // Get the form to update a Usedbook
+
+exports.backoffice_admin_usedbook_update_post = function (req, res) {
+    UsedBook.findByIdAndUpdate( { _id: req.params.id }, req.body, { new: true }, 
+        function (err, book) {
+        if (err) {
+            res.render('error/error', { message: "Error updating book", error: err });
+        } else {
+            res.redirect('/backoffice/admin/usedbook');
+        }
+    });
+}; // Update a book
+
+
+exports.backoffice_admin_usedbook_delete_post = function (req, res) {
+    UsedBook.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            res.render('error/error', { message: "Error deleting book", error: err });
+        } else {
+            // Milestone2 - add message of success
+            res.redirect('/backoffice/admin/usedbook');
+        }
+    });
+}; // Delete a book
+
+
+
+

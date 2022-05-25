@@ -10,13 +10,13 @@ export class SellBookService {
 
   constructor(private restService: RestService) { }
 
-  onSubmit(usedBookModel: any, selectedFile: any) {    
+  onSubmit(tempBookModel: any, selectedFile: any) {    
     // Create a new form data object  
     const formParams = new FormData();
 
     // Iterate over all book values and add them to the object
-    for (let key in usedBookModel) {
-      formParams.append(key, usedBookModel[key]);
+    for (let key in tempBookModel) {
+      formParams.append(key, tempBookModel[key]);
     }
 
     // Add the image to the object
