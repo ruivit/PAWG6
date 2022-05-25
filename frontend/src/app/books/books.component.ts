@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from '../rest/rest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Book } from '../Models/Book';
 import { CartService } from '../cart/cart.service';
-
+import { Book } from '../Models/Book';
 
 @Component({
   selector: 'app-books',
@@ -13,7 +12,9 @@ import { CartService } from '../cart/cart.service';
 })
 
 export class BooksComponent implements OnInit {
-  books: any = [];
+  
+  books: Book[] = [];
+  quantity: number = 0;
 
   constructor(public rest: RestService, 
     private route: ActivatedRoute, 
@@ -27,23 +28,26 @@ export class BooksComponent implements OnInit {
   getBooks() {
     this.books = [];
     this.rest.index().subscribe((data: {}) => {
-      this.books = data;
+      this.books = data as Book[];
     });
   }
 
-  addToCart(book: Book) {
-    // if the quantity is already at the maximum, alert the user
-    if (this.cartService.books.find(x => x.stock === book.stock)) {
-      window.alert('No more ' + book.title + ' books available!');
-      return;
-    }
-
-    // if the book is already in the cart, increment the quantity
-    if (this.cartService.books.find(x => x._id === book._id)) {
-      this.cartService.books.find(x => x._id === book.stock++);
-    } else {     
-      this.cartService.addToCart(book);
-    }
-    window.alert('Your product has been added to the cart! + ' + book.title);
+  getBookStock(book: Book) {
+    return book.stock;
   }
+
+  addToCart(book: Book, quantity: number) {
+    // if the quantity is already at the maximum, alert the user
+    
+    // if the book is already in the cart, increment the quantity
+    if (this.cartService.getBooksInCart().includes(book)) {
+      book.quantityToBuy++;
+    }
+    // otherwise, add the book to the cart
+    else {
+      book.quantityToBuy = quantity;
+      this.cartService.addToCart(book, quantity);
+    }
+  }
+
 }

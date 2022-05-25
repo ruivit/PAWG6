@@ -10,7 +10,8 @@ export class Book {
         public isbn: number, 
         public date: String, 
         public condition: String, 
-        public provider: String, 
+        public provider: String,
+        public quantityToBuy: number,
         public stock: number, 
         public sellPrice: number, 
         public buyPrice: number) {
@@ -25,6 +26,7 @@ export class Book {
             this.date = date;
             this.condition = condition;
             this.provider = provider;
+            this.quantityToBuy = quantityToBuy;
             this.stock = stock;
             this.sellPrice = sellPrice;
             this.buyPrice = buyPrice;

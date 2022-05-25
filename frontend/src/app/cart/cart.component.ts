@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Router } from '@angular/router';
+import { RestService } from '../rest/rest.service';
 import { CartService } from './cart.service';
-import { Book } from '../Models/Book';
 
+import { Book } from '../Models/Book';
+import { Sale } from '../Models/Sale';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -10,28 +13,102 @@ import { Book } from '../Models/Book';
 })
 export class CartComponent implements OnInit {
 
-  books = this.cartService.getBooksInCart();
-  total = this.cartService.calculateTotal();
-  shipping = this.cartService.calculateShipping();
-  gainedPoints = this.cartService.calculateGainedPoints();
+  booksInCart: Book[] = [];
+  clientPoints: number = 0;
+  pointsData: any = {};
 
   constructor(
-    private cartService: CartService
+    private restService: RestService,
+    private cartService: CartService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.booksInCart = this.cartService.getBooksInCart();
+    this.clientPoints = 0;
+    this.restService.getClientPoints().subscribe(data => {
+      this.clientPoints = data;
+    });
+    this.restService.getPointsData().subscribe(data => {
+      this.pointsData = data;
+    });
   }
 
-  getTotal(): number {
-    return this.cartService.calculateTotal();
+  getBooks() {
+    return this.booksInCart;
   }
 
+  // -------------- Cart Operations --------------
   removeFromCart(book: Book) {
-    this.cartService.removeInCart(book);
+    // ATUALIZAR PRECOS AND COISOS
+    this.booksInCart.splice(this.booksInCart.indexOf(book), 1);
   }
+
+  clearCart() {
+    this.booksInCart = [];
+    return this.booksInCart;
+  }
+
+  
+  // -------------- Sale Operations --------------
+  calculateTotalPrice(): number {
+    // FALTA APLICAR DESCONTOS PELA VENDA E POR IDADE CLIENTE
+    let total = 0;
+    for (let item of this.booksInCart) {
+      total += item.sellPrice;
+    }
+    return total;
+  }
+
+  calculateShipping(): number {
+    let shipping = 0;
+    
+    if (this.booksInCart.length > 0) {
+      // If the client has the points to get free shipping
+      if (this.clientPoints == this.pointsData.shippingPoints) {
+        shipping = 0;
+      } else {
+        // Calculate the shipping cost
+        shipping = this.booksInCart.length * 0.85;
+      }
+      return shipping;
+    } else {
+      //generate error message
+      return 0;
+    }
+  }
+
+  calculateGainedPoints(): number {
+    let gainedPoints: number = 0;
+
+    gainedPoints += (this.pointsData.percentagePerPurschase
+    * (this.booksInCart.length * 2));
+    
+    // If there is a promotion active, the client gains even more points
+    if (this.pointsData.salePromotionActive) {
+      gainedPoints += this.pointsData.pointsPerPromotion;
+    }
+
+    return gainedPoints;
+  }
+  
 
   makeSale(books: Book[]) {
-    this.cartService.makeSale(books);
+    let quantity: number[] = [];
+    for (let book of books) {
+      quantity.push(book.quantityToBuy);
+    }
+
+    let sale: Sale = new Sale(
+      "ruiv", books, quantity, this.calculateTotalPrice(),
+      this.calculateGainedPoints(), new Date(), this.calculateShipping()
+    );
+    console.log(sale);
+    confirm("Are you sure you want to make this sale?");
+    // TODO - this.restService.updatePoints(client_id);
+    // if shipping == 0 remove the 2k points
+    this.restService.addSale(sale);
+    this.router.navigate(['/']);
   }
 
 }

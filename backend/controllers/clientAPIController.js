@@ -12,8 +12,8 @@ var nodemailer = require('nodemailer');
 // ------------------- Auxiliary Functions ---------------------------
 function getDateNow(date) {
     var d = new Date();
-    dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
+        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
     return dateNowString;
 }
 
@@ -23,12 +23,12 @@ function sendMail(text) {
     var transporter = nodemailer.createTransport({
         service: 'outlook',
         auth: {
-          user: 'tugatobito@outlook.pt',
-          pass: 'bah54321'
+            user: 'tugatobito@outlook.pt',
+            pass: 'bah54321'
         }
-      });
-      
-      var mailOptions = {
+    });
+
+    var mailOptions = {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
         subject: 'Sending Email using Node.js',
@@ -71,11 +71,11 @@ function sendMailClient(text) {
       
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-          console.log(error);
+            console.log(error);
         } else {
-          console.log('Email sent: ' + info.response);
+            console.log('Email sent: ' + info.response);
         }
-      });
+    });
 }
 
 
@@ -95,7 +95,7 @@ exports.client_index_get = function (req, res) {
 
 
 exports.client_points_get = function (req, res) {
-    Client.findById(req.session.client._id, function (err, client) {
+    Client.findOne({ username: "ruiv" }, function (err, client) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
@@ -115,76 +115,90 @@ exports.points_data_get = function (req, res) {
 }
 
 exports.client_make_sale_post = function (req, res) {
-    try {
-        var sale = new Sale({
-            clientUsername: "client1",
-            books: req.body.books,
-            total: req.body.total,
-            gainedPoints: req.body.gainedPoints,
-            dateString: getDateNow(),
-            online: true,
-            shipping: req.body.shipping,
-            date: req.body.date
-        });
+    // Make the sale
+    var sale = new Sale({
+        clientUsername: "ruiv",
+        books: req.body.books,
+        quantity: req.body.quantity,
+        total: req.body.total,
+        gainedPoints: req.body.gainedPoints,
+        dateString: getDateNow(),
+        online: true,
+        shipping: req.body.shipping,
+        date: req.body.date
+    });
 
-        sale.save(function (err) {
-            if (err) {
-                res.render('error/error', { message: "Error creating sale", error: err });
-            }
-        });
-        
-        // Update the client points
-        Client.findOneAndUpdate(
-            { username: "client1" }, 
-            { $inc: { points: req.body.gainedPoints } }
+    sale.save(function (err) {
+        if (err) {
+            res.render('error/error', { message: "Error creating sale", error: err });
+        }
+    });
+
+
+    // Update the client points
+    Client.findOneAndUpdate(
+        { username: "client1" },
+        { $inc: { points: req.body.gainedPoints } }
         , function (err, client) {
             if (err) {
-                res.render('error/error', { error: err });
-            } else {
-                res.status(200).json( { message: "Sale created successfully" } );
+                res.render('error/error', { message: "Error updating client points", error: err });
             }
         });
 
-    } catch (err) {
-        res.render('error/error', { message: "Error creating sale", error: err });
-    }
+    // Update the books with the quantity
+    for (var book = 0; book < req.body.books.length; book++) {
+        for (var qnt = 0; qnt < req.body.quantity.length; qnt++) {
+            Book.findOneAndUpdate({ _id: req.body.books[book]._id }, 
+                { $inc: { stock: -req.body.quantity[qnt] } }
+                , function (err, book) {
+                    if (err) {
+                        res.render('error/error', { message: "Error updating book quantity", error: err });
+                    }
+                });
+            }
+        }
+
+    res.status(200).json({ message: "Sale made" });
 }; // Make a sale
+
+
 
 exports.client_search_get = function (req, res) {
     var term = req.query.term;
     Book.find({
         $or: [
             { title: { $regex: term, $options: 'i' } }
-        ]}, function (err, books) {
-            if (err) {
-                res.render('error/error', { error: err });
-            } else {
-                res.status(200).json(books);
-            }
+        ]
+    }, function (err, books) {
+        if (err) {
+            res.render('error/error', { error: err });
+        } else {
+            res.status(200).json(books);
         }
+    }
     );
 }; // Search for books
 
 exports.client_sell_usedbook_post = function (req, res) {
     console.log(req.body);
 
-        var usedBook = new UsedBook({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
-            editor: req.body.editor,
-            resume: req.body.resume,
-            isbn: req.body.isbn,
-            provider: 'cliente1',
-            sellPrice: req.body.sellPrice
-        });
-        console.log(usedBook);
+    var usedBook = new UsedBook({
+        title: req.body.title,
+        author: req.body.author,
+        genre: req.body.genre,
+        editor: req.body.editor,
+        resume: req.body.resume,
+        isbn: req.body.isbn,
+        provider: 'cliente1',
+        sellPrice: req.body.sellPrice
+    });
+    console.log(usedBook);
 
-        usedBook.save(function (err) {
-            if (err) {
-                res.render('error/error', { message: "Error creating used book", error: err });
-            }
-        });
+    usedBook.save(function (err) {
+        if (err) {
+            res.render('error/error', { message: "Error creating used book", error: err });
+        }
+    });
 
         sendMailClient(usedBook);
         sendMail(usedBook);

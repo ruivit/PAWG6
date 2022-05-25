@@ -21,27 +21,25 @@
 	  <table>
 		<tr>
 		  <th>Product</th>
-		  <th>Price</th>
 		  <th>Quantity</th>
 		  <th>Total</th>
 		  <th></th>
 		</tr>
-		<tr *ngFor="let book of books">
+		<tr *ngFor="let book of booksInCart">
 		  <td>{{book.title}}</td>
-		  <td>{{book.sellPrice}}</td>
-		  <td>{{book.stock}}</td>
-		  <td>{{book.sellPrice * book.stock}}</td>
+		  <td>{{book.quantityToBuy}}</td>
+		  <td>{{book.sellPrice * book.quantityToBuy}}</td>
 		  <td>
 			  <button class="button fancy-button" (click)="removeFromCart(book)">
 				  <i class="material-icons-outlined">delete</i></button>
 		  </td>
 		</tr>
-	  </table><br>
+	  </table><br> 
 	  <div class="total">
-		<h3>Total: {{total}} €</h3>
-		<h1>Shipping: {{shipping}} €</h1>
+		<h2 style="text-align: center;">Total: {{calculateTotalPrice()}} €</h2>
+		<h3 style="text-align: center;">Shipping: {{calculateShipping()}} €</h3>
 	  </div>
-	  <button type="button" class="button fancy-button" (click)="makeSale(books)">
+	  <button type="button" class="button fancy-button" (click)="makeSale(booksInCart)">
 		  <i class="material-icons-outlined">shopping_cart</i>
 		  Checkout
 	  </button>
