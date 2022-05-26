@@ -95,7 +95,7 @@ exports.client_index_get = function (req, res) {
         } else {
             res.status(200).json(books);
         }
-    }).sort({ dateAdded: -1 }).limit(5);
+    }).sort({ dateAdded: -1 }).limit(6);
 }; // Get all the books for sale
 
 
@@ -128,7 +128,11 @@ exports.client_login_post = function (req, res) {
         else if (!client) { res.status(404).json({ message: 'Cliente não encontrado' }); }
         else {
             if (client.checkPassword(req.body.password)) {
-                res.status(200).json({ message: 'Login efetuado com sucesso' });
+                res.status(200).json(
+                    { message: 'Login efetuado com sucesso',
+                    username: client.username,
+                    name: client.name,
+                    clientID: client._id });
             } else {
                 res.status(401).json({ message: 'Password errada' });
             }
@@ -209,17 +213,38 @@ exports.client_make_sale_post = function (req, res) {
 
 exports.client_search_get = function (req, res) {
     var term = req.query.term;
-    UsedBook.find({
-        $or: [
-            { title: { $regex: term, $options: 'i' } }
-        ]
-    }, function (err, books) {
-        if (err) {
-            res.render('error/error', { error: err });
-        } else {
-            res.status(200).json(books);
+    var bookType = req.query.bookType;
+    switch (bookType) {
+        case "new":
+            Book.find({
+                $or: [
+                    { title: { $regex: term, $options: 'i' } },
+                    { author: { $regex: term, $options: 'i' } },
+                ]
+            }, function (err, books) {
+                if (err) {
+                    res.render('error/error', { error: err });
+                } else {
+                    res.status(200).json(books);
+                }
+            });
+            break;
+
+        case "used":
+            UsedBook.find({
+                $or: [
+                    { title: { $regex: term, $options: 'i' } },
+                    { author: { $regex: term, $options: 'i' } },
+                ]
+            }, function (err, books) {
+                if (err) {
+                    res.render('error/error', { error: err });
+                } else {
+                    res.status(200).json(books);
+                }
+            });
+            break;
         }
-    });
 }; // Search for books
 
 exports.client_sell_tempbook_post = function (req, res) {
@@ -254,8 +279,8 @@ exports.client_sell_tempbook_post = function (req, res) {
 }; // Sell a used book
 
 exports.client_mypurschases_get = async function (req, res) {
-    var sales = await Sale.find({ clientUsername: "ruiv" });
-
+    var sales = await Sale.find({ clientUsername: req.query.username });
+    console.log(sales);
     // Get the book title
     for (var sale = 0; sale < sales.length; sale++) {
         for (var book = 0; book < sales[sale].books.length; book++) {
@@ -268,11 +293,11 @@ exports.client_mypurschases_get = async function (req, res) {
 
 
 exports.client_mysoldbooks_get = function (req, res) {
-    UsedBook.find({ provider: "cliente1" }, function (err, usedBooks) {
+    UsedBook.find({ provider: req.query.username }, function (err, usedBooks) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
             res.status(200).json(usedBooks);
         }
     }).sort({ dateAdded: -1 }); 
-}
+}; // Get all the used books sold by the clients

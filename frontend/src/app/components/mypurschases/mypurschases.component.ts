@@ -20,7 +20,6 @@ export class MypurschasesComponent implements OnInit {
   getPurchases() {
     this.restService.getClientPurschases().subscribe(data => {
       this.purchases = data;
-      console.log("mp gb " + this.purchases);
     });
   }
 

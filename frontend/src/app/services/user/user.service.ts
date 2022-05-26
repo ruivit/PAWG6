@@ -15,12 +15,12 @@ export class UserService {
   }
 
   userLogin(payload: any) {
-    console.log("userservice: " + payload);
     return this.http.post(endpoint + '/login', payload);
   }
 
   logout() {
     localStorage.removeItem('Token');
+    localStorage.removeItem('clientID');
     this.router.navigate([ '/login' ]);
   }
 

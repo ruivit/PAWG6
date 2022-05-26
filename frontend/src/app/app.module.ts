@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IndexComponent } from './components/index/index.component';
 import { CartComponent } from './components/cart/cart.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
+import { TopbarclientComponent } from './components/topbarclient/topbarclient.component';
 import { SellBookComponent } from './components/sell-book/sell-book.component';
 import { SearchComponent } from './components/search/search.component';
 import { MypurschasesComponent } from './components/mypurschases/mypurschases.component';
@@ -22,7 +23,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDatepickerModule} from '@angular/material/datepicker'; 
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatRadioModule } from '@angular/material/radio'; 
+import {MatIconModule} from '@angular/material/icon'; 
+
 
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -30,20 +34,33 @@ import { AuthGuard } from './guard/auth.guard';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
+import { IndexclientComponent } from './components/indexclient/indexclient.component';
 
 const appRoutes: Routes = [
   {
   //url: localhost:4200/
   path: '',
-  canActivate: [ AuthGuard ],
   component: IndexComponent,
-  data: { title: 'New Books' }
+  data: { title: 'Welcome to Library G6' }
+  },
+  {
+  //url: localhost:4200/library
+  path: 'library',
+  canActivate: [ AuthGuard ],
+  component: IndexclientComponent,
+  data: { title: 'Welcome to Library G6' }
   },
   {
   //url: localhost:4200/login
   path: 'login',
   component: LoginComponent,
   data: { title: 'Login' }
+  },
+  {
+    //url: localhost:4200/login
+    path: 'logout',
+    component: LoginComponent,
+    data: { title: 'Logout' }
   },
   {
   //url: localhost:4200/sign-up
@@ -96,6 +113,8 @@ const appRoutes: Routes = [
     MysoldbooksComponent,
     LoginComponent,
     SignupComponent,
+    IndexclientComponent,
+    TopbarclientComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -105,7 +124,9 @@ const appRoutes: Routes = [
     AppRoutingModule,
     ReactiveFormsModule,
     MatButtonModule, MatInputModule, MatCardModule, MatFormFieldModule,MatGridListModule,MatSnackBarModule, BrowserAnimationsModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatRadioModule,
+    MatIconModule
     ],
     providers: [
       {

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../cart/cart.service';
 import { RestService } from '../../services/rest/rest.service';
 
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -12,6 +13,7 @@ export class SearchComponent implements OnInit {
 
   books: any = [];
   term: string = '';
+  bookType: string = '';
   quantity: number = 0;
 
   constructor(
@@ -24,19 +26,20 @@ export class SearchComponent implements OnInit {
   }
 
   getBooks() {
-    console.log(this.term);
-    this.restService.searchBooks(this.term).subscribe((data: {}) => {
+    if (this.bookType == '') { this.bookType = "new" }
+    this.restService.searchBooks(this.term, this.bookType).subscribe((data: {}) => {
       this.books = data;
-      console.log(this.books);
     });
+  }
+
+  setSearchType(bookType: string) {
+    this.bookType = bookType;
   }
 
   onSearch(term: string) {
     // only search if the term is at least 3 characters long
     if (term.length >= 3) {
       this.term = term;
-      console.log(this.term);
-      console.log(this.books);
       this.getBooks();
     } else if (term.length == 0) {
       this.getBooks();

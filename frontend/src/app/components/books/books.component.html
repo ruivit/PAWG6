@@ -1,23 +1,24 @@
-<div class='book' *ngFor="let book of books">
-    <img src="https://localhost/images/books/{{book._id}}.jpg" crossorigin="anonymous">
-    <div class="info"><br>
-        <h3>{{book.title}}</h3>
-        <p>Author: {{book.author}}</p>
-        <p>Editor: {{book.editor}}</p>
-        <p>Genre: {{book.genre}}</p>
-        <p>{{book.sellPrice}} €</p>
-        <!-- if the stock if zero show out of stock message -->
-        <h3 *ngIf="book.stock == 0">Out of stock</h3>
-        <p>Available: {{book.stock}}</p>
-        <div>
-            <div class="quantity{{book._id}}" *ngIf="book.stock > 0">
-                <input type="number" min="1" max="{{book.stock}}"
-                value="{{book.stock}}" name="quantity" [(ngModel)]="quantity">
-                <button *ngIf="book.stock > 0"
-                class="button fancy-button" (click)="addToCart(book, quantity)">
-                Add To Cart
+<mat-grid-list cols="2" rowHeight="380px">
+    <mat-grid-tile *ngFor="let book of books">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>{{book.title}}</mat-card-title>
+                <mat-card-subtitle>{{book.author}}</mat-card-subtitle>
+            </mat-card-header>
+            <img src="https://localhost/images/books/{{book._id}}.jpg" crossorigin="anonymous">
+            <mat-card-content>
+                <mat-card-subtitle>Editora: {{book.editor}}</mat-card-subtitle>
+                <mat-card-subtitle>{{book.resume}}</mat-card-subtitle>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>
+                    <mat-icon>thumb_up</mat-icon>
                 </button>
-            </div>
-        </div>
-    </div>
-</div>
+                <button mat-button>
+                    <mat-icon>thumb_down</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>

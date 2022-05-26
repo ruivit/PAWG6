@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../services/user/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -28,6 +27,8 @@ export class LoginComponent implements OnInit {
       (data: any) => {
         let token = data.token;
         localStorage.setItem('Token', token);
+        localStorage.setItem('clientID', data.clientID);
+        localStorage.setItem('username', data.username);
         this.router.navigate(['/']);
       });
   }
