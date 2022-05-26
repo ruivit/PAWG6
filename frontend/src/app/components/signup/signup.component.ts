@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit {
     password: new FormControl(''),
     birthDate: new FormControl(''),
     ageType: new FormControl(''),
+    recommendation: new FormControl('')
   });
   ngOnInit() { }
 

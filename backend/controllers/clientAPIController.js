@@ -1,15 +1,18 @@
 var fs = require('fs');
 
+const pointsIDcollection = "628f8e0357a2e0f1b8541354";
+const discountIDcollection = "628f8d9857a2e0f1b8541351";
+
 // ----------------------- Models ------------------------------
 var Client = require('../models/clientModel');
 var Book = require('../models/bookModel');
 var TempBook = require('../models/tempBookModel');
 var UsedBook = require('../models/usedBookModel');
 var Sale = require('../models/saleModel');
-var Points = require('../models/pointsModel');
+
 var nodemailer = require('nodemailer');
-
-
+var Points = require('../models/pointsModel');
+var Discount = require('../models/discountModel');
 
 // ------------------- Auxiliary Functions ---------------------------
 function getDateNow(date) {
@@ -99,8 +102,7 @@ exports.client_index_get = function (req, res) {
 }; // Get all the books for sale
 
 
-exports.client_register_post = function (req, res) {
-    console.log(req.body);
+exports.client_register_post = async function (req, res) {
     var client = new Client({
         username: req.body.username,
         name: req.body.name,
@@ -115,9 +117,18 @@ exports.client_register_post = function (req, res) {
 
     client.setPassword(req.body.password);
 
+    // If the client was recommended by an existing client
+    var recommendedBy = await Client.findOne({ email: req.body.recommendation });
+
+    if (recommendedBy) {
+        var pointsData = await Points.findOne({});
+        var pointsGained = pointsData.recomendationClient;
+        client.points += pointsGained;
+    }
+
     client.save(function (err) {
         if (err) { res.status(500).json(err); }
-        else { res.status(200).json({ message: 'Cliente registado com sucesso' }); }
+        else { res.status(201).json({ message: 'Registration Successfull' }); }
     });
 }; // Register a new client
 
@@ -143,7 +154,8 @@ exports.client_login_post = function (req, res) {
 
 
 exports.client_points_get = function (req, res) {
-    Client.findOne({ username: "ruiv" }, function (err, client) {
+    console.log(req.body);
+    Client.findOne({ username: req.body.clientID }, function (err, client) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
@@ -152,15 +164,20 @@ exports.client_points_get = function (req, res) {
     });
 }
 
-exports.points_data_get = function (req, res) {
-    Points.findById("62650c0098b8a1abe1af3bdc", function (err, points) {
+exports.points_table_get = function (req, res) {
+    Points.findOne({}, function (err, points) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
             res.status(200).json(points);
         }
     });
-}
+};
+
+exports.discount_table_get = async function (req, res) {
+    var discountTable = await Discount.findById(discountIDcollection);
+    res.status(200).json(discountTable);
+};
 
 exports.client_make_sale_post = function (req, res) {
     // Make the sale

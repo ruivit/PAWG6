@@ -91,6 +91,39 @@
 				<div class="cut cut-long"></div>
 				<label for="salePromotionActive" class="placeholder">Sale Promotion Active</label>
 			</div>
+			<div class="input-container ic2">
+				<input name="buyedBooks" class="input" type="text" placeholder=" "
+				value="<%= locals.points.buyedBooks %>" oninput="updatedValue()"
+				pattern="0\.00[0-9]" required/>
+				<div class="cut cut-long"></div>
+				<label for="buyedBooks" class="placeholder">Buyed Books </label>
+				<span class="info">
+				Points that the client gains when buying books (0.00*)
+				</span>
+			</div>
+			<br>
+			<div class="input-container ic2">
+				<input name="soldBooks" class="input" type="text" placeholder=" "
+				value="<%= locals.points.soldBooks %>" oninput="updatedValue()"
+				pattern="0\.00[0-9]" required/>
+				<div class="cut cut-long"></div>
+				<label for="soldBooks" class="placeholder">Sold Books</label>
+				<span class="info">
+				Points gained by the number of sold books (0.00*)
+				</span>
+			</div>
+			<br>
+			<div class="input-container ic2">
+				<input name="valueSoldBooks" class="input" type="text" placeholder=" "
+				value="<%= locals.points.valueSoldBooks %>" oninput="updatedValue()"
+				pattern="0\.00[0-9]" required/>
+				<div class="cut cut-long"></div>
+				<label for="valueSoldBooks" class="placeholder">Total Value of Sold Books</label>
+				<span class="info">
+				Total value of sold books by the client (0.00*)
+				</span>
+			</div>
+			<br>
 			<button type="text" class="submit">Update</button>
 		</form>
 		<form action="/backoffice/admin/" method="get">

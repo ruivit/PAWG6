@@ -14,8 +14,9 @@ router.post('/login', clientAPIController.client_login_post);
 
 router.get('/index', clientAPIController.client_index_get);
 
-router.get('/clientPoints', clientAPIController.client_points_get);
-router.get('/pointsData', clientAPIController.points_data_get);
+router.get('/clientPoints', multer().none(), clientAPIController.client_points_get);
+router.get('/pointsTable', clientAPIController.points_table_get);
+router.get('/discountTable', clientAPIController.discount_table_get);
 
 router.post('/makeSale', multer().none(), clientAPIController.client_make_sale_post);
 

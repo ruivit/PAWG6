@@ -16,6 +16,7 @@ export class CartComponent implements OnInit {
   booksInCart: Book[] = [];
   clientPoints: number = 0;
   pointsData: any = {};
+  discountData: any = {};
 
   constructor(
     private restService: RestService,
@@ -29,9 +30,15 @@ export class CartComponent implements OnInit {
     this.restService.getClientPoints().subscribe(data => {
       this.clientPoints = data;
     });
-    this.restService.getPointsData().subscribe(data => {
+    this.restService.getPointsTable().subscribe(data => {
       this.pointsData = data;
     });
+    this.restService.getDiscountTable().subscribe(data => {
+      this.discountData = data;
+    });
+    console.log(this.clientPoints);
+    console.log(this.pointsData);
+    console.log(this.discountData);
   }
 
   getBooks() {

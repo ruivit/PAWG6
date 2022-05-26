@@ -23,8 +23,18 @@ var PointsSchema = new Schema({
   salePromotionActive : { type: Boolean, required: true },
   // Se true, vai ver o pointsPerSale e multiplicar pelo
   // percentagePerPurchase, se false, nao faz nada
+
   pointsPerSalePromotion : { type: Number, required: true },
   // Calculado em funcao da percentagePerPurschase
+
+  buyedBooks: { type: Number, required: true, default: 0.001 },
+  // Quantidade de livros comprados pelo cliente * este valor
+
+  soldBooks: { type: Number, required: true, default: 0.001 },
+  // Quantidade de livros vendidos pelo cliente * este valor
+  
+  valueSoldBooks: { type: Number, required: true, default: 0.001 },
+  // Valor total dos livros vendidos pelo cliente * este valor
 
 }, { collection: 'Points' });
 

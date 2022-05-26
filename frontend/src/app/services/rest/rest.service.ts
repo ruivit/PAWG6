@@ -38,6 +38,9 @@ export class RestService {
       + '&bookType=' + bookType);
   }
 
+
+
+  
   getClientPurschases(): Observable<Sale[]> {
     // url: https://localhost/clientapi/mypurschases
     return this.http.get<Sale[]>(endpoint + '/mypurschases?username=' + localStorage.getItem('username'));
@@ -50,12 +53,20 @@ export class RestService {
 
   getClientPoints(): Observable<any> {
     // url: https://localhost/clientapi/clientPoints
-    return this.http.get<any>(endpoint + '/clientPoints');
+    return this.http.get<any>(endpoint + '/clientPoints?username=' + localStorage.getItem('username'));
   }
 
-  getPointsData(): Observable<any> {
+
+
+
+  getPointsTable(): Observable<any> {
     // url: https://localhost/clientapi/pointsData
-    return this.http.get<any>(endpoint + '/pointsData');
+    return this.http.get<any>(endpoint + '/pointsTable');
+  }
+
+  getDiscountTable(): Observable<any> {
+    // url: https://localhost/clientapi/pointsData
+    return this.http.get<any>(endpoint + '/discountTable');
   }
 
   addSale(sale: Sale) {

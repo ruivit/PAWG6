@@ -1,8 +1,8 @@
 var crypto = require('crypto');
 var fs = require('fs');
 
-const pointsIDcollection = "62650c0098b8a1abe1af3bdc";
-const discountIDcollection = "62667eb941eac5eecb5f4e3a";
+const pointsIDcollection = "628f8e0357a2e0f1b8541354";
+const discountIDcollection = "628f8d9857a2e0f1b8541351";
 
 
 // ----------------------- Models ------------------------------

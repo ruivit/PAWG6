@@ -1,6 +1,6 @@
 <section>
-  <mat-grid-list cols="3">
-    <mat-grid-tile colspan="3">
+  <mat-grid-list cols="2">
+    <mat-grid-tile colspan="2">
       <mat-card>
         <mat-card-header color="primary">
           <mat-card-title>Signup Form</mat-card-title>
@@ -39,6 +39,11 @@
           <mat-form-field style="width:400px !important">
             <mat-label>Password</mat-label>
             <input type="password" formControlName="password" matInput>
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width:400px">
+            <mat-label>Did a friend recommend you our website?</mat-label>
+            <input formControlName="recommendation" matInput>
           </mat-form-field>
           <br>
           <button type="submit" mat-raised-button color="primary">Submit</button>
