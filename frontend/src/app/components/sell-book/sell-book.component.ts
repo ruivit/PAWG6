@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UsedBook } from '../Models/used-book';
+import { UsedBook } from '../../models/used-book';
 import { SellBookService } from './sell-book.service';
 
 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../../services/rest/rest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { CartService } from '../cart/cart.service';
-import { Book } from '../Models/Book';
+import { Book } from '../../models/Book';
 
 @Component({
   selector: 'app-books',

@@ -8,6 +8,10 @@ var clientAPIController = require('../controllers/clientAPIController');
 
 // ------------------------------ Angular/ ---------------------------
 
+router.post('/register', clientAPIController.client_register_post);
+
+router.post('/login', clientAPIController.client_login_post);
+
 router.get('/index', clientAPIController.client_index_get);
 
 router.get('/clientPoints', clientAPIController.client_points_get);

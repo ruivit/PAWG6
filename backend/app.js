@@ -31,9 +31,10 @@ var helmet = require('helmet');
 app.use(helmet());
 
 
-
+// CORS
 var cors = require('cors');
 app.use(cors());
+
 
 // Icons and bootstrap
 app.use('/favicon.ico', express.static('public/images/favicon.ico'));

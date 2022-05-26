@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../../services/rest/rest.service';
 import { CartService } from './cart.service';
 
-import { Book } from '../Models/Book';
-import { Sale } from '../Models/Sale';
+import { Book } from '../../models/Book';
+import { Sale } from '../../models/Sale';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',

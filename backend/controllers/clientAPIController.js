@@ -99,6 +99,45 @@ exports.client_index_get = function (req, res) {
 }; // Get all the books for sale
 
 
+exports.client_register_post = function (req, res) {
+    console.log(req.body);
+    var client = new Client({
+        username: req.body.username,
+        name: req.body.name,
+        email: req.body.email,
+        address: req.body.address,
+        phone: req.body.phone,
+        birthDate: req.body.birthDate,
+        dateString: getDateNow(req.body.birthDate),
+        ageType: req.body.ageType,
+        password: req.body.password,
+    });
+
+    client.setPassword(req.body.password);
+
+    client.save(function (err) {
+        if (err) { res.status(500).json(err); }
+        else { res.status(200).json({ message: 'Cliente registado com sucesso' }); }
+    });
+}; // Register a new client
+
+exports.client_login_post = function (req, res) {
+    console.log(req.body);
+    Client.findOne({ username: req.body.username }, function (err, client) {
+        if (err) { res.status(500).json(err); }
+        else if (!client) { res.status(404).json({ message: 'Cliente não encontrado' }); }
+        else {
+            if (client.checkPassword(req.body.password)) {
+                res.status(200).json({ message: 'Login efetuado com sucesso' });
+            } else {
+                res.status(401).json({ message: 'Password errada' });
+            }
+        }
+    });
+}; // Login a client
+
+
+
 exports.client_points_get = function (req, res) {
     Client.findOne({ username: "ruiv" }, function (err, client) {
         if (err) {

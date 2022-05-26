@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../../services/rest/rest.service';
 
 @Component({
   selector: 'app-mypurschases',

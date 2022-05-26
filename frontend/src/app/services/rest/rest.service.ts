@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, of } from 'rxjs';
 
 
-import { Book } from '../Models/Book';
-import { UsedBook } from '../Models/used-book';
-import { Sale } from '../Models/Sale';
+import { Book } from '../../models/Book';
+import { UsedBook } from '../../models/used-book';
+import { Sale } from '../../models/Sale';
 
 const endpoint = 'https://localhost/clientapi';
 

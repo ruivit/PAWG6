@@ -1,35 +1,55 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BooksComponent } from './books/books.component';
+import { BooksComponent } from './components/books/books.component';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-import { IndexComponent } from './index/index.component';
-import { CartComponent } from './cart/cart.component';
-import { TopbarComponent } from './topbar/topbar.component';
-import { SellBookComponent } from './sell-book/sell-book.component';
-import { SearchComponent } from './search/search.component';
-import { LoginportalComponent } from './loginportal/loginportal.component';
-import { MypurschasesComponent } from './mypurschases/mypurschases.component';
-import { MysoldbooksComponent } from './mysoldbooks/mysoldbooks.component';
+import { IndexComponent } from './components/index/index.component';
+import { CartComponent } from './components/cart/cart.component';
+import { TopbarComponent } from './components/topbar/topbar.component';
+import { SellBookComponent } from './components/sell-book/sell-book.component';
+import { SearchComponent } from './components/search/search.component';
+import { MypurschasesComponent } from './components/mypurschases/mypurschases.component';
+import { MysoldbooksComponent } from './components/mysoldbooks/mysoldbooks.component';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule} from '@angular/material/datepicker'; 
+
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { AuthGuard } from './guard/auth.guard';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 
 const appRoutes: Routes = [
   {
   //url: localhost:4200/
   path: '',
+  canActivate: [ AuthGuard ],
   component: IndexComponent,
   data: { title: 'New Books' }
   },
   {
   //url: localhost:4200/login
   path: 'login',
-  component: LoginportalComponent,
+  component: LoginComponent,
   data: { title: 'Login' }
+  },
+  {
+  //url: localhost:4200/sign-up
+  path: 'signup',
+  component: SignupComponent,
+  data: { title: 'Sign Up' }
   },
   {
   //url: localhost:4200/cart
@@ -72,18 +92,27 @@ const appRoutes: Routes = [
     IndexComponent,
     SellBookComponent,
     SearchComponent,
-    LoginportalComponent,
     MypurschasesComponent,
     MysoldbooksComponent,
+    LoginComponent,
+    SignupComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
     FormsModule,
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    MatButtonModule, MatInputModule, MatCardModule, MatFormFieldModule,MatGridListModule,MatSnackBarModule, BrowserAnimationsModule,
+    MatDatepickerModule
     ],
-    providers: [],
+    providers: [
+      {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true
+      }],
     bootstrap: [AppComponent]
 })
 

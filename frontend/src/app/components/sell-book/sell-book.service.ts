@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../../services/rest/rest.service';
 import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'

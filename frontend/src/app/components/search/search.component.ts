@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CartService } from '../cart/cart.service';
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../../services/rest/rest.service';
 
 @Component({
   selector: 'app-search',
