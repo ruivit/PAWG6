@@ -89,7 +89,7 @@ function sendMailClient(text) {
 // -------------------- Client/API ---------------------------
 
 exports.client_index_get = function (req, res) {
-    Book.find({ forSale: true }, function (err, books) {
+    Book.find({}, function (err, books) {
         if (err) {
             res.render('error/error', { error: err });
         } else {

@@ -37,7 +37,15 @@ export class BooksComponent implements OnInit {
     return book.stock;
   }
 
-  addToCart(book: Book, quantity: number) {
+  findInCart(book: Book) {
+    return this.cartService.getBooksInCart().includes(book);
+  }
+
+  getQuantity(book: Book) {
+    return book.quantityToBuy;
+  }
+
+  addToCart(book: Book) {
     // if the quantity is already at the maximum, alert the user
     
     // if the book is already in the cart, increment the quantity
@@ -46,9 +54,12 @@ export class BooksComponent implements OnInit {
     }
     // otherwise, add the book to the cart
     else {
-      book.quantityToBuy = quantity;
-      this.cartService.addToCart(book, quantity);
+      book.quantityToBuy += 1;
+      this.cartService.addToCart(book, 1);
     }
   }
 
+  removeFromCart(book: Book) {
+    this.cartService.removeFromCart(book);
+  }
 }

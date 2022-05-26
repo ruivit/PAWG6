@@ -15,7 +15,7 @@ export class CartService {
     this.booksInCart[this.booksInCart.length - 1].quantityToBuy = quantity;
   }
 
-  removeInCart(book: Book) {
+  removeFromCart(book: Book) {
     this.booksInCart.splice(this.booksInCart.indexOf(book), 1);
   }
 

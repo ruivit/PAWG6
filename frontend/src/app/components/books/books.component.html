@@ -18,6 +18,14 @@
                 <button mat-button>
                     <mat-icon>thumb_down</mat-icon>
                 </button>
+                <button mat-button (click)="addToCart(book)">
+                    <mat-icon>add</mat-icon>
+                    <span>{{getQuantity(book)}}</span>
+                </button>
+                <button mat-button (click)="removeFromCart(book)"
+                *ngIf="findInCart(book)">
+                    <mat-icon>remove</mat-icon>
+                </button>
             </mat-card-actions>
         </mat-card>
     </mat-grid-tile>
