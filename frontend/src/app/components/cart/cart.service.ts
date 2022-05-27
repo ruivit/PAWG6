@@ -4,6 +4,7 @@ import { Book } from '../../models/Book';
 @Injectable({
   providedIn: 'root'
 })
+
 export class CartService {
 
   booksInCart: Book[] = [];
@@ -13,13 +14,11 @@ export class CartService {
   addToCart(book: Book, quantity: number) {
     this.booksInCart.push(book);
     this.booksInCart[this.booksInCart.length - 1].quantityToBuy = quantity;
-  }
-
-  removeFromCart(book: Book) {
-    this.booksInCart.splice(this.booksInCart.indexOf(book), 1);
+    console.log("cart service add to cart " + this.booksInCart);
   }
 
   getBooksInCart() {
+    console.log("cart service get books in cart " + this.booksInCart);
     return this.booksInCart;
   }
   

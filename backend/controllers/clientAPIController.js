@@ -133,7 +133,6 @@ exports.client_register_post = async function (req, res) {
 }; // Register a new client
 
 exports.client_login_post = function (req, res) {
-    console.log(req.body);
     Client.findOne({ username: req.body.username }, function (err, client) {
         if (err) { res.status(500).json(err); }
         else if (!client) { res.status(404).json({ message: 'Cliente não encontrado' }); }
@@ -143,6 +142,7 @@ exports.client_login_post = function (req, res) {
                     { message: 'Login efetuado com sucesso',
                     username: client.username,
                     name: client.name,
+                    ageType: client.ageType,
                     clientID: client._id });
             } else {
                 res.status(401).json({ message: 'Password errada' });
@@ -154,8 +154,8 @@ exports.client_login_post = function (req, res) {
 
 
 exports.client_points_get = function (req, res) {
-    console.log(req.body);
-    Client.findOne({ username: req.body.clientID }, function (err, client) {
+    Client.findOne({ username: req.query.username }, 
+        function (err, client) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
@@ -164,14 +164,9 @@ exports.client_points_get = function (req, res) {
     });
 }
 
-exports.points_table_get = function (req, res) {
-    Points.findOne({}, function (err, points) {
-        if (err) {
-            res.render('error/error', { error: err });
-        } else {
-            res.status(200).json(points);
-        }
-    });
+exports.points_table_get = async function (req, res) {
+    var pointsTable = await Points.findById(pointsIDcollection);
+    res.status(200).json(pointsTable);
 };
 
 exports.discount_table_get = async function (req, res) {

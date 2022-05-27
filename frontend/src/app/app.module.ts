@@ -37,6 +37,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 import { IndexclientComponent } from './components/indexclient/indexclient.component';
+import { CartService } from './components/cart/cart.service';
 
 const appRoutes: Routes = [
   {
@@ -133,7 +134,7 @@ const appRoutes: Routes = [
     MatToolbarModule,
     FlexLayoutModule
     ],
-    providers: [
+    providers: [CartService, 
       {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,

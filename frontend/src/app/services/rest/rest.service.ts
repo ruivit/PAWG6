@@ -40,7 +40,7 @@ export class RestService {
 
 
 
-  
+
   getClientPurschases(): Observable<Sale[]> {
     // url: https://localhost/clientapi/mypurschases
     return this.http.get<Sale[]>(endpoint + '/mypurschases?username=' + localStorage.getItem('username'));
@@ -51,23 +51,24 @@ export class RestService {
     return this.http.get<Book[]>(endpoint + '/mysoldbooks?username=' + localStorage.getItem('username'));
   }
 
-  getClientPoints(): Observable<any> {
+  getClientPoints() {
     // url: https://localhost/clientapi/clientPoints
-    return this.http.get<any>(endpoint + '/clientPoints?username=' + localStorage.getItem('username'));
+    return this.http.get(endpoint + '/clientPoints?username=' + localStorage.getItem('username'));
   }
-
 
 
 
   getPointsTable(): Observable<any> {
-    // url: https://localhost/clientapi/pointsData
+    // url: https://localhost/clientapi/pointsTable
     return this.http.get<any>(endpoint + '/pointsTable');
   }
 
   getDiscountTable(): Observable<any> {
-    // url: https://localhost/clientapi/pointsData
+    // url: https://localhost/clientapi/pointsTable
     return this.http.get<any>(endpoint + '/discountTable');
   }
+
+
 
   addSale(sale: Sale) {
     // url: https://localhost/clientapi/addSale

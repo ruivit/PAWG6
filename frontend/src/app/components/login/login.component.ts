@@ -25,12 +25,13 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.User.userLogin(this.loginForm.value).subscribe(
       (data: any) => {
+        console.log(data);
         let token = data.token;
         localStorage.setItem('Token', token);
         localStorage.setItem('clientID', data.clientID);
         localStorage.setItem('username', data.username);
         this.snackBar.open("Login com Sucesso", "Nice", { duration: 3000 });
-        this.router.navigate(['/']);
+        this.router.navigate(['/library']);
       },
       (err: HttpErrorResponse) => {
         if (err.error.msg) {
