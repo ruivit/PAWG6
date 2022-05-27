@@ -33,13 +33,13 @@ export class RestService {
   }
 
 
-  getPointsTable(): Observable<any> {
+  getPointsTable() {
     // url: https://localhost/clientapi/pointsTable
-    return this.http.get<any>(api + '/pointsTable');
+    return this.http.get(api + '/pointsTable');
   }
 
-  getDiscountTable(): Observable<DiscountTable> {
+  getDiscountTable() {
     // url: https://localhost/clientapi/discountTable
-    return this.http.get<DiscountTable>(api + '/discountTable');
+    return this.http.get(api + '/discountTable');
   }
 }

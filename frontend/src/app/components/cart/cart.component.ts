@@ -16,8 +16,6 @@ export class CartComponent implements OnInit {
   books = Array<Book>();
   total = 0;
   clientPoints = 0;
-  pointsTable: any;
-  discountTable: any;
 
   constructor(
     private cartService: CartService,
@@ -32,9 +30,13 @@ export class CartComponent implements OnInit {
       this.clientPoints = data;
     });*/
     this.restService.getPointsTable().subscribe(data => {
-      this.pointsTable = data;
+      localStorage.setItem('pointsTable', JSON.stringify(data));
     });
-    this.discountTable = this.restService.getDiscountTable();
+    
+    this.restService.getDiscountTable().subscribe(data => {
+      localStorage.setItem('discountTable', JSON.stringify(data));
+    });
+
     this.calculateTotal();
   }
 
@@ -43,7 +45,14 @@ export class CartComponent implements OnInit {
     this.books.forEach(book => {
       this.total += book.sellPrice;
     });
-    console.log(this.discountTable.discountPerSale);
+
+    let discountTable = JSON.parse(localStorage.getItem('discountTable') || '{}');
+    let pointsTable = JSON.parse(localStorage.getItem('pointsTable') || '{}');
+
+    console.log(discountTable.perInfantil);
+    console.log(pointsTable.shippingPoints);
+    // Ja se consegue fazer contas...
+    this.total -= discountTable.perInfantil * 5;
   }
 
   checkout() {
