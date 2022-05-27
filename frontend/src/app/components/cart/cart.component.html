@@ -1,48 +1,38 @@
-<div class="container">
-	<div class="title">
-		<h2>Product Order Form</h2>
-	</div>
-  <div class="d-flex">
-	<form action="" method="">
-	  <label>
-		<span class="fname">First Name <span class="required">*</span></span>
-		<input type="text" name="fname">
-	  </label>
-	  <label>
-		<span class="lname">Last Name <span class="required">*</span></span>
-		<input type="text" name="lname">
-	  </label>
-	  <label>
-		<span>Email Address <span class="required">*</span></span>
-		<input type="email" name="city"> 
-	  </label>
-	</form>
-	<div class="Yorder">
-	  <table>
-		<tr>
-		  <th>Product</th>
-		  <th>Quantity</th>
-		  <th>Total</th>
-		  <th></th>
-		</tr>
-		<tr *ngFor="let book of booksInCart">
-		  <td>{{book.title}}</td>
-		  <td>{{book.quantityToBuy}}</td>
-		  <td>{{book.sellPrice * book.quantityToBuy}}</td>
-		  <td>
-			  <button class="button fancy-button" (click)="removeFromCart(book)">
-				  <i class="material-icons-outlined">delete</i></button>
-		  </td>
-		</tr>
-	  </table><br> 
-	  <div class="total">
-		<h2 style="text-align: center;">Total: {{calculateTotalPrice()}} €</h2>
-		<h3 style="text-align: center;">Shipping: {{calculateShipping()}} €</h3>
-	  </div>
-	  <button type="button" class="button fancy-button" (click)="makeSale(booksInCart)">
-		  <i class="material-icons-outlined">shopping_cart</i>
-		  Checkout
-	  </button>
-	</div>
-   </div>
-  </div>
+<mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+        <div class="books">
+            <div class="book" *ngFor="let book of books">
+                <div class="book-details">
+                    <h2 class="book-title">{{book.title}}</h2>
+                    <h3 class="book-author">{{book.author}}</h3>
+                    <p class="book-price">{{book.sellPrice}}</p>
+                </div>
+                <!-- 
+                <div class="checkout-item-quantity">
+                    <button mat-icon-button (click)="decrement()">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                    <span>{{quantity}}</span>
+                    <button mat-icon-button (click)="increment()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                -->
+            </div>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div class="checkout">
+            <div class="checkout-details">
+                <h2 class="checkout-title">Checkout</h2>
+                <div class="checkout-total">
+                    <p class="checkout-total-title">Total</p>
+                    <p class="checkout-total-price">{{total}}</p>
+                </div>
+            </div>
+            <div class="checkout-button">
+                <button mat-raised-button color="primary" (click)="checkout()">Checkout</button>
+            </div>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>

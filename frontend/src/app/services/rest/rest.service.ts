@@ -1,86 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
 
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { Book } from '../../models/Book';
-import { UsedBook } from '../../models/used-book';
 import { Sale } from '../../models/Sale';
+import { DiscountTable } from 'src/app/models/DiscountTable';
 
-const endpoint = 'https://localhost/clientapi';
+
+//#region Constants
+const api = 'https://localhost/clientapi';
+const baseURl = 'http://localhost:4200/';
 
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
   })
 };
+//#endregion
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class RestService {
-  constructor(private http: HttpClient) { }
 
-  private extractData(res: Response) {
-    let body = res;
-    return body || {};
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  getBooks(): Observable<Book[]> {
+    return this.http.get<Book[]>(api + '/books');
   }
-
-  index(): Observable<Book[]> {
-    // url: https://localhost/clientapi/index
-    return this.http.get<Book[]>(endpoint + '/index');
-  }
-
-  searchBooks(term: string, bookType: string): Observable<Book[]> {
-    // url: https://localhost/clientapi/search?term=term
-    return this.http.get<Book[]>(endpoint + '/search?term=' + term
-      + '&bookType=' + bookType);
-  }
-
-
-
-
-  getClientPurschases(): Observable<Sale[]> {
-    // url: https://localhost/clientapi/mypurschases
-    return this.http.get<Sale[]>(endpoint + '/mypurschases?username=' + localStorage.getItem('username'));
-  }
-
-  getClientBooks(): Observable<Book[]> {
-    // url: https://localhost/clientapi/mysoldbooks
-    return this.http.get<Book[]>(endpoint + '/mysoldbooks?username=' + localStorage.getItem('username'));
-  }
-
-  getClientPoints() {
-    // url: https://localhost/clientapi/clientPoints
-    return this.http.get(endpoint + '/clientPoints?username=' + localStorage.getItem('username'));
-  }
-
 
 
   getPointsTable(): Observable<any> {
     // url: https://localhost/clientapi/pointsTable
-    return this.http.get<any>(endpoint + '/pointsTable');
+    return this.http.get<any>(api + '/pointsTable');
   }
 
-  getDiscountTable(): Observable<any> {
-    // url: https://localhost/clientapi/pointsTable
-    return this.http.get<any>(endpoint + '/discountTable');
-  }
-
-
-
-  addSale(sale: Sale) {
-    // url: https://localhost/clientapi/addSale
-    return this.http.post(endpoint + '/makeSale', sale, httpOptions).subscribe(data => {});
-  }
-
-  sellBook(formParams: FormData) {
-    // url: https://localhost/clientapi/sellBook
-
-    console.log(formParams, "RestService");
-    return this.http.post(endpoint + '/sellBook', formParams).subscribe(data => {
-      console.log(data, "data");
-    });
+  getDiscountTable(): Observable<DiscountTable> {
+    // url: https://localhost/clientapi/discountTable
+    return this.http.get<DiscountTable>(api + '/discountTable');
   }
 }

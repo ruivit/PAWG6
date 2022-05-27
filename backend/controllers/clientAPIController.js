@@ -91,7 +91,7 @@ function sendMailClient(text) {
 
 // -------------------- Client/API ---------------------------
 
-exports.client_index_get = function (req, res) {
+exports.client_new_books_get = function (req, res) {
     Book.find({}, function (err, books) {
         if (err) {
             res.render('error/error', { error: err });
@@ -99,7 +99,7 @@ exports.client_index_get = function (req, res) {
             res.status(200).json(books);
         }
     }).sort({ dateAdded: -1 }).limit(6);
-}; // Get all the books for sale
+}; // Get all the books
 
 
 exports.client_register_post = async function (req, res) {
@@ -224,10 +224,11 @@ exports.client_make_sale_post = function (req, res) {
 
 
 exports.client_search_get = function (req, res) {
-    var term = req.query.term;
-    var bookType = req.query.bookType;
+    var term = req.params.term;
+    var bookType = req.params.bookType;
     switch (bookType) {
         case "new":
+            console.log("New");
             Book.find({
                 $or: [
                     { title: { $regex: term, $options: 'i' } },
@@ -243,6 +244,7 @@ exports.client_search_get = function (req, res) {
             break;
 
         case "used":
+            console.log("Used");
             UsedBook.find({
                 $or: [
                     { title: { $regex: term, $options: 'i' } },

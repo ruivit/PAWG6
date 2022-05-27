@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { UserService } from '../../services/user/user.service';
-imports: [ MatButtonModule ];
 
 @Component({
   selector: 'app-index',
@@ -10,8 +7,9 @@ imports: [ MatButtonModule ];
 })
 export class IndexComponent implements OnInit {
 
-  constructor(private user: UserService ) { }
+  constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
+
 }
