@@ -5,7 +5,9 @@ import { Sale } from '../../models/Sale';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RestService } from 'src/app/services/rest/rest.service';
+
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-cart',
@@ -48,24 +50,58 @@ export class CartComponent implements OnInit {
     });
 
     let discountTable = JSON.parse(localStorage.getItem('discountTable') || '{}');
-    let pointsTable = JSON.parse(localStorage.getItem('pointsTable') || '{}');
 
-    console.log(discountTable.perInfantil);
-    console.log(pointsTable.shippingPoints);
-    // Ja se consegue fazer contas...
-    this.total -= discountTable.perInfantil * 5;
+    let ageType = localStorage.getItem('ageType');
+    let discountAge = 0;
+    switch (ageType) {
+      case 'Infantil': {
+        discountAge = discountTable.perInfantil;
+        break;
+      }
+      case 'Juvenil': {
+        discountAge = discountTable.perJuvenil;
+        break;
+      }
+      case 'Adulto': {
+        discountAge = discountTable.perAdulto;
+        break;
+      }
+      case 'Senior': {
+        discountAge = discountTable.perSenior;
+        break;
+      }
+    }
+
+    let promotionDiscount = 0;
+    if (discountTable.activePromotion) {
+      promotionDiscount = discountTable.discountPromotion;
+    }
+
+    this.total -= promotionDiscount;
+    this.total -= this.calculateShipping();
+    this.total -= discountAge;
     return this.total;
   }
 
   calculateGainedPoints() {
-    return 100;
+    let pointsTable = JSON.parse(localStorage.getItem('pointsTable') || '{}');
+    let clientPoints = JSON.parse(localStorage.getItem('clientPoints') || '{}');
+
+    let gainedPoints = 0;
+    // Ja nao me lembro das contas...
+    return gainedPoints;
   }
 
   calculateShipping() {
     let pointsTable = JSON.parse(localStorage.getItem('pointsTable') || '{}');
     let shippingPoints = pointsTable.shippingPoints;
-    
-    return 5;
+    let clientPoints = JSON.parse(localStorage.getItem('clientPoints') || '{}');
+
+    if (clientPoints.shippingPoints >= shippingPoints) {
+      return 0;
+    } else {
+      return this.books.length * 0.85;
+    }
   }
 
   checkout() {
@@ -77,8 +113,8 @@ export class CartComponent implements OnInit {
 
     let sale: any;
     sale = new Sale({
-      clientUsername: JSON.parse(localStorage.getItem('username') || '{}'),
-      books: this.books,
+      clientUsername: localStorage.getItem('username') || '',
+      books: JSON.stringify(this.books),
       total: this.calculateTotal(),
       gainedPoints: this.calculateGainedPoints(),
       date: new Date(),
@@ -86,19 +122,28 @@ export class CartComponent implements OnInit {
     });
 
     let formParams = new FormData();
-
     // Iterate over all the sale values and add them to the object
     for (let key in sale) {
       formParams.append(key, sale[key]);
     }
 
-    this.restService.checkout(formParams).subscribe(data => {
-      console.log(data);
-    });
-    this.snackBar.open('Thanks for buying from us!', '', {
-      duration: 2000,
-      verticalPosition: 'top'
-    });
-    this.router.navigate(['/client']);
+    this.restService.checkout(formParams).subscribe(
+      (data: any) => {
+        this.snackBar.open(data.msg, '', {
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+        this.router.navigate(['/client']);
+      },
+      (err: HttpErrorResponse) => {
+        if (err.error.msg) {
+          this.snackBar.open(err.error.msg, 'Ups');
+        } else {
+          this.snackBar.open(err.error.message, 'Ok', {
+            duration: 2000,
+          });
+        }
+      }
+    );
   }
 }

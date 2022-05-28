@@ -61,7 +61,7 @@ export class SellBookComponent implements OnInit {
   onSubmit(){
     this.loading = true;
     this.sellBookService.onSubmit(this.tempBookModel, this.selectedFile);
-    this.snackBar.open("Your proposals was submited.", '', { duration: 3000 });
+    this.snackBar.open("Your proposal was submited.", '', { duration: 3000 });
   }
 
   

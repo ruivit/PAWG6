@@ -15,6 +15,8 @@ import { CartService } from 'src/app/services/cart/cart.service';
 export class BooksComponent implements OnInit {
 
   books = new Array<Book>();
+  isLogged = false;
+  type = "new";
 
   constructor(
     private snackBar: MatSnackBar,
@@ -22,19 +24,21 @@ export class BooksComponent implements OnInit {
     private restService: RestService
   ) { }
 
-
   ngOnInit(): void {
-    this.restService.getBooks().subscribe(
+    console.log(this.type);
+    this.restService.getBooks(this.type).subscribe(
       (data: Book[]) => {
         this.books = data;
       });
+    if (localStorage.getItem('Token') != null) this.isLogged = true;
   }
 
   addToCart(book: Book) {
+    if (book.quantityToBuy == 0) book.quantityToBuy = 1;
     if ( this.cartService.addToCart(book) ) {
       this.snackBar.open('Book added to cart', '', { duration: 2000 });
     } else {
-      this.snackBar.open('Book not available', '', { duration: 2000 });
+      this.snackBar.open('Out of stock...', '', { duration: 5000 });
     }
   }
   

@@ -13,6 +13,7 @@ var Sale = require('../models/saleModel');
 var nodemailer = require('nodemailer');
 var Points = require('../models/pointsModel');
 var Discount = require('../models/discountModel');
+const { type } = require('os');
 
 // ------------------- Auxiliary Functions ---------------------------
 function getDateNow(date) {
@@ -92,13 +93,29 @@ function sendMailClient(text) {
 // -------------------- Client/API ---------------------------
 
 exports.client_new_books_get = function (req, res) {
-    Book.find({}, function (err, books) {
-        if (err) {
-            res.render('error/error', { error: err });
-        } else {
-            res.status(200).json(books);
-        }
-    }).sort({ dateAdded: -1 }).limit(6);
+    switch (req.query.type) {
+        case 'new':
+            Book.find({}, function (err, books) {
+                if (err) {
+                    res.render('error/error', { error: err });
+                } else {
+                    res.status(200).json(books);
+                }
+            }).sort({ dateAdded: -1 }).limit(6);
+            break;
+        case 'used':
+            UsedBook.find({}, function (err, books) {
+                if (err) {
+                    res.render('error/error', { error: err });
+                } else {
+                    res.status(200).json(books);
+                }
+            }).sort({ dateAdded: -1 }).limit(6);
+            break;
+        default:
+            res.status(404).json({ msg: 'Invalid type' });
+            break;
+    }
 }; // Get all the books
 
 
@@ -185,55 +202,36 @@ exports.discount_table_get = async function (req, res) {
 };
 
 exports.client_make_sale_post = function (req, res) {
-    console.log(req.body);
-    // PROBLEMA ELE RECEBE EM [Object] e o nodejs nao entende isso
-    // tentar passar um array json no angular e receber bem aqui    
-
     // Make the sale
     var sale = new Sale({
-        clientUsername: "ruiv",
-        books: req.body.books,
-        quantity: req.body.quantity,
+        clientUsername: req.body.clientUsername.toString(),
+        books: JSON.parse(req.body.books),
         total: req.body.total,
         gainedPoints: req.body.gainedPoints,
+        date: req.body.date,
         dateString: getDateNow(),
         online: true,
         shipping: req.body.shipping,
-        date: req.body.date
     });
 
-    sale.save(function (err) {
-        if (err) {
-            res.render('error/error', { message: "Error creating sale", error: err });
+    // Update the client's points
+    Client.findOne({ username: req.body.clientUsername }, function (err, client) {
+        if (err) { res.status(500).json(err); }
+        else {
+            client.points += sale.gainedPoints;
+            client.save(function (err) { if (err) { return err; } });
         }
     });
 
-
-    // Update the client points
-    Client.findOneAndUpdate(
-        { username: "client1" },
-        { $inc: { points: req.body.gainedPoints } }
-        , function (err, client) {
-            if (err) {
-                res.render('error/error', { message: "Error updating client points", error: err });
-            }
-        });
-
-    /* Update the books with the quantity
-    for (var book = 0; book < req.body.books.length; book++) {
-        for (var qnt = 0; qnt < req.body.quantity.length; qnt++) {
-            Book.findOneAndUpdate({ _id: req.body.books[book]._id }, 
-                { $inc: { stock: -req.body.quantity[qnt] } }
-                , function (err, book) {
-                    if (err) {
-                        res.render('error/error', { message: "Error updating book quantity", error: err });
-                    }
-                });
-            }
+    // Save the sale
+    sale.save(function (err) { 
+        if (err) { 
+            console.log(err);
+            res.status(500).json(err);
+        } else {
+            res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
         }
-        */
-
-    res.status(200).json({ message: "Sale made" });
+    });
 }; // Make a sale
 
 

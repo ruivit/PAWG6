@@ -19,7 +19,7 @@ export class CartService {
     let bookInCart = this.items.find(b => b._id === book._id);
     if (bookInCart) {
       // if there is stock, increase quantity
-      if (bookInCart.stock > bookInCart.quantityToBuy) {
+      if (bookInCart.quantityToBuy < bookInCart.stock) {
         bookInCart.quantityToBuy++;
       } else {
         return false;

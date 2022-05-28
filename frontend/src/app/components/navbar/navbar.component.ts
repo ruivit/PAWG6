@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user/user.service';
+import { BooksComponent } from '../books/books.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +13,9 @@ export class NavbarComponent implements OnInit {
   loggedIn = this.userService.isLoggedIn();
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
+    private booksComponent: BooksComponent
   ) { }
 
   ngOnInit(): void {
@@ -20,5 +24,11 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.userService.logout();
+  }
+
+  getUsedBooks() {
+    this.booksComponent.type = 'used';
+    this.booksComponent.ngOnInit();
+    this.ngOnInit();
   }
 }

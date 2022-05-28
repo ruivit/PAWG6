@@ -27,8 +27,8 @@ export class RestService {
     private http: HttpClient
   ) { }
 
-  getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(api + '/books');
+  getBooks(type: string): Observable<Book[]> {
+    return this.http.get<Book[]>(api + '/books?type=' + type);
   }
 
 

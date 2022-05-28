@@ -14,7 +14,7 @@ var BookSchema = new Schema({
   dateString: { type: String, required: false, default: '' },
   condition: { type: String, required: true },
   provider: { type: String, required: true },
-  stock: { type: Number, required: false, default: 0 },
+  stock: { type: Number, required: false, default: 1 },
   quantityToBuy: { type: Number, required: false, default: 0 },
   sellPrice: { type: Number, required: true },
   buyPrice: { type: Number, required: true},

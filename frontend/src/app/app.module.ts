@@ -100,7 +100,7 @@ const appRoutes: Routes = [
     VisitorComponent
   ],
   imports: [
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }),
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
@@ -125,7 +125,7 @@ const appRoutes: Routes = [
     provide: HTTP_INTERCEPTORS,
     useClass: HttpConfigInterceptor,
     multi: true
-  }],
+  }, BooksComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

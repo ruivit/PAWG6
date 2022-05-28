@@ -9,10 +9,10 @@
                 <mat-card-content>
                     <p>{{book.resume}}</p>
                 </mat-card-content>
-                <mat-card-actions>
-                    <p>{{book.stock}}</p>
+                <mat-card-actions *ngIf="isLogged">
                     <button mat-button (click)="addToCart(book)">Add</button>
                 </mat-card-actions>
+                <p>{{book.stock}} Available</p>
             </mat-card>
         </div>
     </div>

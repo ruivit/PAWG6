@@ -12,7 +12,7 @@ router.post('/register', clientAPIController.client_register_post);
 
 router.post('/login', clientAPIController.client_login_post);
 
-router.get('/books', clientAPIController.client_new_books_get);
+router.get('/books', multer().none(), clientAPIController.client_new_books_get);
 
 router.get('/clientPoints', multer().none(), clientAPIController.client_points_get);
 router.get('/pointsTable', clientAPIController.points_table_get);

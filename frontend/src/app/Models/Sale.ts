@@ -2,7 +2,7 @@ import { Book } from "./Book";
 
 export class Sale {
     clientUsername: String;
-    books: Array<Book>;
+    books: String;
     total: Number;
     gainedPoints: Number;
     date: Date;
