@@ -1,20 +1,23 @@
 //#region Modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { AppRoutingModule } from './app-routing.module';
+import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 //import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 //#endregion
 
 
 //#region Components
-import { AppRoutingModule } from './app-routing.module';
-import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BooksComponent } from './components/books/books.component';
 import { IndexComponent } from './components/index/index.component';
 import { CartComponent } from './components/cart/cart.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { SellBookComponent } from './components/sell-book/sell-book.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { MyprofileComponent } from './components/myprofile/myprofile.component';
 //#endregion
 
 //#region Services
@@ -35,6 +38,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //#endregion
 
 //#region Routes
@@ -51,6 +55,24 @@ const appRoutes: Routes = [
     component: CartComponent,
     data: { title: 'Shopping Cart' }
   },
+  {
+    //url: localhost:4200/login
+    path: 'login',
+    component: LoginComponent,
+    data: { title: 'Login' }
+  },
+  {
+    //url: localhost:4200/signup
+    path: 'signup',
+    component: SignupComponent,
+    data: { title: 'Signup' }
+  },
+  {
+    //url: localhost:4200/sellBook
+    path: 'sellBook',
+    component: SellBookComponent,
+    data: { title: 'Sell us a Book' }
+  },
 ];
 //#endregion
 
@@ -60,7 +82,11 @@ const appRoutes: Routes = [
     BooksComponent,
     IndexComponent,
     CartComponent,
-    NavbarComponent
+    NavbarComponent,
+    SellBookComponent,
+    LoginComponent,
+    SignupComponent,
+    MyprofileComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -80,7 +106,9 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatToolbarModule,
     FlexLayoutModule,
-    NgbModule
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ ],
   bootstrap: [AppComponent]

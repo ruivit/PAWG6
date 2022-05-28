@@ -42,4 +42,13 @@ export class RestService {
     // url: https://localhost/clientapi/discountTable
     return this.http.get(api + '/discountTable');
   }
+
+  sellBook(formParams: FormData) {
+    // url: https://localhost/clientapi/sellBook
+
+    console.log(formParams, "RestService");
+    return this.http.post(api + '/sellBook', formParams).subscribe(data => {
+      console.log(data, "data");
+    });
+  }
 }
