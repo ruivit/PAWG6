@@ -48,15 +48,21 @@ export class SignupComponent implements OnInit {
     
     this.User.registerNewUser(this.signupForm.value).subscribe(
       (data: any) => {
-        console.log(data);
         this.router.navigate([ '/login' ]);
+        if (data.wasRecommended) {
+          this.snackBar.open("User created successfully. You really have a good friend", '', { duration: 3000 });
+        } else {
+          this.snackBar.open("User created successfully", '', { duration: 3000 });
+        }
       },
       (err: HttpErrorResponse) => {
         if (err.error.msg) {
           console.log(err.error.msg);
-          this.snackBar.open(err.error.msg, 'Undo');
+          this.snackBar.open(err.error.msg, 'Ok');
         } else {
-          this.snackBar.open('Something Went Wrong!');
+          this.snackBar.open(err.error.msg, 'Ok', {
+            duration: 5000,
+          });
         }
       }
     );

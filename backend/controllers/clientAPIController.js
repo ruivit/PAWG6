@@ -103,33 +103,43 @@ exports.client_new_books_get = function (req, res) {
 
 
 exports.client_register_post = async function (req, res) {
-    var client = new Client({
-        username: req.body.username,
-        name: req.body.name,
-        email: req.body.email,
-        address: req.body.address,
-        phone: req.body.phone,
-        birthDate: req.body.birthDate,
-        dateString: getDateNow(req.body.birthDate),
-        ageType: req.body.ageType,
-        password: req.body.password,
-    });
 
-    client.setPassword(req.body.password);
+    // find client by username and/or email
+    var duplClient = await Client.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] });
+    if (duplClient) {
+        res.status(409).json({ msg: 'Client already exists' });
+    } else {
+        var client = new Client({
+            username: req.body.username,
+            name: req.body.name,
+            email: req.body.email,
+            address: req.body.address,
+            phone: req.body.phone,
+            birthDate: req.body.birthDate,
+            dateString: getDateNow(req.body.birthDate),
+            ageType: req.body.ageType,
+            password: req.body.password,
+        });
 
-    // If the client was recommended by an existing client
-    var recommendedBy = await Client.findOne({ email: req.body.recommendation });
+        client.setPassword(req.body.password);
 
-    if (recommendedBy) {
         var pointsData = await Points.findOne({});
         var pointsGained = pointsData.recomendationClient;
-        client.points += pointsGained;
-    }
 
-    client.save(function (err) {
-        if (err) { res.status(500).json(err); }
-        else { res.status(201).json({ message: 'Registration Successfull' }); }
-    });
+        // If the client was recommended by an existing client
+        var recommendedClient = await Client.findOne({ email: req.body.recommendation });
+
+        if (recommendedClient) {
+            client.points += pointsGained;
+            client.save(function (err) { if (err) { return err; } }); 
+            res.status(201).json({ message: 'Registration Successfull', 
+            wasRecommended: true });
+        } else {
+            client.save(function (err) { if (err) { return err; } });
+            res.status(201).json({ message: 'Registration Successfull', 
+            wasRecommended: false });
+        }
+    }
 }; // Register a new client
 
 exports.client_login_post = function (req, res) {
