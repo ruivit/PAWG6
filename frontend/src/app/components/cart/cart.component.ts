@@ -16,7 +16,6 @@ export class CartComponent implements OnInit {
 
   books = Array<Book>();
   total = 0;
-  clientPoints = 0;
 
   constructor(
     private cartService: CartService,
@@ -28,9 +27,9 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.books = this.cartService.getItemsInCart();
 
-    /*this.restService.getClientPoints().subscribe(data => {
-      this.clientPoints = data;
-    });*/
+    this.restService.getClientPoints().subscribe(data => {
+      localStorage.setItem('clientPoints', JSON.stringify(data));
+    });
     this.restService.getPointsTable().subscribe(data => {
       localStorage.setItem('pointsTable', JSON.stringify(data));
     });
@@ -78,7 +77,7 @@ export class CartComponent implements OnInit {
 
     let sale: any;
     sale = new Sale({
-      clientUsername: localStorage.getItem('username'),
+      clientUsername: JSON.parse(localStorage.getItem('username') || '{}'),
       books: this.books,
       total: this.calculateTotal(),
       gainedPoints: this.calculateGainedPoints(),

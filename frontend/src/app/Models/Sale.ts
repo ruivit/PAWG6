@@ -8,7 +8,7 @@ export class Sale {
     date: Date;
     shipping: Number;
 
-    constructor(sale: any) {
+    constructor(sale: Sale) {
         this.clientUsername = sale.clientUsername;
         this.books = sale.books;
         this.total = sale.total;

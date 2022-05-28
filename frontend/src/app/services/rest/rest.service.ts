@@ -42,6 +42,13 @@ export class RestService {
     return this.http.get(api + '/discountTable');
   }
 
+  getClientPoints() {
+    // url: https://localhost/clientapi/clientPoints
+    return this.http.get(api + '/clientPoints?username=' +
+      localStorage.getItem('username'));
+  }
+
+
   sellBook(formParams: FormData) {
     // url: https://localhost/clientapi/sellBook
 

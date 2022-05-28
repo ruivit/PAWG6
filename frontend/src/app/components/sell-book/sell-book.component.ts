@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { UsedBook } from 'src/app/models/UsedBook';
 import { SellBookService } from 'src/app/services/sell-book/sell-book.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sell-book',
@@ -13,7 +14,10 @@ export class SellBookComponent implements OnInit {
   loading: boolean = false; // Flag variable
 
   // Inject SellBookService
-  constructor(private sellBookService: SellBookService) { }
+  constructor(
+    private sellBookService: SellBookService,
+    private snackBar: MatSnackBar
+  ) { }
 
   genres = ['Fiction', 'Non-Fiction', 'Children', 'Others', 'Biography', 'Poetry', 'Fantasy', 'Thriller', 'Horror', 'Mystery', 'Romance', 'Self-Help', 'Health', 'Travel', 'Science', 'History', 'Religion', 'Philosophy', 'Psychology', 'Business', 'Comics', 'Art', 'Cooking', 'Drama', 'Education', 'Engineering', 'Finance', 'Health', 'Law', 'Medicine', 'Music', 'Science', 'Sports', 'Technology', 'Travel', 'Youth'];
   genreHasError = true;
@@ -57,6 +61,7 @@ export class SellBookComponent implements OnInit {
   onSubmit(){
     this.loading = true;
     this.sellBookService.onSubmit(this.tempBookModel, this.selectedFile);
+    this.snackBar.open("Your proposals was submited.", '', { duration: 3000 });
   }
 
   

@@ -827,7 +827,7 @@ exports.backoffice_admin_proposals_get = async function (req, res) {
             books = await TempBook.find().skip(pD.startFrom).limit(pD.perPage).sort({ dateAdded: 1 });
         }
         
-        res.render('backoffice/admin/proposels/indexProposels', 
+        res.render('backoffice/admin/proposals/indexProposals', 
         { books: books, totalPages: pD.totalPages, currentPage: pD.pageNumber, query: req.query.search });
         // Milestone2 - add message of success
     } catch (error) {
@@ -920,7 +920,7 @@ exports.backoffice_admin_usedbook_create_post = function (req, res) {
             oldata = req.body;
             books = [];
             console.log(oldata,"erro de isbn");
-            res.render('backoffice/admin/proposels/indexProposels',
+            res.render('backoffice/admin/proposals/indexProposals',
             { books: books, message: "We already have this book in our used book stock." });
         } else {
             // If the isbn is not already in use, create the book

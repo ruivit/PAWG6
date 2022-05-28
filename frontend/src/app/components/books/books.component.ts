@@ -31,12 +31,10 @@ export class BooksComponent implements OnInit {
   }
 
   addToCart(book: Book) {
-    if (! (this.cartService.canBuyBook(book)) ) {
-      this.cartService.addToCart(book);
-      this.snackBar.open('Cant buy more books', '', { duration: 2000 });
+    if ( this.cartService.addToCart(book) ) {
+      this.snackBar.open('Book added to cart', '', { duration: 2000 });
     } else {
-      this.cartService.addToCart(book);
-      this.snackBar.open('Book added to cart', '', { duration: 2000 });      
+      this.snackBar.open('Book not available', '', { duration: 2000 });
     }
   }
   
