@@ -24,7 +24,11 @@ export class UserService {
     this.router.navigate([ '/login' ]);
   }
 
+  isLoggedIn() {
+    return localStorage.getItem('Token') !== null;
+  }
+
   constructor(private http: HttpClient,
     private router: Router) { }
-
+  
 }

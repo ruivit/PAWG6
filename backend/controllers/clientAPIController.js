@@ -185,6 +185,10 @@ exports.discount_table_get = async function (req, res) {
 };
 
 exports.client_make_sale_post = function (req, res) {
+    console.log(req.body);
+    // PROBLEMA ELE RECEBE EM [Object] e o nodejs nao entende isso
+    // tentar passar um array json no angular e receber bem aqui    
+
     // Make the sale
     var sale = new Sale({
         clientUsername: "ruiv",
@@ -215,7 +219,7 @@ exports.client_make_sale_post = function (req, res) {
             }
         });
 
-    // Update the books with the quantity
+    /* Update the books with the quantity
     for (var book = 0; book < req.body.books.length; book++) {
         for (var qnt = 0; qnt < req.body.quantity.length; qnt++) {
             Book.findOneAndUpdate({ _id: req.body.books[book]._id }, 
@@ -227,6 +231,7 @@ exports.client_make_sale_post = function (req, res) {
                 });
             }
         }
+        */
 
     res.status(200).json({ message: "Sale made" });
 }; // Make a sale

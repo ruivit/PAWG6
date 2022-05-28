@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule, Routes } from '@angular/router';
+
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-//import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
+import { AuthGuard } from './guard/auth.guard';
+import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 //#endregion
 
 
@@ -39,6 +41,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VisitorComponent } from './components/visitor/visitor.component';
 //#endregion
 
 //#region Routes
@@ -46,7 +49,14 @@ const appRoutes: Routes = [
   {
     //url: localhost:4200/
     path: '',
+    component: VisitorComponent,
+    data: { title: 'Welcome to Library G6' }
+  },
+  {
+    //url: localhost:4200/client
+    path: 'client',
     component: IndexComponent,
+    canActivate: [AuthGuard],
     data: { title: 'Welcome to Library G6' }
   },
   {
@@ -86,7 +96,8 @@ const appRoutes: Routes = [
     SellBookComponent,
     LoginComponent,
     SignupComponent,
-    MyprofileComponent
+    MyprofileComponent,
+    VisitorComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -94,11 +105,11 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule, 
-    MatInputModule, 
-    MatCardModule, 
-    MatFormFieldModule, 
-    MatGridListModule, 
+    MatButtonModule,
+    MatInputModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatGridListModule,
     MatSnackBarModule,
     MatDatepickerModule,
     MatRadioModule,
@@ -110,7 +121,11 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpConfigInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

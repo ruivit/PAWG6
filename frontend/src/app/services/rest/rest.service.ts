@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { Book } from '../../models/Book';
 import { Sale } from '../../models/Sale';
-import { DiscountTable } from 'src/app/models/DiscountTable';
 
 
 //#region Constants
@@ -50,5 +49,10 @@ export class RestService {
     return this.http.post(api + '/sellBook', formParams).subscribe(data => {
       console.log(data, "data");
     });
+  }
+
+  checkout(formParams: FormData) {
+    // url: https://localhost/clientapi/makeSale
+    return this.http.post(api + '/makeSale', formParams);
   }
 }
