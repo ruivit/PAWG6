@@ -49,6 +49,20 @@ export class RestService {
   }
 
 
+  getClientSales() {
+    // url: https://localhost/clientapi/clientSales
+    return this.http.get(api + '/clientSales?username=' +
+      localStorage.getItem('username'));
+  }
+
+
+  getClientSoldBooks() {
+    // url: https://localhost/clientapi/clientSoldBooks
+    return this.http.get(api + '/clientSoldBooks?username=' +
+      localStorage.getItem('username'));
+  }
+
+
   sellBook(formParams: FormData) {
     // url: https://localhost/clientapi/sellBook
 

@@ -66,6 +66,13 @@ const appRoutes: Routes = [
     data: { title: 'Shopping Cart' }
   },
   {
+    //url: localhost:4200/myprofile
+    path: 'myprofile',
+    component: MyprofileComponent,
+    canActivate: [AuthGuard],
+    data: { title: 'My Profile' }
+  },
+  {
     //url: localhost:4200/login
     path: 'login',
     component: LoginComponent,

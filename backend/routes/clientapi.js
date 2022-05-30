@@ -20,12 +20,9 @@ router.get('/discountTable', clientAPIController.discount_table_get);
 
 router.post('/makeSale', multer().none(), clientAPIController.client_make_sale_post);
 
-// route /search?term=term&bookType=bookType
-router.get('/search/:term/:bookType', clientAPIController.client_search_get);
-
 router.post('/sellBook', multer().single('image'), clientAPIController.client_sell_tempbook_post);
 
-router.get('/mypurschases', multer().none(), clientAPIController.client_mypurschases_get);
-router.get('/mysoldbooks', multer().none(), clientAPIController.client_mysoldbooks_get);
+router.get('/clientSales', multer().none(), clientAPIController.client_sales_get);
+router.get('/clientSoldBooks', multer().none(), clientAPIController.client_soldbooks_get);
 
 module.exports = router;

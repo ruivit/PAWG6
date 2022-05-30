@@ -115,9 +115,11 @@ export class CartComponent implements OnInit {
     sale = new Sale({
       clientUsername: localStorage.getItem('username') || '',
       books: JSON.stringify(this.books),
+      booksInfo: Array<any>(),
       total: this.calculateTotal(),
       gainedPoints: this.calculateGainedPoints(),
       date: new Date(),
+      dateString: new Date().toLocaleDateString(),
       shipping: this.calculateShipping(),
     });
 

@@ -34,7 +34,6 @@ export class BooksComponent implements OnInit {
   }
 
   addToCart(book: Book) {
-    if (book.quantityToBuy == 0) book.quantityToBuy = 1;
     if ( this.cartService.addToCart(book) ) {
       this.snackBar.open('Book added to cart', '', { duration: 2000 });
     } else {
