@@ -9,8 +9,7 @@ export class UsedBook {
     isbn: number;
     date: Date;
     condition: String;
-    provider: String;
-    quantityToBuy: number;
+    provider: any;
     stock: number;
     sellPrice: number;
     buyPrice: number;
@@ -27,7 +26,6 @@ export class UsedBook {
         this.date = usedBook.date;
         this.condition = usedBook.condition;
         this.provider = usedBook.provider;
-        this.quantityToBuy = usedBook.quantityToBuy;
         this.stock = usedBook.stock;
         this.sellPrice = usedBook.sellPrice;
         this.buyPrice = usedBook.buyPrice;

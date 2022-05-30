@@ -1,6 +1,6 @@
 export class Book {
     _id: number;
-    title: String;
+    title: string;
     author: String;
     genre: String;
     editor: String;
@@ -9,8 +9,7 @@ export class Book {
     isbn: number;
     date: Date;
     condition: String;
-    provider: String;
-    quantityToBuy: number;
+    provider: any;
     stock: number;
     sellPrice: number;
     buyPrice: number;
@@ -27,7 +26,6 @@ export class Book {
         this.date = book.date;
         this.condition = book.condition;
         this.provider = book.provider;
-        this.quantityToBuy = book.quantityToBuy;
         this.stock = book.stock;
         this.sellPrice = book.sellPrice;
         this.buyPrice = book.buyPrice;

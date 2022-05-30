@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Book } from '../../models/Book';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BLOCK_MARKER } from '@angular/localize/src/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,23 @@ export class CartService {
   ) { }
 
   addToCart(book: Book): boolean {
-    // if book already in cart, increase quantity
-    let bookInCart = this.items.find(b => b._id === book._id);
-    if (bookInCart) {
-      // if there is stock, increase quantity
-      if (bookInCart.quantityToBuy < bookInCart.stock) {
-        bookInCart.quantityToBuy++;
+    // count the number of the same book already in the cart
+    let count = 0;
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i]._id == book._id) {
+        count++;
+      }
+    }
+
+    if (book.stock > 0) {
+      // compare the book.stock with the count
+      if (count < book.stock) {
+        this.items.push(book);
+        return true;          
       } else {
         return false;
       }
-    } else {
-      this.items.push(book);
     }
-    console.log(this.items);
     return true;
   }
 

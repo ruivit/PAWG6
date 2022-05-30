@@ -201,6 +201,7 @@ exports.discount_table_get = async function (req, res) {
     res.status(200).json(discountTable);
 };
 
+
 exports.client_make_sale_post = function (req, res) {
     // Make the sale
     var sale = new Sale({
@@ -232,47 +233,29 @@ exports.client_make_sale_post = function (req, res) {
             res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
         }
     });
+
+    // Update the books' stock
+    for (var i = 0; i < sale.books.length; i++) {
+        // Get the number of the same book bought
+        var numberOfSameBook = 1;
+        for (var j = 0; j < sale.books.length; j++) {
+            if (sale.books[i]._id == sale.books[j]._id) {
+                numberOfSameBook++;
+            }
+        }
+
+        // update the book's stock
+        Book.findById(sale.books[i]._id, function (err, book) {
+            if (err) { res.status(500).json(err); }
+            else {
+                book.stock -= numberOfSameBook;
+                book.save(function (err) { if (err) { return err; } });
+            }
+        });
+    }
+
 }; // Make a sale
 
-
-
-exports.client_search_get = function (req, res) {
-    var term = req.params.term;
-    var bookType = req.params.bookType;
-    switch (bookType) {
-        case "new":
-            console.log("New");
-            Book.find({
-                $or: [
-                    { title: { $regex: term, $options: 'i' } },
-                    { author: { $regex: term, $options: 'i' } },
-                ]
-            }, function (err, books) {
-                if (err) {
-                    res.render('error/error', { error: err });
-                } else {
-                    res.status(200).json(books);
-                }
-            });
-            break;
-
-        case "used":
-            console.log("Used");
-            UsedBook.find({
-                $or: [
-                    { title: { $regex: term, $options: 'i' } },
-                    { author: { $regex: term, $options: 'i' } },
-                ]
-            }, function (err, books) {
-                if (err) {
-                    res.render('error/error', { error: err });
-                } else {
-                    res.status(200).json(books);
-                }
-            });
-            break;
-        }
-}; // Search for books
 
 exports.client_sell_tempbook_post = function (req, res) {
     console.log(req.body + "before tempBook");
@@ -307,21 +290,41 @@ exports.client_sell_tempbook_post = function (req, res) {
 
 }; // Sell a used book
 
-exports.client_mypurschases_get = async function (req, res) {
+
+exports.client_sales_get = async function (req, res) {
     var sales = await Sale.find({ clientUsername: req.query.username });
-    console.log(sales);
-    // Get the book title
-    for (var sale = 0; sale < sales.length; sale++) {
-        for (var book = 0; book < sales[sale].books.length; book++) {
-            var bookFound = await Book.findById(sales[sale].books[book]._id);
-            sales[sale].booksTitle[book] = bookFound.title;
+
+    booksInfo = Array();
+    for (var i = 0; i < sales.length; i++) {
+        for (var j = 0; j < sales[i].books.length; j++) {
+            var book = await Book.findById(sales[i].books[j]);
+            count = 0;
+            // count the number of bought books by title
+            if (!booksInfo.includes(book.title)) {
+                for (var k = 0; k < sales.length; k++) {
+                    for (var l = 0; l < sales[k].books.length; l++) {
+                        var book2 = await Book.findById(sales[k].books[l]);
+                        if (book.title == book2.title) {
+                            count++;
+                        }
+                    }
+                }
+                booksInfo.push(book.title);
+                booksInfo.push("(" + count + "x)");
+            }
         }
     }
+
+    // include the booksInfo in the sales
+    for (var i = 0; i < sales.length; i++) {
+        sales[i].booksInfo = booksInfo;
+    }
+
     res.status(200).json(sales);
 }; // Get all the sales made by the client           
 
 
-exports.client_mysoldbooks_get = function (req, res) {
+exports.client_soldbooks_get = function (req, res) {
     UsedBook.find({ provider: req.query.username }, function (err, usedBooks) {
         if (err) {
             res.render('error/error', { error: err });
