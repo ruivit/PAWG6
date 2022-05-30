@@ -275,6 +275,8 @@ exports.client_search_get = function (req, res) {
 }; // Search for books
 
 exports.client_sell_tempbook_post = function (req, res) {
+    console.log(req.body + "before tempBook");
+
     var tempBook = new TempBook({
         title: req.body.title,
         author: req.body.author,
@@ -285,7 +287,7 @@ exports.client_sell_tempbook_post = function (req, res) {
         provider: req.body.provider,
         sellPrice: req.body.sellPrice
     });
-    console.log(req.body);
+    console.log(req.body + "tempBook");
 
     tempBook.save(function (err) {
         if (err) {

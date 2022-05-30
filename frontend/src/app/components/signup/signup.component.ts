@@ -27,6 +27,8 @@ export class SignupComponent implements OnInit {
   });
   ngOnInit() { }
 
+// Calculate age type based on birth date
+
   calculateAgeType(birthDate: string) {
     const today = new Date();
     const birthDateDate = new Date(birthDate);
