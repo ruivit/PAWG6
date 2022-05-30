@@ -211,13 +211,13 @@ exports.client_update_password = function (req, res) {
     var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
     1000, 64, process.env.ENCRYPTION).toString('hex');
 
-    Client.findOneAndUpdate({ username: req.body.username },
-        { $set: { password: newPasswordHash, salt: salt } },
+    Client.findOneAndUpdate({ username: req.body.username }, 
+        { salt: salt, passwordHash: newPasswordHash }, { new: true },
         function (err, client) {
             if (err) {
                 res.status(500).json(err);
             } else {
-                res.status(200).json({ msg: 'Password updated' });
+                res.status(200).json({ msg: 'Password Updated' });
             }
         }
     );
