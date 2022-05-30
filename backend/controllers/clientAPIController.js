@@ -1,4 +1,5 @@
 var fs = require('fs');
+var crypto = require('crypto');
 
 const pointsIDcollection = "628f8e0357a2e0f1b8541354";
 const discountIDcollection = "628f8d9857a2e0f1b8541351";
@@ -202,6 +203,27 @@ exports.discount_table_get = async function (req, res) {
 };
 
 
+exports.client_update_password = function (req, res) {
+    var salt = crypto.randomBytes(16).toString('hex'); 
+    
+    // Hashing user's salt and password with 1000 iterations, 
+    console.log(req.body.password);
+    var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
+    1000, 64, process.env.ENCRYPTION).toString('hex');
+
+    Client.findOneAndUpdate({ username: req.body.username },
+        { $set: { password: newPasswordHash, salt: salt } },
+        function (err, client) {
+            if (err) {
+                res.status(500).json(err);
+            } else {
+                res.status(200).json({ msg: 'Password updated' });
+            }
+        }
+    );
+}; // Change the password of a client
+
+
 exports.client_make_sale_post = function (req, res) {
     // Make the sale
     var sale = new Sale({
@@ -329,6 +351,7 @@ exports.client_soldbooks_get = function (req, res) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
+            console.log(usedBooks);
             res.status(200).json(usedBooks);
         }
     }).sort({ dateAdded: -1 }); 

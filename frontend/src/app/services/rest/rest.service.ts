@@ -63,10 +63,13 @@ export class RestService {
   }
 
 
+  updatePassword(formParams: FormData) {
+    // url: https://localhost/clientapi/updatePassword
+    return this.http.post(api + '/updatePassword', formParams);
+  }
+
   sellBook(formParams: FormData) {
     // url: https://localhost/clientapi/sellBook
-
-    console.log(formParams, "RestService");
     return this.http.post(api + '/sellBook', formParams).subscribe(data => {
       console.log(data, "data");
     });

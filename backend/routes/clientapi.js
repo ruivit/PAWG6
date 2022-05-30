@@ -25,4 +25,6 @@ router.post('/sellBook', multer().single('image'), clientAPIController.client_se
 router.get('/clientSales', multer().none(), clientAPIController.client_sales_get);
 router.get('/clientSoldBooks', multer().none(), clientAPIController.client_soldbooks_get);
 
+router.post('/updatePassword', multer().none(), clientAPIController.client_update_password);
+
 module.exports = router;
