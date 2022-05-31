@@ -4,6 +4,10 @@
     <h1>Sell Used Book Form</h1>
     <form #usedBookForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
 
+        {{ usedBookForm.value | json }}
+        <hr/>
+        {{ tempBookModel | json }}
+
 		<div class="form-group">
             <label>Book Title</label>
             <input type="text" #title="ngModel" pattern="[a-zA-Z0-9]{-1,100}" required   

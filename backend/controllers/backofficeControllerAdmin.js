@@ -15,6 +15,7 @@ var UsedBook = require('../models/usedBookModel');
 var Author = require('../models/authorModel');
 var Editor = require('../models/editorModel');
 
+var nodemailer = require('nodemailer');
 var Sale = require('../models/saleModel');
 var Points = require('../models/pointsModel');
 var Discount = require('../models/discountModel');
@@ -894,6 +895,7 @@ exports.backoffice_admin_usedbook_get = async function (req, res) {
     }
 }; // List/show the books
 
+//#region used books
 // --------------------- Backoffice/Admin/UsedBooks/Create ---------------------------
 
 
@@ -1054,6 +1056,52 @@ exports.backoffice_admin_usedbook_delete_post = function (req, res) {
     });
 }; // Delete a book
 
+//#endregion
+
+// ------------------Backoffice/Admin/tempbook----------------- 
+
+function sendMailClient(tempBook) {
+    var transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+          user: 'tugatobito@outlook.pt',
+          pass: 'bah54321'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'tugatobito@outlook.pt',
+        to: '8210227@estg.ipp.pt',
+        subject: 'Sending Email using Node.js',
+        text: 'Agradecemos sua proposta submetida na data ' + tempBook.dateString + '\n\n' +
+        'Proposta:\n' + 
+        'Titulo: ' + tempBook.title + '\n' + 
+        'ISBN: ' + tempBook.isbn + '\n' + 
+        'Seel Price: ' + tempBook.sellPrice + '\n' + 
+        'No entanto a mesma, não foi aceite por ter um valor muito elevado\n' +
+        '\n\n' + 'Com os melhores cumprimentos,\n' +
+        '\n\n' + 'A Administração'
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+    transporter.close();
+}
 
 
-
+exports.backoffice_admin_tempbook_delete_post = function (req, res) {
+    TempBook.findByIdAndRemove(req.params.id, function (err, tempBook) {
+        if (err) {
+            res.render('error/error', { message: "Error deleting book", error: err });
+        } else {
+            sendMailClient(tempBook);
+            // Milestone2 - add message of success
+            res.redirect('/backoffice/admin/proposals');
+        }
+    });
+}; // Delete a book

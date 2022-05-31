@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Book } from '../../models/Book';
-import { Sale } from '../../models/Sale';
+import { Book } from '../../Models/Book';
+import { Sale } from '../../Models/Sale';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RestService } from 'src/app/services/rest/rest.service';
@@ -26,8 +26,17 @@ export class CartComponent implements OnInit {
     private router: Router
   ) { }
 
+
   ngOnInit(): void {
+
+    
     this.books = this.cartService.getItemsInCart();
+
+    // if the books are empty, send message and do nothing
+    if (this.books.length === 0) { 
+      this.snackBar.open('Your cart is empty', '', { duration: 5000 });
+    return;
+    }
 
     this.restService.getClientPoints().subscribe(data => {
       localStorage.setItem('clientPoints', JSON.stringify(data));
@@ -85,10 +94,30 @@ export class CartComponent implements OnInit {
 
   calculateGainedPoints() {
     let pointsTable = JSON.parse(localStorage.getItem('pointsTable') || '{}');
-    let clientPoints = JSON.parse(localStorage.getItem('clientPoints') || '{}');
+
+    let clientTotalBuys: any;
+    clientTotalBuys = localStorage.getItem('totalBuys');
+  // If this is the first buy the clientTotalBuys will be null so we set it to 1
+    if (clientTotalBuys === '0') {
+      clientTotalBuys = 1;
+    }
 
     let gainedPoints = 0;
-    // Ja nao me lembro das contas...
+    // percentage of points for each sale calculated by the formula: total * pointsTable.percentagePerPurchase
+    let percentagePoints = this.calculateTotal() * pointsTable.percentagePerPurschase;
+    console.log("Tabela de Pontos" + pointsTable);
+
+    // Points if the promotion is active
+    let promotionPoints = 0;
+
+    if (pointsTable.salePromotionActive) {
+      promotionPoints = pointsTable.pointsPerSalePromotion;
+    }
+    // Points per total of books in the totalBuys calculated by the formula: totalBuys * pointsTable.buyedBooks
+    let buyedBooksPoints = clientTotalBuys * pointsTable.buyedBooks;
+    gainedPoints = percentagePoints + promotionPoints + buyedBooksPoints;
+
+    gainedPoints = Math.ceil(gainedPoints);
     return gainedPoints;
   }
 

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { TempBook } from 'src/app/Models/temp-book';
 
-import { Book } from '../../models/Book';
-import { Sale } from '../../models/Sale';
-
+import { Book } from '../../Models/Book';
+import { Sale } from '../../Models/Sale';
 
 //#region Constants
 const api = 'https://localhost/clientapi';
@@ -68,11 +68,12 @@ export class RestService {
     return this.http.post(api + '/updatePassword', formParams);
   }
 
-  sellBook(formParams: FormData) {
+  sellBook(tempBookModel: TempBook, selectedFile: any) {
+    console.log('restService');
+    console.log(tempBookModel);
     // url: https://localhost/clientapi/sellBook
-    return this.http.post(api + '/sellBook', formParams).subscribe(data => {
-      console.log(data, "data");
-    });
+    return this.http.post('https://localhost/clientapi/sellBook', { tempBookModel, selectedFile });
+
   }
 
   checkout(formParams: FormData) {

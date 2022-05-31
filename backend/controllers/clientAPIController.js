@@ -171,7 +171,9 @@ exports.client_login_post = function (req, res) {
                     username: client.username,
                     name: client.name,
                     ageType: client.ageType,
-                    clientID: client._id });
+                    clientID: client._id,
+                    points: client.points,
+                    totalBuys: client.totalBuys, });
             } else {
                 res.status(401).json({ message: 'Password errada' });
             }
@@ -191,6 +193,7 @@ exports.client_points_get = function (req, res) {
         }
     });
 }
+
 
 exports.points_table_get = async function (req, res) {
     var pointsTable = await Points.findById(pointsIDcollection);
@@ -237,14 +240,6 @@ exports.client_make_sale_post = function (req, res) {
         shipping: req.body.shipping,
     });
 
-    // Update the client's points
-    Client.findOne({ username: req.body.clientUsername }, function (err, client) {
-        if (err) { res.status(500).json(err); }
-        else {
-            client.points += sale.gainedPoints;
-            client.save(function (err) { if (err) { return err; } });
-        }
-    });
 
     // Save the sale
     sale.save(function (err) { 
@@ -259,7 +254,7 @@ exports.client_make_sale_post = function (req, res) {
     // Update the books' stock
     for (var i = 0; i < sale.books.length; i++) {
         // Get the number of the same book bought
-        var numberOfSameBook = 1;
+        var numberOfSameBook = 0;
         for (var j = 0; j < sale.books.length; j++) {
             if (sale.books[i]._id == sale.books[j]._id) {
                 numberOfSameBook++;
@@ -276,11 +271,33 @@ exports.client_make_sale_post = function (req, res) {
         });
     }
 
+    // count the number of books bought
+    var numberOfBooksBought = 0;
+    for (var i = 0; i < sale.books.length; i++) {
+        for (var j = 0; j < sale.books.length; j++) {
+            if (sale.books[i]._id == sale.books[j]._id) {
+                numberOfBooksBought++;
+            }
+        }
+    }
+
+
+      // Update the client's points and totalBuys
+      Client.findOne({ username: req.body.clientUsername }, function (err, client) {
+        if (err) { res.status(500).json(err); }
+        else {
+            console.log(sale.gainedPoints + ' points');
+            client.points += sale.gainedPoints;
+            client.totalBuys += numberOfBooksBought;
+            client.save(function (err) { if (err) { return err; } });
+        }
+    });
+
 }; // Make a sale
 
 
-exports.client_sell_tempbook_post = function (req, res) {
-    console.log(req.body + "before tempBook");
+exports.client_sell_tempbook_post =  function (req, res) {
+    console.log('Cheguei aqui');
 
     var tempBook = new TempBook({
         title: req.body.title,
@@ -289,6 +306,8 @@ exports.client_sell_tempbook_post = function (req, res) {
         editor: req.body.editor,
         resume: req.body.resume,
         isbn: req.body.isbn,
+        date: req.body.date,
+        dateString: req.body.dateString,
         provider: req.body.provider,
         sellPrice: req.body.sellPrice
     });

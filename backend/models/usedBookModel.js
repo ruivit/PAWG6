@@ -15,7 +15,6 @@ var UsedBookSchema = new Schema({
   condition: { type: String, required: true },
   provider: { type: String, required: true },
   stock: { type: Number, required: false, default: 1 },
-  quantityToBuy: { type: Number, required: false, default: 1 },
   sellPrice: { type: Number, required: true },
   buyPrice: { type: Number, required: true},
 }, { collection: 'UsedBooks' });

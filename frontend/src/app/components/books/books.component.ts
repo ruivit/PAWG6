@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Book } from 'src/app/models/Book';
+import { Book } from '../../Models/Book';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RestService } from 'src/app/services/rest/rest.service';
@@ -25,7 +25,6 @@ export class BooksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.type);
     this.restService.getBooks(this.type).subscribe(
       (data: Book[]) => {
         this.books = data;

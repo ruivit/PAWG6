@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Book } from '../../models/Book';
+import { Book } from '../../Models/Book';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BLOCK_MARKER } from '@angular/localize/src/utils';
 
@@ -33,7 +33,7 @@ export class CartService {
         return false;
       }
     }
-    return true;
+    return false;
   }
 
   getItemsInCart(): Book[] {

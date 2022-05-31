@@ -36,7 +36,9 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('Token', token);
         localStorage.setItem('clientID', data.clientID);
         localStorage.setItem('username', data.username);
-        localStorage.setItem('clientPoints', data.clientPoints);
+        localStorage.setItem('clientPoints', data.points);
+        console.log(data.points);
+        localStorage.setItem('totalBuys', data.totalBuys);
         localStorage.setItem('ageType', data.ageType);
         this.snackBar.open("Login Successfull", '', { duration: 3000 });
         this.router.navigate(['/']);

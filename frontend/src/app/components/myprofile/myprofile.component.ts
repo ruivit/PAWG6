@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Sale } from '../../models/Sale';
+import { Sale } from '../../Models/Sale';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { MatSnackBar } from '@angular/material/snack-bar';

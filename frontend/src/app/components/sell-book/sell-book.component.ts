@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import { UsedBook } from 'src/app/models/UsedBook';
+import { TempBook } from '../../Models/temp-book';
 import { SellBookService } from 'src/app/services/sell-book/sell-book.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -9,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './sell-book.component.html',
   styleUrls: ['./sell-book.component.css']
 })
-export class SellBookComponent implements OnInit {
+export class SellBookComponent {
 
   loading: boolean = false; // Flag variable
 
@@ -21,6 +20,10 @@ export class SellBookComponent implements OnInit {
 
   genres = ['Fiction', 'Non-Fiction', 'Children', 'Others', 'Biography', 'Poetry', 'Fantasy', 'Thriller', 'Horror', 'Mystery', 'Romance', 'Self-Help', 'Health', 'Travel', 'Science', 'History', 'Religion', 'Philosophy', 'Psychology', 'Business', 'Comics', 'Art', 'Cooking', 'Drama', 'Education', 'Engineering', 'Finance', 'Health', 'Law', 'Medicine', 'Music', 'Science', 'Sports', 'Technology', 'Travel', 'Youth'];
   genreHasError = true;
+
+  // Create a model of an UsedBook
+
+  tempBookModel = new TempBook('Title', 'Author', 'Genre', 'Editor', 'Resume', 0, 0);
   
   validateGenre(value:any){
     if(value === 'default'){
@@ -30,29 +33,8 @@ export class SellBookComponent implements OnInit {
     }
   }
 
-  // Create a model of an UsedBook
-  tempBookModel: UsedBook = {
-    _id: 0,
-    title: '',
-    author: '',
-    genre: '',
-    editor: '',
-    resume: '',
-    avaliation: 0,
-    isbn: 1234567891234,
-    date: new Date(),
-    condition: '',
-    provider: localStorage.getItem('username'),
-    stock: 0,
-    sellPrice: 0,
-    buyPrice: 0,
-}
-
-
   selectedFile: any;
-
   onFileChanged(event: any) {
-    console.log(event.target.files[0], "onfilechanged");
     this.selectedFile = event.target.files[0]
   }
  
