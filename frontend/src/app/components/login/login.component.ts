@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { Book } from 'src/app/Models/Book';
 
 import { UserService } from '../../services/user/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -40,6 +40,10 @@ export class LoginComponent implements OnInit {
         console.log(data.points);
         localStorage.setItem('totalBuys', data.totalBuys);
         localStorage.setItem('ageType', data.ageType);
+        
+        let books: Array<Book> = [];
+        localStorage.setItem('cart', JSON.stringify(books));
+        
         this.snackBar.open("Login Successfull", '', { duration: 3000 });
         this.router.navigate(['/']);
       },

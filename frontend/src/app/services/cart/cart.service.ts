@@ -9,7 +9,7 @@ import { BLOCK_MARKER } from '@angular/localize/src/utils';
 })
 export class CartService {
 
-  items = local
+  items = JSON.parse(localStorage.getItem("cart") || "[]");
 
   constructor(
     private snackBar: MatSnackBar
