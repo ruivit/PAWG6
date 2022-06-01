@@ -3,6 +3,8 @@
 - [ ] Fazer verificações no registo de um cliente
 - [ ] Rever as verificações do sell-book
 - [ ] Não está a carregar os usedbooks
+- [ ] O sistema de pontos e descontos não está a funcionar na venda do backend
+
 <br>
 
 <br>
