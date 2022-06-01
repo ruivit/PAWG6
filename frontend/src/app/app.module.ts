@@ -132,7 +132,7 @@ const appRoutes: Routes = [
     provide: HTTP_INTERCEPTORS,
     useClass: HttpConfigInterceptor,
     multi: true
-  }, BooksComponent],
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

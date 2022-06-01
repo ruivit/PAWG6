@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user/user.service';
-import { BooksComponent } from '../books/books.component';
+import { BooksService } from 'src/app/services/books/books.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,11 +11,12 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   loggedIn = this.userService.isLoggedIn();
+  new = true;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private booksComponent: BooksComponent
+    private bookService: BooksService,
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +28,8 @@ export class NavbarComponent implements OnInit {
   }
 
   getUsedBooks() {
-    this.booksComponent.type = 'used';
-    this.booksComponent.ngOnInit();
-    this.ngOnInit();
+    this.bookService.searchType = "used";
+    this.router.navigateByUrl('/client', { skipLocationChange: true });
   }
+  
 }

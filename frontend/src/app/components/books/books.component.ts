@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RestService } from 'src/app/services/rest/rest.service';
 import { CartService } from 'src/app/services/cart/cart.service';
-
+import { BooksService } from 'src/app/services/books/books.service';
 
 @Component({
   selector: 'app-books',
@@ -16,18 +16,20 @@ export class BooksComponent implements OnInit {
 
   books = new Array<Book>();
   isLogged = false;
-  type = "new";
 
   constructor(
     private snackBar: MatSnackBar,
     private cartService: CartService,
-    private restService: RestService
+    private restService: RestService,
+    private bookService: BooksService
   ) { }
 
   ngOnInit(): void {
-    this.restService.getBooks(this.type).subscribe(
+    console.log(this.bookService.searchType);
+    this.restService.getBooks(this.bookService.searchType).subscribe(
       (data: Book[]) => {
         this.books = data;
+        console.log(this.books);
       });
     if (localStorage.getItem('Token') != null) this.isLogged = true;
   }
