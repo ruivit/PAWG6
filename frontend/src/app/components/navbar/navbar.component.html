@@ -26,16 +26,15 @@
           <button type="button" class="btn btn-light" (click)="getUsedBooks()">Used  Books</button>
         </li>
         <br>
-        
+        <li class="nav-item active" *ngIf="loggedIn">
+          <button type="button" class="btn btn-light" (click)="searchBooks()">Search  Books</button>
+        </li>
+        <br>
         <li class="nav-item active" *ngIf="loggedIn">
           <button type="button" class="btn btn-light"
           (click)="logout()" [routerLink]="['/logout']">Logout</button>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
   </div>
 </nav>

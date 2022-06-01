@@ -42,6 +42,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SearchedBooksComponent } from './components/searched-books/searched-books.component';
 //#endregion
 
 //#region Routes
@@ -63,6 +64,12 @@ const appRoutes: Routes = [
     //url: localhost:4200/client
     path: 'usedbooks',
     component: UsedBooksComponent,
+    canActivate: [AuthGuard],
+    data: { title: 'Welcome to Library G6' }
+  },
+  {
+    path: 'searchbooks',
+    component: SearchedBooksComponent,
     canActivate: [AuthGuard],
     data: { title: 'Welcome to Library G6' }
   },
@@ -111,7 +118,8 @@ const appRoutes: Routes = [
     MyprofileComponent,
     VisitorComponent,
     NewBooksComponent,
-    UsedBooksComponent
+    UsedBooksComponent,
+    SearchedBooksComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }),

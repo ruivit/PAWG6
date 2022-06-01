@@ -27,4 +27,6 @@ router.get('/clientSoldBooks', multer().none(), clientAPIController.client_soldb
 
 router.post('/updatePassword', multer().none(), clientAPIController.client_update_password);
 
+router.get('/search', multer().none(), clientAPIController.client_search_get);
+
 module.exports = router;

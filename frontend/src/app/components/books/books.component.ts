@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RestService } from 'src/app/services/rest/rest.service';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { BooksService } from 'src/app/services/books/books.service';
 
 @Component({
   selector: 'app-books',
@@ -20,13 +19,11 @@ export class BooksComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private cartService: CartService,
-    private restService: RestService,
-    private bookService: BooksService
+    private restService: RestService
   ) { }
 
   ngOnInit(): void {
-    console.log(this.bookService.searchType);
-    this.restService.getBooks(this.bookService.searchType).subscribe(
+    this.restService.getBooks("new").subscribe(
       (data: Book[]) => {
         this.books = data;
         console.log(this.books);

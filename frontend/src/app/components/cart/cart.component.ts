@@ -89,6 +89,7 @@ export class CartComponent implements OnInit {
     this.total -= promotionDiscount;
     this.total -= this.calculateShipping();
     this.total -= discountAge;
+
     return this.total;
   }
 
@@ -125,11 +126,13 @@ export class CartComponent implements OnInit {
     let pointsTable = JSON.parse(localStorage.getItem('pointsTable') || '{}');
     let shippingPoints = pointsTable.shippingPoints;
     let clientPoints = JSON.parse(localStorage.getItem('clientPoints') || '{}');
+    let shipping = 0;
 
     if (clientPoints.shippingPoints >= shippingPoints) {
       return 0;
     } else {
-      return this.books.length * 0.85;
+      shipping = Math.ceil(this.books.length * 0.85);
+      return shipping;
     }
   }
 

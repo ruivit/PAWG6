@@ -39,21 +39,21 @@ function sendMail(text) {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
         subject: 'Sending Email using Node.js',
-        text: 'O cliente ' + text.provider + ' pretende vender o livro ' + 
-        text.title + ' a um preço de ' + text.sellPrice + '€'
-      };
-      
+        text: 'O cliente ' + text.provider + ' pretende vender o livro ' +
+            text.title + ' a um preço de ' + text.sellPrice + '€'
+    };
 
-      
-      transporter.sendMail(mailOptions, function(error, info){
+
+
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          console.log(error);
+            console.log(error);
         } else {
-          console.log('Email sent: ' + info.response);
+            console.log('Email sent: ' + info.response);
         }
-      });
+    });
 
-      transporter.close();
+    transporter.close();
 }
 
 // Quando um cliente submete um livro para avaliação, se o livro for corretamente adicionado,
@@ -63,22 +63,22 @@ function sendMailClient(text) {
     var transporter = nodemailer.createTransport({
         service: 'outlook',
         auth: {
-          user: 'tugatobito@outlook.pt',
-          pass: 'bah54321'
+            user: 'tugatobito@outlook.pt',
+            pass: 'bah54321'
         }
-      });
-      
-      var mailOptions = {
+    });
+
+    var mailOptions = {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
         subject: 'Sending Email using Node.js',
-        text: 'A sua proposta foi submtida com sucesso, com a seguinte informação\n\n'+
-        'O cliente' + text.provider + ' pretende vender o livro ' + text.title + 
-        ' a um preço de ' + text.sellPrice + '€' + '\n\n' + 
-        'Por favor, aguarde a nossa resposta, tentaremos ser breves.'
-      };
-      
-      transporter.sendMail(mailOptions, function(error, info){
+        text: 'A sua proposta foi submtida com sucesso, com a seguinte informação\n\n' +
+            'O cliente' + text.provider + ' pretende vender o livro ' + text.title +
+            ' a um preço de ' + text.sellPrice + '€' + '\n\n' +
+            'Por favor, aguarde a nossa resposta, tentaremos ser breves.'
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
         } else {
@@ -149,13 +149,17 @@ exports.client_register_post = async function (req, res) {
 
         if (recommendedClient) {
             client.points += pointsGained;
-            client.save(function (err) { if (err) { return err; } }); 
-            res.status(201).json({ message: 'Registration Successfull', 
-            wasRecommended: true });
+            client.save(function (err) { if (err) { return err; } });
+            res.status(201).json({
+                message: 'Registration Successfull',
+                wasRecommended: true
+            });
         } else {
             client.save(function (err) { if (err) { return err; } });
-            res.status(201).json({ message: 'Registration Successfull', 
-            wasRecommended: false });
+            res.status(201).json({
+                message: 'Registration Successfull',
+                wasRecommended: false
+            });
         }
     }
 }; // Register a new client
@@ -167,13 +171,15 @@ exports.client_login_post = function (req, res) {
         else {
             if (client.checkPassword(req.body.password)) {
                 res.status(200).json(
-                    { message: 'Login efetuado com sucesso',
-                    username: client.username,
-                    name: client.name,
-                    ageType: client.ageType,
-                    clientID: client._id,
-                    points: client.points,
-                    totalBuys: client.totalBuys, });
+                    {
+                        message: 'Login efetuado com sucesso',
+                        username: client.username,
+                        name: client.name,
+                        ageType: client.ageType,
+                        clientID: client._id,
+                        points: client.points,
+                        totalBuys: client.totalBuys,
+                    });
             } else {
                 res.status(401).json({ message: 'Password errada' });
             }
@@ -184,14 +190,14 @@ exports.client_login_post = function (req, res) {
 
 
 exports.client_points_get = function (req, res) {
-    Client.findOne({ username: req.query.username }, 
+    Client.findOne({ username: req.query.username },
         function (err, client) {
-        if (err) {
-            res.render('error/error', { error: err });
-        } else {
-            res.status(200).json(client.points);
-        }
-    });
+            if (err) {
+                res.render('error/error', { error: err });
+            } else {
+                res.status(200).json(client.points);
+            }
+        });
 }
 
 
@@ -207,14 +213,14 @@ exports.discount_table_get = async function (req, res) {
 
 
 exports.client_update_password = function (req, res) {
-    var salt = crypto.randomBytes(16).toString('hex'); 
-    
+    var salt = crypto.randomBytes(16).toString('hex');
+
     // Hashing user's salt and password with 1000 iterations, 
     console.log(req.body.password);
-    var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,  
-    1000, 64, process.env.ENCRYPTION).toString('hex');
+    var newPasswordHash = crypto.pbkdf2Sync(req.body.password, salt,
+        1000, 64, process.env.ENCRYPTION).toString('hex');
 
-    Client.findOneAndUpdate({ username: req.body.username }, 
+    Client.findOneAndUpdate({ username: req.body.username },
         { salt: salt, passwordHash: newPasswordHash }, { new: true },
         function (err, client) {
             if (err) {
@@ -227,7 +233,7 @@ exports.client_update_password = function (req, res) {
 }; // Change the password of a client
 
 
-exports.client_make_sale_post = function (req, res) {
+exports.client_make_sale_post = async function (req, res) {
     // Make the sale
     var sale = new Sale({
         clientUsername: req.body.clientUsername.toString(),
@@ -242,8 +248,8 @@ exports.client_make_sale_post = function (req, res) {
 
 
     // Save the sale
-    sale.save(function (err) { 
-        if (err) { 
+    sale.save(function (err) {
+        if (err) {
             console.log(err);
             res.status(500).json(err);
         } else {
@@ -253,8 +259,10 @@ exports.client_make_sale_post = function (req, res) {
 
     // Update the books' stock
     for (var i = 0; i < sale.books.length; i++) {
-        Book.findByIdAndUpdate(sale.books[i]._id, { $inc: 
-            { stock: -1 } }, { new: true }, function (err, book) {
+        Book.findByIdAndUpdate(sale.books[i]._id, {
+            $inc:
+                { stock: -1 }
+        }, { new: true }, function (err, book) {
             if (err) {
                 res.status(500).json(err);
             }
@@ -271,13 +279,16 @@ exports.client_make_sale_post = function (req, res) {
         }
     }
 
-
-      // Update the client's points and totalBuys
-      Client.findOne({ username: req.body.clientUsername }, function (err, client) {
+    var pointsTable = await Points.findById(pointsIDcollection);
+    // Update the client's points and totalBuys
+    Client.findOne({ username: req.body.clientUsername }, function (err, client) {
         if (err) { res.status(500).json(err); }
         else {
-            console.log(sale.gainedPoints + ' points');
             client.points += sale.gainedPoints;
+            if ( req.body.shipping == 0 ) {
+                client.points -= pointsTable.shippingPoints;
+            }
+
             client.totalBuys += numberOfBooksBought;
             client.save(function (err) { if (err) { return err; } });
         }
@@ -286,11 +297,11 @@ exports.client_make_sale_post = function (req, res) {
 }; // Make a sale
 
 
-exports.client_sell_tempbook_post =  function (req, res) {
+exports.client_sell_tempbook_post = function (req, res) {
     console.log('Cheguei aqui');
     console.log(req.body);
     console.log(req.body.tempBookModel.title);
-    
+
 
     var tempBook = new TempBook({
         title: req.body.tempBookModel.title,
@@ -315,13 +326,13 @@ exports.client_sell_tempbook_post =  function (req, res) {
             res.status(201).json({ msg: 'TempBook Successfull!' });
         }
     });
- // Sell a tempBook
-/* 
-     // save the cover
-     if (req.file) {
-        fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
-    }
- */
+    // Sell a tempBook
+    /* 
+         // save the cover
+         if (req.file) {
+            fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
+        }
+     */
     //sendMailClient(tempBook);
     //sendMail(tempBook);
 
@@ -369,5 +380,44 @@ exports.client_soldbooks_get = function (req, res) {
             console.log(usedBooks);
             res.status(200).json(usedBooks);
         }
-    }).sort({ dateAdded: -1 }); 
+    }).sort({ dateAdded: -1 });
 }; // Get all the used books sold by the clients
+
+
+exports.client_search_get = function (req, res) {
+    var term = req.query.term;
+    var bookType = req.query.bookType;
+    console.log(term);
+    console.log(bookType);
+    switch (bookType) {
+        case "new":
+            Book.find({
+                $or: [
+                    { title: { $regex: term, $options: 'i' } },
+                    { author: { $regex: term, $options: 'i' } },
+                ]
+            }, function (err, books) {
+                if (err) {
+                    res.render('error/error', { error: err });
+                } else {
+                    res.status(200).json(books);
+                }
+            });
+            break;
+
+        case "used":
+            UsedBook.find({
+                $or: [
+                    { title: { $regex: term, $options: 'i' } },
+                    { author: { $regex: term, $options: 'i' } },
+                ]
+            }, function (err, books) {
+                if (err) {
+                    res.render('error/error', { error: err });
+                } else {
+                    res.status(200).json(books);
+                }
+            });
+            break;
+        }
+}; // Search for books

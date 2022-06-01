@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { UserService } from 'src/app/services/user/user.service';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +12,6 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   loggedIn = this.userService.isLoggedIn();
-  new = true;
 
   constructor(
     private userService: UserService,
@@ -33,4 +34,7 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/usedbooks', { skipLocationChange: true });
   }
   
+  searchBooks() {
+    this.router.navigateByUrl('/searchbooks', { skipLocationChange: true });
+  }
 }

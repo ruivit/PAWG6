@@ -49,6 +49,12 @@ export class RestService {
   }
 
 
+  searchBooks(term: string, bookType: string): Observable<Book[]> {
+    // url: https://localhost/clientapi/search?term=term
+    return this.http.get<Book[]>(api + '/search?term=' + term
+      + '&bookType=' + bookType);
+  }
+
   getClientSales() {
     // url: https://localhost/clientapi/clientSales
     return this.http.get(api + '/clientSales?username=' +
