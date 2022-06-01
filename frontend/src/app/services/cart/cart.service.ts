@@ -23,7 +23,7 @@ export class CartService {
         count++;
       }
     }
-
+    console.log(this.items);
     if (book.stock > 0) {
       // compare the book.stock with the count
       if (count < book.stock) {

@@ -12,14 +12,15 @@ import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 
 //#region Components
 import { AppComponent } from './app.component';
-import { BooksComponent } from './components/books/books.component';
-import { IndexComponent } from './components/index/index.component';
 import { CartComponent } from './components/cart/cart.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SellBookComponent } from './components/sell-book/sell-book.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { MyprofileComponent } from './components/myprofile/myprofile.component';
+import { VisitorComponent } from './components/visitor/visitor.component';
+import { NewBooksComponent } from './components/new-books/new-books.component';
+import { UsedBooksComponent } from './components/used-books/used-books.component';
 //#endregion
 
 //#region Services
@@ -41,7 +42,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { VisitorComponent } from './components/visitor/visitor.component';
 //#endregion
 
 //#region Routes
@@ -54,8 +54,15 @@ const appRoutes: Routes = [
   },
   {
     //url: localhost:4200/client
-    path: 'client',
-    component: IndexComponent,
+    path: 'newbooks',
+    component: NewBooksComponent,
+    canActivate: [AuthGuard],
+    data: { title: 'Welcome to Library G6' }
+  },
+  {
+    //url: localhost:4200/client
+    path: 'usedbooks',
+    component: UsedBooksComponent,
     canActivate: [AuthGuard],
     data: { title: 'Welcome to Library G6' }
   },
@@ -96,15 +103,15 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    BooksComponent,
-    IndexComponent,
     CartComponent,
     NavbarComponent,
     SellBookComponent,
     LoginComponent,
     SignupComponent,
     MyprofileComponent,
-    VisitorComponent
+    VisitorComponent,
+    NewBooksComponent,
+    UsedBooksComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }),
