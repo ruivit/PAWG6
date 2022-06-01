@@ -253,20 +253,10 @@ exports.client_make_sale_post = function (req, res) {
 
     // Update the books' stock
     for (var i = 0; i < sale.books.length; i++) {
-        // Get the number of the same book bought
-        var numberOfSameBook = 0;
-        for (var j = 0; j < sale.books.length; j++) {
-            if (sale.books[i]._id == sale.books[j]._id) {
-                numberOfSameBook++;
-            }
-        }
-
-        // update the book's stock
-        Book.findById(sale.books[i]._id, function (err, book) {
-            if (err) { res.status(500).json(err); }
-            else {
-                book.stock -= numberOfSameBook;
-                book.save(function (err) { if (err) { return err; } });
+        Book.findByIdAndUpdate(sale.books[i]._id, { $inc: 
+            { stock: -1 } }, { new: true }, function (err, book) {
+            if (err) {
+                res.status(500).json(err);
             }
         });
     }
