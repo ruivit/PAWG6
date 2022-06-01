@@ -6,6 +6,9 @@ export class TempBook {
         public editor: string,
         public resume: string,
         public isbn: number,
+        public dateAdded: Date,
+        public dateString: string,
+        public provider: string,
         public sellPrice: number,
     ) { }
 }

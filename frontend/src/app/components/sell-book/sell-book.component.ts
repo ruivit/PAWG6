@@ -23,7 +23,8 @@ export class SellBookComponent {
 
   // Create a model of an UsedBook
 
-  tempBookModel = new TempBook('Title', 'Author', 'Genre', 'Editor', 'Resume', 0, 0);
+  tempBookModel = new TempBook('Title', 'Author', 'Genre', 'Editor', 'Resume', 
+  0, new Date(Date.now()), '', localStorage.getItem('username') || '', 0);
   
   validateGenre(value:any){
     if(value === 'default'){

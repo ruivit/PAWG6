@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-//var schema  = require('./clientModel');
-
 var Schema = mongoose.Schema;
 
 var TempBookSchema = new Schema({

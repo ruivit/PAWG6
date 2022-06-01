@@ -10,14 +10,24 @@ import { Router } from '@angular/router';
 })
 export class SellBookService {
 
-  _url = '';
+  _url = 'https://localhost/clientapi/sellBook';
   constructor(private restService: RestService,
+    private _http: HttpClient,
     private router: Router) { }
 
   onSubmit(tempBookModel: TempBook, selectedFile: any) {
         
-    //return this._http.post<any>(this._url, { tempBookModel, selectedFile });
-    /* // Create a new form data object  
+    return this._http.post<any>(this._url, { tempBookModel, selectedFile }).subscribe(
+      (data) => {
+        console.log(data);
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+      /* // Create a new form data object  
     const formParams = new FormData();
 /* 
     // Iterate over all book values and add them to the object
@@ -29,8 +39,8 @@ export class SellBookService {
     formParams.append('image', selectedFile); */ 
 
     // Send the POST request using the restService
-    this.restService.sellBook(tempBookModel, selectedFile);
-    }
+    //this.restService.sellBook(tempBookModel, selectedFile);
+    //}
 
     // Redirect to the home page
     //this.router.navigate(['/']);

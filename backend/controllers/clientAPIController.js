@@ -298,38 +298,44 @@ exports.client_make_sale_post = function (req, res) {
 
 exports.client_sell_tempbook_post =  function (req, res) {
     console.log('Cheguei aqui');
+    console.log(req.body);
+    console.log(req.body.tempBookModel.title);
+    
 
     var tempBook = new TempBook({
-        title: req.body.title,
-        author: req.body.author,
-        genre: req.body.genre,
-        editor: req.body.editor,
-        resume: req.body.resume,
-        isbn: req.body.isbn,
-        date: req.body.date,
-        dateString: req.body.dateString,
-        provider: req.body.provider,
-        sellPrice: req.body.sellPrice
+        title: req.body.tempBookModel.title,
+        author: req.body.tempBookModel.author,
+        genre: req.body.tempBookModel.genre,
+        editor: req.body.tempBookModel.editor,
+        resume: req.body.tempBookModel.resume,
+        isbn: req.body.tempBookModel.isbn,
+        dateAdded: req.body.tempBookModel.dateAdded,
+        dateString: req.body.tempBookModel.dateString,
+        provider: req.body.tempBookModel.provider,
+        sellPrice: req.body.tempBookModel.sellPrice,
     });
-    console.log(req.body + "tempBook");
+    console.log('tempBook');
+    console.log(tempBook);
 
     tempBook.save(function (err) {
         if (err) {
-            res.render('error/error', { message: "Error creating used book", error: err });
+            console.log(err);
+            res.status(500).json(err);
+        } else {
+            res.status(201).json({ msg: 'TempBook Successfull!' });
         }
     });
-
+ // Sell a tempBook
+/* 
      // save the cover
      if (req.file) {
         fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
     }
-
+ */
     //sendMailClient(tempBook);
     //sendMail(tempBook);
-        
-    res.status(200).json( { message: "Used book created successfully" } );
 
-}; // Sell a used book
+};// Sell a used book
 
 
 exports.client_sales_get = async function (req, res) {
