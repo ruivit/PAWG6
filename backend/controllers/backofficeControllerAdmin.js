@@ -595,6 +595,7 @@ exports.backoffice_admin_book_delete_post = function (req, res) {
 //#region Sale
 
 exports.backoffice_admin_sales_get = async function (req, res) {
+    console.log(req.session);
     async function getTitleBooks (req, res, sales) {
         for (var i = 0; i < sales.length; i++) {
             for (var j = 0; j < sales[i].books.length; j++) {
@@ -608,7 +609,7 @@ exports.backoffice_admin_sales_get = async function (req, res) {
     async function getEmployeeUsername (req, res, sales) {
         for (var i = 0; i < sales.length; i++) {
             var employee = await Employee.findById(sales[i].employee_id);
-            sales[i].employeeUsername = employee.username;
+            sales[i].employeeUsername = req.session.username;
         }
         return sales;
     }

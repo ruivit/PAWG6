@@ -28,8 +28,12 @@ export class NavbarComponent implements OnInit {
   }
 
   getUsedBooks() {
-    this.bookService.searchType = "used";
-    this.router.navigateByUrl('/client', { skipLocationChange: true });
+    if (this.bookService.searchType === 'used') {
+      this.bookService.searchType = 'new';
+    } else {
+      this.bookService.searchType = "used";
+      this.router.navigateByUrl('/client', { skipLocationChange: true });
+    }
   }
   
 }
