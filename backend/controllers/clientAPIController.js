@@ -147,15 +147,19 @@ exports.client_register_post = async function (req, res) {
 
         // If the client was recommended by an existing client
         var recommendedClient = await Client.findOne({ email: req.body.recommendation });
-
         if (recommendedClient) {
-            client.points += pointsGained;
+            
+            recommendedClient.points += pointsGained;
+            recommendedClient.save();
+            console.log(client);
             client.save(function (err) { if (err) { return err; } });
+            console.log('cliente recomendado 2');
             res.status(201).json({
                 message: 'Registration Successfull',
                 wasRecommended: true
             });
         } else {
+            
             client.save(function (err) { if (err) { return err; } });
             res.status(201).json({
                 message: 'Registration Successfull',
