@@ -1018,6 +1018,20 @@ exports.backoffice_admin_usedbook_create_post = function (req, res) {
                 });
             }
         }); // UsedBook save end
+
+        // Upadate the client's points and the client's sold books
+        
+        Client.findOne({ username: req.body.provider }, function (err, client) {
+            if (err) { res.status(500).json(err); }
+            else {
+                var gainedPoints = req.body.buyPrice * 10;
+                client.points += gainedPoints;    
+                client.soldBooks = client.soldBooks + 1;
+                client.save(function (err) { if (err) { return err; } });
+            }
+        });
+        
+
         res.redirect('/backoffice/admin/usedbook');
     }
     }); // Promise end
@@ -1073,13 +1087,13 @@ function sendMailClient(tempBook) {
       var mailOptions = {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
-        subject: 'Sending Email using Node.js',
+        subject: 'My Library',
         text: 'Agradecemos sua proposta submetida na data ' + tempBook.dateString + '\n\n' +
         'Proposta:\n' + 
         'Titulo: ' + tempBook.title + '\n' + 
         'ISBN: ' + tempBook.isbn + '\n' + 
         'Seel Price: ' + tempBook.sellPrice + '\n' + 
-        'No entanto a mesma, não foi aceite por ter um valor muito elevado\n' +
+        'Estado: Não aceite.\n' +
         '\n\n' + 'Com os melhores cumprimentos,\n' +
         '\n\n' + 'A Administração'
       };
