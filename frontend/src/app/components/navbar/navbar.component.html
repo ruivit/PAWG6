@@ -30,6 +30,10 @@
           <button type="button" class="btn btn-light" (click)="searchBooks()">Search  Books</button>
         </li>
         <br>
+        <li class="nav-item active">
+          <button type="button" class="btn btn-light" [routerLink]="['/myprofile']" *ngIf="loggedIn">My Profile</button>
+        </li>
+        <br>
         <li class="nav-item active" *ngIf="loggedIn">
           <button type="button" class="btn btn-light"
           (click)="logout()" [routerLink]="['/logout']">Logout</button>

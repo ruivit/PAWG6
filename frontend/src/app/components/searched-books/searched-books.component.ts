@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { Book } from '../../Models/Book';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RestService } from 'src/app/services/rest/rest.service';
 import { CartService } from 'src/app/services/cart/cart.service';
+
+import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
+import { BookDetailComponent } from '../book-detail/book-detail.component';
 
 @Component({
   selector: 'app-searched-books',
@@ -19,10 +23,16 @@ export class SearchedBooksComponent implements OnInit {
   quantity: number = 0;
   isLogged = false;
 
+    
+  selectedBook?: Book;
+  dataSource = new MatTableDataSource(this.books);
+  @Inject(MAT_DIALOG_DATA) public data: any
+
   constructor(
     private restService: RestService,
     private cartService: CartService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +68,21 @@ export class SearchedBooksComponent implements OnInit {
     } else {
       this.snackBar.open('Out of stock...', '', { duration: 5000 });
     }
+  }
+
+  openDialog(book: Book) {
+    this.dialog.open(BookDetailComponent, {
+      data: {
+        title: book.title,
+        author: book.author,
+        editor: book.editor,
+        genre: book.genre,
+        resume: book.resume,
+        avaliation: book.avaliation,
+        isbn: book.isbn,
+        stock: book.stock,
+      },
+    });
   }
 
 }

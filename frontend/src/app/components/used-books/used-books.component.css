@@ -1,22 +1,37 @@
 mat-toolbar {
-    justify-content: space-between;
-  }
-  
-  .content {
-    padding: 16px;
-  }
-  
-  .content > mat-card {
-    margin-bottom: 16px;
-  }
-  
-  .column-label {
-    margin-right: 8px;
-    font-size: 1rem;
-  }
-  
-  img { 
-    max-width: 60%;
-    max-height: 65%;
-    justify-content: center;
-  }
+  justify-content: space-between;
+}
+
+.content {
+  padding: 16px;
+  margin-top: 10px; 
+  margin-bottom: 10px;
+}
+
+.content>mat-card {
+  margin-bottom: 16px;
+}
+
+.main-image {
+  margin: 10px;
+  width: calc(85% - 50px);
+  height: calc(85% - 50px);
+  object-fit: cover;
+  justify-content: center;
+}
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.div1 {
+  grid-area: 2 / 1 / 6 / 6;
+}
+
+.div2 {
+  grid-area: 1 / 1 / 2 / 6;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { Book } from '../../Models/Book';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,6 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RestService } from 'src/app/services/rest/rest.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 
+import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
+import { BookDetailComponent } from '../book-detail/book-detail.component';
 
 @Component({
   selector: 'app-new-books',
@@ -16,11 +19,16 @@ export class NewBooksComponent implements OnInit {
 
   books = new Array<Book>();
   isLogged = false;
+  
+  selectedBook?: Book;
+  dataSource = new MatTableDataSource(this.books);
+  @Inject(MAT_DIALOG_DATA) public data: any
 
   constructor(
     private snackBar: MatSnackBar,
     private cartService: CartService,
-    private restService: RestService
+    private restService: RestService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -40,4 +48,18 @@ export class NewBooksComponent implements OnInit {
     }
   }
 
+  openDialog(book: Book) {
+    this.dialog.open(BookDetailComponent, {
+      data: {
+        title: book.title,
+        author: book.author,
+        editor: book.editor,
+        genre: book.genre,
+        resume: book.resume,
+        avaliation: book.avaliation,
+        isbn: book.isbn,
+        stock: book.stock,
+      },
+    });
+  }
 }
