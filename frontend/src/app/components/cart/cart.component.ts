@@ -28,7 +28,6 @@ export class CartComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     
     this.books = this.cartService.getItemsInCart();
 
@@ -167,7 +166,7 @@ export class CartComponent implements OnInit {
           duration: 3000,
           verticalPosition: 'top',
         });
-        this.router.navigate(['/client']);
+        this.router.navigate(['/newbooks']);
       },
       (err: HttpErrorResponse) => {
         if (err.error.msg) {

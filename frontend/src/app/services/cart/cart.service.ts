@@ -27,7 +27,9 @@ export class CartService {
     if (book.stock > 0) {
       // compare the book.stock with the count
       if (count < book.stock) {
+        // save in localStorage
         this.items.push(book);
+        window.localStorage.setItem("cart", JSON.stringify(this.items));
         return true;          
       } else {
         return false;
@@ -37,7 +39,7 @@ export class CartService {
   }
 
   getItemsInCart(): Book[] {
-    return this.items;
+    return JSON.parse(localStorage.getItem("cart") || "[]");
   }
 
   clearCart() {
