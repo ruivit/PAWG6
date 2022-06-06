@@ -26,7 +26,7 @@ function getDateNow(date) {
 
 // Quando um cliente submete um livro para avaliação, é enviado um email ao administrador
 
-function sendMail(text) {
+function sendMailAdmin(text) {
     var transporter = nodemailer.createTransport({
         service: 'outlook',
         auth: {
@@ -38,9 +38,10 @@ function sendMail(text) {
     var mailOptions = {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
-        subject: 'Sending Email using Node.js',
+        subject: 'New Proposal',
         text: 'O cliente ' + text.provider + ' pretende vender o livro ' +
-            text.title + ' a um preço de ' + text.sellPrice + '€'
+            text.title + ' a um preço de ' + text.sellPrice + '€' + '\n\n' +
+            'https://localhost/backoffice/admin/proposals'
     };
 
 
@@ -71,7 +72,7 @@ function sendMailClient(text) {
     var mailOptions = {
         from: 'tugatobito@outlook.pt',
         to: '8210227@estg.ipp.pt',
-        subject: 'Sending Email using Node.js',
+        subject: 'My Library - Your Proposal',
         text: 'A sua proposta foi submtida com sucesso, com a seguinte informação\n\n' +
             'O cliente' + text.provider + ' pretende vender o livro ' + text.title +
             ' a um preço de ' + text.sellPrice + '€' + '\n\n' +
@@ -333,8 +334,11 @@ exports.client_sell_tempbook_post = function (req, res) {
             fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
         }
      */
-    //sendMailClient(tempBook);
-    //sendMail(tempBook);
+    sendMailClient(tempBook);
+    setTimeout(function () {
+        sendMailAdmin(tempBook);
+    }, 5000);
+    
 
 };// Sell a used book
 
