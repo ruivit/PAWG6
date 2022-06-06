@@ -21,6 +21,7 @@ import { MyprofileComponent } from './components/myprofile/myprofile.component';
 import { VisitorComponent } from './components/visitor/visitor.component';
 import { NewBooksComponent } from './components/new-books/new-books.component';
 import { UsedBooksComponent } from './components/used-books/used-books.component';
+import { SearchedBooksComponent } from './components/searched-books/searched-books.component';
 //#endregion
 
 //#region Services
@@ -40,9 +41,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SearchedBooksComponent } from './components/searched-books/searched-books.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { BookDetailComponent } from './components/book-detail/book-detail.component';
 //#endregion
 
 //#region Routes
@@ -119,7 +122,8 @@ const appRoutes: Routes = [
     VisitorComponent,
     NewBooksComponent,
     UsedBooksComponent,
-    SearchedBooksComponent
+    SearchedBooksComponent,
+    BookDetailComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }),
@@ -139,15 +143,21 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatToolbarModule,
     FlexLayoutModule,
-    NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    MatDialogModule,
+    ReactiveFormsModule,
+    TooltipModule.forRoot(),
+    CarouselModule.forRoot()
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpConfigInterceptor,
-    multi: true
-  }],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true,
+    },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
