@@ -43,9 +43,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //#endregion
 
 //#region Routes
@@ -147,7 +149,8 @@ const appRoutes: Routes = [
     MatDialogModule,
     ReactiveFormsModule,
     TooltipModule.forRoot(),
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    NgbModule
   ],
   providers: [
     {

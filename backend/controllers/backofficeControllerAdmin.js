@@ -1,5 +1,6 @@
 var crypto = require('crypto');
 var fs = require('fs');
+var sharp = require('sharp');
 
 const pointsIDcollection = "628f8e0357a2e0f1b8541354";
 const discountIDcollection = "628f8d9857a2e0f1b8541351";
@@ -544,10 +545,17 @@ exports.backoffice_admin_book_create_post = function (req, res) {
                     }
                 }); // Editor end
 
+               
+                
                 // save the cover
                 if (req.file) {
-                    fs.writeFileSync("./public/images/books/" + book._id + ".jpg", req.file.buffer);
+                    fs.writeFileSync("./public/images/books/tempImage.jpg", req.file.buffer);
                 }
+
+                // resise the cover 500x500
+                sharp("./public/images/books/tempImage.jpg").
+                resize(750, 1000).toFile("./public/images/books/" + book._id + ".jpg");
+
             }
         }); // Book save end
         res.redirect('/backoffice/admin/book');

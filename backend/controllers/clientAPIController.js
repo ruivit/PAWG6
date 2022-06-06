@@ -125,6 +125,7 @@ exports.client_register_post = async function (req, res) {
 
     // find client by username and/or email
     var duplClient = await Client.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] });
+    console.log(req.body.birthDate + '\n' + 'this is the birthdate');
     if (duplClient) {
         res.status(409).json({ msg: 'Client already exists' });
     } else {
@@ -138,8 +139,9 @@ exports.client_register_post = async function (req, res) {
             dateString: getDateNow(req.body.birthDate),
             ageType: req.body.ageType,
             password: req.body.password,
+            recommendedBy: req.body.recommendedBy,
         });
-
+    
         client.setPassword(req.body.password);
 
         var pointsData = await Points.findOne({});
@@ -150,10 +152,8 @@ exports.client_register_post = async function (req, res) {
         if (recommendedClient) {
             
             recommendedClient.points += pointsGained;
-            recommendedClient.save();
             console.log(client);
             client.save(function (err) { if (err) { return err; } });
-            console.log('cliente recomendado 2');
             res.status(201).json({
                 message: 'Registration Successfull',
                 wasRecommended: true
@@ -161,6 +161,7 @@ exports.client_register_post = async function (req, res) {
         } else {
             
             client.save(function (err) { if (err) { return err; } });
+            console.log(client);
             res.status(201).json({
                 message: 'Registration Successfull',
                 wasRecommended: false

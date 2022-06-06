@@ -6,7 +6,7 @@
 
 		<div class="form-group">
             <label>Book Title</label>
-            <input type="text" #title="ngModel" pattern="[a-zA-Z0-9]{-1,100}" required   
+            <input type="text" #title="ngModel" pattern="[\w ]{1,100}$" required   
             [class.is-invalid]="title.invalid && title.touched"  class="form-control" 
             name="title" [(ngModel)]="tempBookModel.title">
             <div *ngIf="title.errors && (title.invalid || title.touched)">
@@ -59,7 +59,7 @@
 
         <div class="form-group">
             <label>ISBN</label>
-            <input type="number" #isbn="ngModel" required pattern="[0-9]{13,13}" 
+            <input type="number" #isbn="ngModel" required pattern="[0-9]{13,13}" minlength="13" maxlength="13"  
             [class.is-invalid]="isbn.invalid && isbn.touched" class="form-control" name="isbn"[(ngModel)]="tempBookModel.isbn">
             <div *ngIf="isbn.errors && (isbn.invalid || isbn.touched)">
                 <small class="text-danger" *ngIf="isbn.errors?.['required']">ISBN is required</small>
