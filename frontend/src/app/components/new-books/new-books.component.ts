@@ -1,13 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { Book } from '../../Models/Book';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RestService } from 'src/app/services/rest/rest.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { BookDetailComponent } from '../book-detail/book-detail.component';
 
 @Component({
@@ -18,7 +20,9 @@ import { BookDetailComponent } from '../book-detail/book-detail.component';
 export class NewBooksComponent implements OnInit {
 
   books = new Array<Book>();
-  isLogged = false;
+  max = 5;
+  rate = 0;
+  isLogged = false;  
   
   selectedBook?: Book;
   dataSource = new MatTableDataSource(this.books);
@@ -48,6 +52,34 @@ export class NewBooksComponent implements OnInit {
     }
   }
 
+
+  rateBook(like: boolean, book: Book) {
+    // If the book is at maximum rate, just show the pop up but do nothing
+    if (book.avaliation >= 5 && like) {
+      this.snackBar.open('An amazing book indeed', '', { duration: 2000 });
+      return;
+    }
+
+    if (like) {
+      this.restService.rateBook(book._id, 1).subscribe( data => {} );
+    } else {
+      console.log("ahhh");
+      this.restService.rateBook(book._id, 0).subscribe( data => {} );
+    }
+    this.snackBar.open('Thanks for your opinion', '', { duration: 2000 });
+  }
+
+  convertAvaliationToStars(book: Book) {
+    let stars = '';
+
+    let avaliation = Math.ceil(book.avaliation);
+    for (let i = 0; i < avaliation; i++) {
+      stars += '★';
+    }
+    return stars;
+  }
+
+
   openDialog(book: Book) {
     this.dialog.open(BookDetailComponent, {
       data: {
@@ -56,7 +88,7 @@ export class NewBooksComponent implements OnInit {
         editor: book.editor,
         genre: book.genre,
         resume: book.resume,
-        avaliation: book.avaliation,
+        avaliation: Math.ceil(book.avaliation),
         isbn: book.isbn,
         stock: book.stock,
       },

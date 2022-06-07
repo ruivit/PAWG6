@@ -29,4 +29,6 @@ router.post('/updatePassword', multer().none(), clientAPIController.client_updat
 
 router.get('/search', multer().none(), clientAPIController.client_search_get);
 
+router.get('/rateBook', multer().none(), clientAPIController.client_rate_book);
+
 module.exports = router;

@@ -55,6 +55,13 @@ export class RestService {
       + '&bookType=' + bookType);
   }
 
+
+  rateBook(bookId: number, like: number) {
+    // url: https://localhost/clientapi/rateBook?bookId=bookId&like=true
+    return this.http.get(api + '/rateBook?bookId=' + bookId + '&like=' + like);
+  }
+
+
   getClientSales() {
     // url: https://localhost/clientapi/clientSales
     return this.http.get(api + '/clientSales?username=' +
