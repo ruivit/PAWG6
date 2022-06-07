@@ -1,57 +1,84 @@
 <app-navbar></app-navbar>
-<mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Books</th>
-              <th scope="col">Total + Shippping</th>
-              <th scope="col">Gained Points</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let sales of clientSales">
-                <td>{{sales.dateString}}</td>
-                <table *ngFor="let info of sales.booksInfo">
-                    <td>{{info}}</td>
-                </table>
-                <td>{{sales.total}} + {{sales.shipping}}</td>
-                <td>{{sales.gainedPoints}}</td>
-            </tr>
-            </tbody>
-          </table>   
-    </mat-grid-tile>
-    <mat-grid-tile>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Date</th>
-              <th scope="col">Sold Price</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let soldbook of clientSoldBooks">
-                <td>{{soldbook.title}}</td>
-                <td>{{soldbook.dateString}}</td>
-                <td>{{soldbook.buyPrice}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </mat-grid-tile>
-    <mat-grid-tile>
-        <!-- Update password -->
-        <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
-            <div class="form-group">
-                <label for="password">New Password</label>
-                <input type="password" class="form-control" id="password" formControlName="password" placeholder="New Password">
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <form role="form">
+                <div class="form-group">
+
+                    <label for="exampleInputEmail1">
+                        Email address
+                    </label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" />
+                </div>
+                <div class="form-group">
+
+                    <label for="exampleInputPassword1">
+                        Password
+                    </label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" />
+                </div>
+                <div class="form-group">
+
+                    <label for="exampleInputFile">
+                        File input
+                    </label>
+                    <input type="file" class="form-control-file" id="exampleInputFile" />
+                    <p class="help-block">
+                        Example block-level help text here.
+                    </p>
+                </div>
+                <div class="checkbox">
+
+                    <label>
+                        <input type="checkbox" /> Check me out
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg"
+                class="rounded" />
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <!-- My Purschases -->
+        <div class="col-md-6">
+            <div id="card-sale-date">
+                <div class="card" *ngFor="let sales of clientSales;">
+                    <accordion [isAnimated]="true">
+                        <accordion-group heading={{sales.dateString}}>
+                            {{sales.dateString}}
+                            <tr *ngFor="let sales of clientSales">
+                                <td>Date: {{sales.dateString}}</td>
+                                <td>Total: {{sales.total}}€</td>
+                                <td>Shipping: {{sales.shipping}}€</td>
+                                <td>Gained Points: {{sales.gainedPoints}}</td>
+                            </tr>
+                        </accordion-group>
+                    </accordion>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm Password">
+        </div>
+
+        <!-- Sold Books -->
+        <div class="col-md-6">
+            <div id="card-sale-date">
+                <div class="card" *ngFor="let book of clientSoldBooks;">
+                    <accordion [isAnimated]="true">
+                        <accordion-group heading={{book.dateString}}>
+                            Title: {{book.title}}<br>
+                            Sold by {{book.buyPrice}}€
+                        </accordion-group>
+                    </accordion>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update Password</button>
-        </form>
-    </mat-grid-tile>
-</mat-grid-list>
+        </div>
+
+    </div>
+</div>

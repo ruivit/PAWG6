@@ -46,6 +46,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //#endregion
@@ -150,6 +151,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     TooltipModule.forRoot(),
     CarouselModule.forRoot(),
+    AccordionModule.forRoot(),
     //NgbModule
   ],
   providers: [

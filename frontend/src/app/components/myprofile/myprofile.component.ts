@@ -16,7 +16,7 @@ export class MyprofileComponent implements OnInit {
 
   clientSales = Array<Sale>();
   clientSoldBooks = Array<any>();
-
+  isCollapsed = false;
 
   updatePasswordForm = new FormGroup({
     username: new FormControl(''),
@@ -75,4 +75,5 @@ export class MyprofileComponent implements OnInit {
     // NAO FUNCIONA
     // todo add popup
   }
+
 }
