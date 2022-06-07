@@ -451,27 +451,21 @@ exports.client_rate_book = async function (req, res) {
     var book = await Book.findOne({ _id: req.query.bookId });
 
     if (req.query.like == 1) {
-        console.log("like");
         currentAvaliation = book.avaliation;
         currentAvaliation += 0.25 * (1 / book.avaliation);    
     } else {
-        console.log("dislike");
         currentAvaliation = book.avaliation;
         currentAvaliation -= 0.25 * (1 / book.avaliation);
     } 
 
 
     if (book.avaliation + currentAvaliation > 5 && req.query.like == 1) {
-        console.log("Avaliation is now 5");
         currentAvaliation = 5;
     } 
-    if (book.avaliation + currentAvaliation < 1) {
-        console.log("Avaliation is now 1");
-        currentAvaliation = 1;
-    }
-        
+    if (book.avaliation + currentAvaliation < 1) currentAvaliation = 1;
+    
     book.avaliation = currentAvaliation;
-    console.log("after " + book.avaliation);
+    
     book.save(function (err) { if (err) { return err; }
     });
     
