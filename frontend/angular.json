@@ -68,8 +68,9 @@
         },
         "serve": {
           "options": {
-            "port": 80,
-            "host": "localhost"
+            "port": 443,
+            "host": "localhost",
+            "ssl": true
           },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
