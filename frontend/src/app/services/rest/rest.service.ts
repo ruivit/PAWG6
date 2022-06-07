@@ -8,8 +8,8 @@ import { Book } from '../../Models/Book';
 import { Sale } from '../../Models/Sale';
 
 //#region Constants
-const api = 'https://localhost/clientapi';
-const baseURl = 'http://localhost:4200/';
+const api = 'https://localhost:3000/clientapi';
+const baseURl = 'http://localhost/';
 
 const httpOptions = {
   headers: new HttpHeaders({

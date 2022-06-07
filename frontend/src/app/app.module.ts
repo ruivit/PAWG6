@@ -47,7 +47,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //#endregion
 
 //#region Routes
@@ -150,7 +150,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     TooltipModule.forRoot(),
     CarouselModule.forRoot(),
-    NgbModule
+    //NgbModule
   ],
   providers: [
     {
