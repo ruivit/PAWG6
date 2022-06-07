@@ -4,13 +4,13 @@
     <div class="col-md-12">
         <div class="input-group mb-3" id="search">
             <mat-radio-group aria-label="Select an option">
-                <mat-radio-button [(ngModel)]="bookType" (click)="setSearchType('new')" value="new">
+                <mat-radio-button [(ngModel)]="bookType" ngDefaultControl (click)="setSearchType('new')" value="new">
                     New
                 </mat-radio-button>
-                <mat-radio-button [(ngModel)]="bookType" (click)="setSearchType('used')" value="used">
+                <mat-radio-button [(ngModel)]="bookType" ngDefaultControl (click)="setSearchType('used')" value="used">
                     Used
                 </mat-radio-button>
-                <input type="text" placeholder="Search" name="term" [(ngModel)]="term" class="form-control"
+                <input type="text" placeholder="Search" name="term" [(ngModel)]="term" ngDefaultControl class="form-control"
                     (keyup)="onSearch(term)" placeholder="Search for a book...">
             </mat-radio-group>
         </div>

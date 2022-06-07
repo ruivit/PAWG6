@@ -396,10 +396,17 @@ exports.client_soldbooks_get = function (req, res) {
 exports.client_search_get = function (req, res) {
     var term = req.query.term;
     var bookType = req.query.bookType;
-    console.log(term);
-    console.log(bookType);
+
     switch (bookType) {
         case "new":
+            if (RegExp(/^[0-9]+$/).test(term)) {
+                Book.find({ isbn: term }, function (err, books) { 
+                    console.log("isbn " + term);
+                    if (err) { res.status(500).json(err); }
+                    else { res.status(200).json(books); }
+                });
+                break;
+            }
             Book.find({
                 $or: [
                     { title: { $regex: term, $options: 'i' } },
@@ -415,6 +422,14 @@ exports.client_search_get = function (req, res) {
             break;
 
         case "used":
+            if (RegExp(/^[0-9]+$/).test(term)) {
+                UsedBook.find({ isbn: term }, function (err, books) { 
+                    console.log("isbn " + term);
+                    if (err) { res.status(500).json(err); }
+                    else { res.status(200).json(books); } 
+                });
+                break;
+            }
             UsedBook.find({
                 $or: [
                     { title: { $regex: term, $options: 'i' } },
