@@ -1,9 +1,10 @@
-<section>
+<body>
     <mat-grid-list cols="3">
         <mat-grid-tile colspan="3">
             <mat-card>
                 <mat-card-header color="primary">
-                    <mat-card-title>Login Form</mat-card-title>
+                    <mat-card-title>Login into your account,
+                        dear customer!</mat-card-title>
                 </mat-card-header>
                 <form [formGroup]="loginForm" (submit)="loginUser()">
                     <mat-form-field style="width:400px !important">
@@ -16,14 +17,11 @@
                         <input type="password" formControlName="password" matInput>
                     </mat-form-field>
                     <br>
-                    <button type="submit" mat-raised-button color="primary">Submit</button>
-                    <button type="button" mat-raised-button color="basic" [routerLink]="['/signup']">Register</button>
-                    <button type="button" class="btn btn-primary"
-                    tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-              Simple demo
-            </button>
+                    <button mat-raised-button color="primary">Submit</button>
+                    <button mat-raised-button color="basic"
+                    [routerLink]="['/signup']">Register</button>
                 </form>
             </mat-card>
         </mat-grid-tile>
     </mat-grid-list>
-</section>
+</body>
