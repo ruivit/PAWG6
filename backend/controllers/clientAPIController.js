@@ -152,10 +152,11 @@ exports.client_register_post = async function (req, res) {
         if (recommendedClient) {
             
             recommendedClient.points += pointsGained;
+            recommendedClient.save();
             console.log(client);
             client.save(function (err) { if (err) { return err; } });
             res.status(201).json({
-                message: 'Registration Successfull',
+                message: 'Registration Successfull, you really have a great friend!',
                 wasRecommended: true
             });
         } else {

@@ -26,7 +26,7 @@ var Discount = require('../models/discountModel');
 function getDateNow(date) {
     var d = new Date();
     dateNowString = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    d.getFullYear();
     return dateNowString;
 }
 
@@ -286,7 +286,7 @@ exports.backoffice_admin_client_create_post = function (req, res) {
             phone: req.body.phone,
             points: calculatePoints(req.body.points), // Milestone2
             birthDate: req.body.birthDate,
-            dateString: req.body.birthDate,
+            dateString: getDateNow(req.body.birthDate),
         });
 
         client.setPassword(req.body.password);
@@ -308,6 +308,7 @@ exports.backoffice_admin_client_create_post = function (req, res) {
 exports.backoffice_admin_client_update_get = async function (req, res) {   
     try {
         var client = await Client.findById(req.params.id);
+        console.log(client);
         
         res.render('backoffice/admin/client/updateClient', { client: client });
         // Milestone2 - add message of success
