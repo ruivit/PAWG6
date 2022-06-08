@@ -44,6 +44,7 @@ export class CartService {
 
   clearCart() {
     this.items = Array<Book>();
+    window.localStorage.setItem("cart", JSON.stringify(this.items));
   }
 
 }

@@ -144,6 +144,7 @@ export class CartComponent implements OnInit {
 
     let sale: any;
     sale = new Sale({
+      _id: 0,
       clientUsername: localStorage.getItem('username') || '',
       books: JSON.stringify(this.books),
       booksInfo: Array<any>(),
@@ -178,5 +179,6 @@ export class CartComponent implements OnInit {
         }
       }
     );
+    this.cartService.clearCart();
   }
 }

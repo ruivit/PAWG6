@@ -357,6 +357,21 @@ exports.client_sales_get = async function (req, res) {
 }; // Get all the sales made by the client           
 
 
+exports.client_specific_sale_get = async function (req, res) {
+    var sale = await Sale.findById(req.query.saleID);
+
+    booksInfo = Array();
+    
+    for (var j = 0; j < sale.books.length; j++) {
+        var book = await Book.findById(sale.books[j]);
+        booksInfo.push(book.title);
+    }
+
+    sale.booksInfo = booksInfo;
+
+    res.status(200).json(sale);
+}; // Get a specific sale made by the client
+
 exports.client_soldbooks_get = function (req, res) {
     UsedBook.find({ provider: req.query.username }, function (err, usedBooks) {
         if (err) {

@@ -50,16 +50,31 @@
         <!-- My Purschases -->
         <div class="col-md-6">
             <div id="card-sale-date">
-                <div class="card" *ngFor="let sales of clientSales;">
+                <div class="card" *ngFor="let sale of clientSales; index as i">
                     <accordion [isAnimated]="true">
-                        <accordion-group heading={{sales.dateString}}>
-                            {{sales.dateString}}
-                            <tr *ngFor="let sales of clientSales">
-                                <td>Date: {{sales.dateString}}</td>
-                                <td>Total: {{sales.total}}€</td>
-                                <td>Shipping: {{sales.shipping}}€</td>
-                                <td>Gained Points: {{sales.gainedPoints}}</td>
-                            </tr>
+                        <accordion-group heading={{sale.dateString}}
+                        (click)="getSale(sale)">
+                            <table>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>Shipping</th>
+                                    <th>Points Gained</th>
+                                    <th>Books</th>
+                                </tr>
+                                <tr>
+                                    <td>{{sale.total}}</td>
+                                    <td>{{sale.shipping}}</td>
+                                    <td>{{sale.gainedPoints}}</td>
+                                    <table>
+                                        <tr>
+                                            <th>Title</th>
+                                        </tr>
+                                        <tr *ngFor="let book of sale.booksInfo">
+                                            <td>{{book}}</td>
+                                        </tr>
+                                    </table>
+                                </tr>
+                            </table>
                         </accordion-group>
                     </accordion>
                 </div>

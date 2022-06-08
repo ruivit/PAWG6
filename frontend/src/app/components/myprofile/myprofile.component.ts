@@ -43,6 +43,20 @@ export class MyprofileComponent implements OnInit {
     );
   }
 
+  getSale(sale: Sale) {
+    this.rest.getSale(sale._id).subscribe(
+      (data: any) => {
+        // push the booksInfo into the related sale
+        for (let sale in this.clientSales) {
+          if (this.clientSales[sale]._id == data._id) {
+            this.clientSales[sale].booksInfo = data.booksInfo;
+            console.log(this.clientSales[sale].booksInfo);
+          }
+        }
+      }
+    );
+  }
+
   getClientSales() {
     return this.clientSales;
   }
