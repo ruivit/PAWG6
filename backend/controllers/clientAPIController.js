@@ -297,6 +297,7 @@ exports.client_update_password = function (req, res) {
 }; // Change the password of a client
 
 
+
 exports.client_make_sale_post = async function (req, res) {
     // Make the sale
     var sale = new Sale({
@@ -310,15 +311,39 @@ exports.client_make_sale_post = async function (req, res) {
         shipping: req.body.shipping,
     });
 
+    res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
+
+    // Save the book info
+    for ( var b = 0; b < sale.books.length; b++ ) {
+        var book = await Book.findById(sale.books[b]);
+       
+        sale.booksInfo[b] = {
+            title: book.title.toString(),
+            quantity: 1,
+        }
+    }   
+
+    var size = sale.booksInfo.length;
+    // found and remove duplicate books by title
+    for ( var i = 0; i < size; i++ ) {
+        for ( var j = i + 1; j < size; j++ ) {
+            if ( sale.booksInfo[i].title === sale.booksInfo[j].title ) {
+                sale.booksInfo[i].quantity += sale.booksInfo[j].quantity;
+                sale.booksInfo.splice(j, 1);
+                size--;
+                j--;
+            }
+        }
+    }
+
     // Save the sale
-    sale.save(function (err) {
+    sale.save(async function (err) {
         if (err) {
             console.log(err);
             res.status(500).json(err);
-        } else {
-            res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
         }
     }); 
+
 
     // Update the books' stock
     for (var i = 0; i < sale.books.length; i++) {
@@ -361,10 +386,6 @@ exports.client_make_sale_post = async function (req, res) {
 
 
 exports.client_sell_tempbook_post = function (req, res) {
-    console.log('Cheguei aqui');
-    console.log(req.body);
-    console.log(req.body.tempBookModel.title);
-
 
     var tempBook = new TempBook({
         title: req.body.tempBookModel.title,
@@ -378,8 +399,6 @@ exports.client_sell_tempbook_post = function (req, res) {
         provider: req.body.tempBookModel.provider,
         sellPrice: req.body.tempBookModel.sellPrice,
     });
-    console.log('tempBook');
-    console.log(tempBook);
 
     tempBook.save(function (err) {
         if (err) {
@@ -389,6 +408,7 @@ exports.client_sell_tempbook_post = function (req, res) {
             res.status(201).json({ msg: 'TempBook Successfull!' });
         }
     });
+
     // Sell a tempBook
 
          // save the cover
@@ -413,6 +433,21 @@ exports.client_sales_get = async function (req, res) {
     res.status(200).json(sales);
 }; // Get all the sales made by the client           
 
+
+exports.client_specific_sale_get = async function (req, res) {
+    var sale = await Sale.findById(req.query.saleID);
+
+    booksInfo = Array();
+    
+    for (var j = 0; j < sale.books.length; j++) {
+        var book = await Book.findById(sale.books[j]);
+        booksInfo.push(book.title);
+    }
+
+    sale.booksInfo = booksInfo;
+
+    res.status(200).json(sale);
+}; // Get a specific sale made by the client
 
 exports.client_soldbooks_get = function (req, res) {
     UsedBook.find({ provider: req.query.username }, function (err, usedBooks) {

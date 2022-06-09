@@ -32,6 +32,11 @@ export class RestService {
   }
 
 
+  getSale(saleID: number) {
+    // url: https://localhost/clientapi/getSale?saleID=saleID
+    return this.http.get(api + '/getSale?saleID=' + saleID);
+  }
+
   getPointsTable() {
     // url: https://localhost/clientapi/pointsTable
     return this.http.get(api + '/pointsTable');

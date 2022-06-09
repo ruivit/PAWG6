@@ -1,6 +1,7 @@
 import { Book } from "./Book";
 
 export class Sale {
+    _id: number;
     clientUsername: String;
     books: String;
     booksInfo: Array<any>;
@@ -11,6 +12,7 @@ export class Sale {
     shipping: Number;
 
     constructor(sale: Sale) {
+        this._id = sale._id;
         this.clientUsername = sale.clientUsername;
         this.books = sale.books;
         this.booksInfo = sale.booksInfo;

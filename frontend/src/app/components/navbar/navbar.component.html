@@ -1,4 +1,75 @@
-<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <li class="nav-item">
+      <a class="navbar-brand" [routerLink]="['/']">
+        <div class="icon-sample">
+          <igx-icon>home</igx-icon>
+        </div>
+      </a>
+    </li>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/login']" *ngIf="!loggedIn">
+            <div class="icon-sample">
+              <igx-icon>login</igx-icon>
+            </div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/newbooks']"
+          (click)="getNewBooks()">New Books
+            <div class="icon-sample">
+              <igx-icon>auto_stories</igx-icon>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/usedbooks']"
+          (click)="getUsedBooks()">Used Books
+            <div class="icon-sample">
+              <igx-icon>auto_stories</igx-icon>
+            </div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/myprofile']">
+            <div class="icon-sample">
+              <igx-icon>account_circle</igx-icon>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/sellbook']">
+            <div class="icon-sample">
+              <igx-icon>currency_exchange</igx-icon>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/cart']">
+            <div class="icon-sample">
+              <mat-icon matBadge={{itemsInCart}} matBadgeColor="warn">shopping_basket</mat-icon>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="loggedIn">
+          <a class="nav-link" (click)="logout()" [routerLink]="['/logout']">
+            <div class="icon-sample">
+              <igx-icon>logout</igx-icon>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!--<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" [routerLink]="['/']">Home</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,3 +113,4 @@
     </div>
   </div>
 </nav>
+-->

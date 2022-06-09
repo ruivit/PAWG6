@@ -22,6 +22,7 @@ import { VisitorComponent } from './components/visitor/visitor.component';
 import { NewBooksComponent } from './components/new-books/new-books.component';
 import { UsedBooksComponent } from './components/used-books/used-books.component';
 import { SearchedBooksComponent } from './components/searched-books/searched-books.component';
+import { BookDetailComponent } from './components/book-detail/book-detail.component';
 //#endregion
 
 //#region Services
@@ -43,12 +44,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'; 
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BookDetailComponent } from './components/book-detail/book-detail.component';
-//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatBadgeModule } from '@angular/material/badge';
+import { IgxIconModule } from 'igniteui-angular';
 //#endregion
 
 //#region Routes
@@ -152,7 +154,9 @@ const appRoutes: Routes = [
     TooltipModule.forRoot(),
     CarouselModule.forRoot(),
     AccordionModule.forRoot(),
-    //NgbModule
+    IgxIconModule,
+    MatButtonToggleModule,
+    MatBadgeModule
   ],
   providers: [
     {

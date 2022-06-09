@@ -31,4 +31,6 @@ router.get('/search', multer().none(), clientAPIController.client_search_get);
 
 router.get('/rateBook', multer().none(), clientAPIController.client_rate_book);
 
+router.get('/getSale', multer().none(), clientAPIController.client_specific_sale_get);
+
 module.exports = router;

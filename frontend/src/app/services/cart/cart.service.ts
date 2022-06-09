@@ -42,8 +42,13 @@ export class CartService {
     return JSON.parse(localStorage.getItem("cart") || "[]");
   }
 
+  getNumberOfItemsInCart(): number {
+    return this.items.length;
+  }
+
   clearCart() {
     this.items = Array<Book>();
+    window.localStorage.setItem("cart", JSON.stringify(this.items));
   }
 
 }
