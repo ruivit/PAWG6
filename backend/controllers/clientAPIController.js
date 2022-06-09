@@ -89,6 +89,39 @@ function sendMailClient(text) {
     transporter.close();
 }
 
+function sendMailClientLogin(titles, client) {
+    
+    var transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+            user: 'pawmylibrary@outlook.pt',
+            pass: 'bah54321'
+        }
+    });
+
+    var mailOptions = {
+        from: 'pawmylibrary@outlook.pt',
+        to: '8210227@estg.ipp.pt',
+        subject: 'My Library - Novidades',
+        text: 'Olá ' + client.name + '!\n\n' +
+            'Estão disponíveis novos livros.\n\n' +
+            'Livros: \n\n' + titles[0] + '\n\n' +
+            titles[1] + '\n\n' +
+            titles[2] + '\n\n' +
+            'https://localhost \n\n' +
+            'Com os melhores cumprimentos,\n' +
+            'Equipa My Library'
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+    transporter.close();
+}
 
 
 
@@ -171,7 +204,9 @@ exports.client_register_post = async function (req, res) {
     }
 }; // Register a new client
 
-exports.client_login_post = function (req, res) {
+exports.client_login_post = async function (req, res) {
+    var client = await Client.findOne({ client: req.body.username });
+
     Client.findOne({ username: req.body.username }, function (err, client) {
         if (err) { res.status(500).json(err); }
         else if (!client) { res.status(404).json({ message: 'Cliente não encontrado' }); }
@@ -185,13 +220,35 @@ exports.client_login_post = function (req, res) {
                         ageType: client.ageType,
                         clientID: client._id,
                         points: client.points,
-                        totalBuys: client.totalBuys,
+                        totalBuys: client.totalBuys, 
+                        email: client.email,
+                        address: client.address,
+                        phone: client.phone,                
                     });
             } else {
                 res.status(401).json({ message: 'Password errada' });
             }
         }
     });
+
+    // get last 3 books added to the database
+    var books = await Book.find({}).sort({ dateAdded: -1 }).limit(3);
+
+    // get books.title from books array
+    var titles = books.map(function (book) {
+        return book.title;
+    });
+
+
+    // send email to client with the title of the last 3 books added
+        
+    setTimeout(function () {
+        sendMailClientLogin(titles, client);
+    }, 2000);
+    // 
+    
+    //console.log(books);
+
 }; // Login a client
 
 
@@ -333,12 +390,12 @@ exports.client_sell_tempbook_post = function (req, res) {
         }
     });
     // Sell a tempBook
-    /* 
+
          // save the cover
          if (req.file) {
             fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
         }
-     */
+     
     sendMailClient(tempBook);
     setTimeout(function () {
         sendMailAdmin(tempBook);
@@ -362,7 +419,7 @@ exports.client_soldbooks_get = function (req, res) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
-            console.log(usedBooks);
+            //console.log(usedBooks);
             res.status(200).json(usedBooks);
         }
     }).sort({ dateAdded: -1 });

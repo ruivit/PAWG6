@@ -1,7 +1,7 @@
 #### Tarefas
 - [x] Fazer verificações no registo de um cliente
 - [ ] Rever as verificações do sell-book
-- [ ] Quando cliente fizer login, enviar email com os três últimos livros
+- [x] Quando cliente fizer login, enviar email com os três últimos livros
 - [x] O sistema de pontos e descontos não está a funcionar na venda do backend
 - [x] Criar URL para o search book, basicamente, o que esta no branch master
 - [ ] Dashboard cliente

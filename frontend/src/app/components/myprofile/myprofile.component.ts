@@ -17,6 +17,13 @@ export class MyprofileComponent implements OnInit {
   clientSales = Array<Sale>();
   clientSoldBooks = Array<any>();
   isCollapsed = false;
+  clientData = {
+    name: JSON.stringify(localStorage.getItem('name')),
+    email: JSON.stringify(localStorage.getItem('email')),
+    phone: JSON.stringify(localStorage.getItem('phone')),
+    address: JSON.stringify(localStorage.getItem('address')),
+  }
+
 
   updatePasswordForm = new FormGroup({
     username: new FormControl(''),
@@ -29,16 +36,19 @@ export class MyprofileComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+
+    console.log(this.clientData);
+
     this.rest.getClientSales().subscribe(
       (data: any) => {
         this.clientSales = data;
-        console.log(this.clientSales);
+        //console.log(this.clientSales);
       }
     );
     this.rest.getClientSoldBooks().subscribe(
       (data: any) => {
         this.clientSoldBooks = data;
-        console.log(this.clientSoldBooks);
+        //console.log(this.clientSoldBooks);
       }
     );
   }
@@ -60,7 +70,7 @@ export class MyprofileComponent implements OnInit {
 
     this.rest.updatePassword(formParams).subscribe(
       (data: any) => { 
-        console.log(data);
+        //console.log(data);
       },
       (err: HttpErrorResponse) => {
         if (err.error.msg) {

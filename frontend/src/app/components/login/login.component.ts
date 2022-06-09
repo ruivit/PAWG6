@@ -37,9 +37,13 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('clientID', data.clientID);
         localStorage.setItem('username', data.username);
         localStorage.setItem('clientPoints', data.points);
-        console.log(data.points);
+        localStorage.setItem('name', data.name);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('phone', data.phone);
+        localStorage.setItem('address', data.address);
         localStorage.setItem('totalBuys', data.totalBuys);
         localStorage.setItem('ageType', data.ageType);
+
         
         let books: Array<Book> = [];
         localStorage.setItem('cart', JSON.stringify(books));
