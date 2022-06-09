@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from 'src/app/services/user/user.service';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 import { Router } from '@angular/router';
 
@@ -12,9 +13,11 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   loggedIn = this.userService.isLoggedIn();
+  itemsInCart = this.cartService.getNumberOfItemsInCart();
 
   constructor(
     private userService: UserService,
+    private cartService: CartService,
     private router: Router
   ) { }
 
