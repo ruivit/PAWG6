@@ -36,28 +36,28 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/myprofile']">
+          <a class="nav-link" [routerLink]="['/myprofile']">My Profile
             <div class="icon-sample">
               <igx-icon>account_circle</igx-icon>
             </div>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/sellbook']">
+          <a class="nav-link" [routerLink]="['/sellbook']">Sell Your Books
             <div class="icon-sample">
               <igx-icon>currency_exchange</igx-icon>
             </div>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/cart']">
+          <a class="nav-link" [routerLink]="['/cart']">Cart
             <div class="icon-sample">
               <mat-icon matBadge={{itemsInCart}} matBadgeColor="warn">shopping_basket</mat-icon>
             </div>
           </a>
         </li>
         <li class="nav-item" *ngIf="loggedIn">
-          <a class="nav-link" (click)="logout()" [routerLink]="['/logout']">
+          <a class="nav-link" (click)="logout()" [routerLink]="['/logout']">Logout
             <div class="icon-sample">
               <igx-icon>logout</igx-icon>
             </div>

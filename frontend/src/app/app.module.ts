@@ -23,6 +23,7 @@ import { NewBooksComponent } from './components/new-books/new-books.component';
 import { UsedBooksComponent } from './components/used-books/used-books.component';
 import { SearchedBooksComponent } from './components/searched-books/searched-books.component';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
+
 //#endregion
 
 //#region Services

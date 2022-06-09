@@ -242,10 +242,10 @@ exports.client_login_post = async function (req, res) {
 
     // send email to client with the title of the last 3 books added
         
-    setTimeout(function () {
+    /* setTimeout(function () {
         sendMailClientLogin(titles, client);
     }, 2000);
-    // 
+     */// 
     
     //console.log(books);
 
@@ -277,6 +277,7 @@ exports.discount_table_get = async function (req, res) {
 
 
 exports.client_update_password = function (req, res) {
+    console.log(req.body);
     var salt = crypto.randomBytes(16).toString('hex');
 
     // Hashing user's salt and password with 1000 iterations, 
