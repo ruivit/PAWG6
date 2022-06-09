@@ -5,6 +5,9 @@ import { CartService } from 'src/app/services/cart/cart.service';
 
 import { Router } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+import { NavbarService } from 'src/app/services/navbar/navbar.service';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -15,9 +18,15 @@ export class NavbarComponent implements OnInit {
   loggedIn = this.userService.isLoggedIn();
   itemsInCart = this.cartService.getNumberOfItemsInCart();
 
+  notifierSubscription: Subscription = 
+  this.navbarService.subjectNotifier.subscribe(notified => {
+    this.itemsInCart = this.cartService.getNumberOfItemsInCart();
+  });
+
   constructor(
     private userService: UserService,
     private cartService: CartService,
+    private navbarService: NavbarService,
     private router: Router
   ) { }
 

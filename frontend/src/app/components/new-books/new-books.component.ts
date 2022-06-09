@@ -12,6 +12,8 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BookDetailComponent } from '../book-detail/book-detail.component';
 
+import { NavbarService } from 'src/app/services/navbar/navbar.service';
+
 @Component({
   selector: 'app-new-books',
   templateUrl: './new-books.component.html',
@@ -32,6 +34,7 @@ export class NewBooksComponent implements OnInit {
     private snackBar: MatSnackBar,
     private cartService: CartService,
     private restService: RestService,
+    private navbarService: NavbarService,
     public dialog: MatDialog,
   ) { }
 
@@ -50,6 +53,7 @@ export class NewBooksComponent implements OnInit {
     } else {
       this.snackBar.open('Out of stock...', '', { duration: 5000 });
     }
+    this.navbarService.notify();
   }
 
 
