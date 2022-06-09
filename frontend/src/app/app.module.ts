@@ -109,7 +109,7 @@ const appRoutes: Routes = [
   },
   {
     //url: localhost:4200/sellBook
-    path: 'sellBook',
+    path: 'sellbook',
     component: SellBookComponent,
     data: { title: 'Sell us a Book' }
   },
