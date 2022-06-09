@@ -253,15 +253,29 @@ exports.client_make_sale_post = async function (req, res) {
         shipping: req.body.shipping,
     });
 
+    res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
+    // Save the book info
+    for ( var b = 0; b < sale.books.length; b++ ) {
+        var book = await Book.findById(sale.books[b]);
+       
+        console.log(sale.books.length);
+        console.log(book);
+        sale.booksInfo[b] = {
+            title: book.title.toString(),
+            quantity: 1,
+        }
+    }
+    console.log(sale.booksInfo);
+
+
     // Save the sale
-    sale.save(function (err) {
+    sale.save(async function (err) {
         if (err) {
             console.log(err);
             res.status(500).json(err);
-        } else {
-            res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
         }
     }); 
+
 
     // Update the books' stock
     for (var i = 0; i < sale.books.length; i++) {

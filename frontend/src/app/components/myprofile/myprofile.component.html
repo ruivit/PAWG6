@@ -53,36 +53,44 @@
                 <h1>My last 5 Purschases</h1>
                 <div class="card" *ngFor="let sale of clientSales; index as i">
                     <accordion [isAnimated]="true">
-                        <accordion-group heading={{sale.dateString}}
-                        (click)="getSale(sale)">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                              <th scope="col">Total</th>
-                              <th scope="col">Shipping</th>
-                              <th scope="col">Points Gained</th>
-                              <th scope="col">Books</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                              <td>{{ sale.total }}</td>
-                              <td>{{ sale.shipping }}</td>
-                              <td>{{ sale.gainedPoints }}</td>
-                              <table class="table table-striped">
-                                  <tbody>
-                                    <tr *ngFor="let book of sale.booksInfo">
-                                        <td>{{book}}</td>
+                        <accordion-group heading={{sale.dateString}}>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Shipping</th>
+                                        <th scope="col">Points Gained</th>
+                                        <th scope="col">Books</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ sale.total }}</td>
+                                    <td>{{ sale.shipping }}</td>
+                                    <td>{{ sale.gainedPoints }}</td>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr *ngFor="let book of sale.booksInfo">
+                                                <td>{{book.title}} {{book.quantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </tbody>
-                              </table>
-                            </tbody>
-                          </table>
+                            </table>
                         </accordion-group>
                     </accordion>
                 </div>
             </div>
         </div>
 
+
+        <!-- <table class="table table-striped">
+                                  <tbody>
+                                    <tr *ngFor="let book of sale.booksInfo">
+                                        <td>{{book}}</td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                            -->
         <!-- Sold Books -->
         <div class="col-md-6">
             <div id="card-sale-date">
