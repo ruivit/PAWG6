@@ -240,6 +240,7 @@ exports.client_update_password = function (req, res) {
 }; // Change the password of a client
 
 
+
 exports.client_make_sale_post = async function (req, res) {
     // Make the sale
     var sale = new Sale({
@@ -254,19 +255,29 @@ exports.client_make_sale_post = async function (req, res) {
     });
 
     res.status(201).json({ msg: 'Sale Successfull! +' + sale.gainedPoints + ' points' });
+
     // Save the book info
     for ( var b = 0; b < sale.books.length; b++ ) {
         var book = await Book.findById(sale.books[b]);
        
-        console.log(sale.books.length);
-        console.log(book);
         sale.booksInfo[b] = {
             title: book.title.toString(),
             quantity: 1,
         }
-    }
-    console.log(sale.booksInfo);
+    }   
 
+    var size = sale.booksInfo.length;
+    // found and remove duplicate books by title
+    for ( var i = 0; i < size; i++ ) {
+        for ( var j = i + 1; j < size; j++ ) {
+            if ( sale.booksInfo[i].title === sale.booksInfo[j].title ) {
+                sale.booksInfo[i].quantity += sale.booksInfo[j].quantity;
+                sale.booksInfo.splice(j, 1);
+                size--;
+                j--;
+            }
+        }
+    }
 
     // Save the sale
     sale.save(async function (err) {
@@ -318,10 +329,6 @@ exports.client_make_sale_post = async function (req, res) {
 
 
 exports.client_sell_tempbook_post = function (req, res) {
-    console.log('Cheguei aqui');
-    console.log(req.body);
-    console.log(req.body.tempBookModel.title);
-
 
     var tempBook = new TempBook({
         title: req.body.tempBookModel.title,
@@ -335,8 +342,6 @@ exports.client_sell_tempbook_post = function (req, res) {
         provider: req.body.tempBookModel.provider,
         sellPrice: req.body.tempBookModel.sellPrice,
     });
-    console.log('tempBook');
-    console.log(tempBook);
 
     tempBook.save(function (err) {
         if (err) {
@@ -346,13 +351,14 @@ exports.client_sell_tempbook_post = function (req, res) {
             res.status(201).json({ msg: 'TempBook Successfull!' });
         }
     });
+
     // Sell a tempBook
-    /* 
-         // save the cover
-         if (req.file) {
-            fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
-        }
-     */
+     
+    // save the cover
+    if (req.file) {
+        fs.writeFileSync("./public/images/books/" + tempBook._id + ".jpg", req.file.buffer);
+    }
+    
     sendMailClient(tempBook);
     setTimeout(function () {
         sendMailAdmin(tempBook);
