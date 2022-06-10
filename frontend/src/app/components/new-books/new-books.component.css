@@ -4,7 +4,8 @@ mat-toolbar {
 }
 
 .content {
-  padding: 5px;
+  padding: 10px;
+  padding-top: 20px;
 }
 
 mat-card {
@@ -17,7 +18,7 @@ mat-card {
 .main-image{
   margin: 0 auto;
   width: calc(85% - 50px);
-  height: calc(75% - 50px);
+  height: calc(65% - 50px);
   object-fit: cover;
   justify-content: center;
   display: inline-block;
@@ -27,7 +28,18 @@ mat-card {
 .info {
   padding: 10px;
   width: 350px;
-
+  height: 25px;
   display: flex;
   justify-content: space-between;
+  padding-top: 25px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+mat-car-content {
+ height: 25px;
 }
