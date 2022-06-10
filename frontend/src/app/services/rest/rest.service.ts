@@ -89,8 +89,8 @@ export class RestService {
   sellBook(tempBookModel: TempBook, selectedFile: any) {
     console.log('restService');
     console.log(tempBookModel);
-    // url: https://localhost/clientapi/sellBook
-    return this.http.post('https://localhost/clientapi/sellBook', { tempBookModel, selectedFile });
+    // url: https://localhost/clientapi/sellbook
+    return this.http.post(api + '/sellbook', { tempBookModel, selectedFile });
 
   }
 
