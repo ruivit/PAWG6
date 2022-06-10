@@ -2,24 +2,31 @@
 <mat-grid-list cols="2" rowHeight="2:1">
     <mat-grid-tile>
         <div class="books">
-            <div class="book" *ngFor="let book of books">
-                <div class="book-details">
-                    <h2 class="book-title">{{book.title}}</h2>
-                    <h3 class="book-author">{{book.author}}</h3>
-                    <p class="book-price">{{book.sellPrice}}</p>
-                </div>
-                <!-- 
-                <div class="checkout-item-quantity">
-                    <button mat-icon-button (click)="decrement()">
-                        <mat-icon>remove</mat-icon>
-                    </button>
-                    <span>{{quantity}}</span>
-                    <button mat-icon-button (click)="increment()">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                </div>
-                -->
-            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let book of books; index as i">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.sellPrice }}</td>
+                        <td>{{ getQuantity(book) }}</td>
+                        <td>
+                            <button mat-icon-button 
+                            (click)="removeFromCart(book)">
+                                <mat-icon>remove</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>

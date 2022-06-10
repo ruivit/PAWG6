@@ -89,6 +89,9 @@ export class CartComponent implements OnInit {
     this.total -= this.calculateShipping();
     this.total -= discountAge;
 
+    if ( this.total <= 0 ) {
+      this.total = 0;
+    }
     return this.total;
   }
 
@@ -97,7 +100,8 @@ export class CartComponent implements OnInit {
 
     let clientTotalBuys: any;
     clientTotalBuys = localStorage.getItem('totalBuys');
-  // If this is the first buy the clientTotalBuys will be null so we set it to 1
+    // If this is the first buy the clientTotalBuys 
+    // will be null so we set it to 1
     if (clientTotalBuys === '0') {
       clientTotalBuys = 1;
     }
@@ -133,6 +137,17 @@ export class CartComponent implements OnInit {
       shipping = Math.ceil(this.books.length * 0.85);
       return shipping;
     }
+  }
+
+
+  getQuantity(book: Book) {
+    return this.cartService.getQuantity(book);
+  }
+
+  removeFromCart(book: Book) {
+    this.cartService.removeFromCart(book);
+    this.books = this.cartService.getItemsInCart();
+    this.calculateTotal();
   }
 
   checkout() {
@@ -181,4 +196,6 @@ export class CartComponent implements OnInit {
     );
     this.cartService.clearCart();
   }
+
+
 }

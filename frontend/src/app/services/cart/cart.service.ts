@@ -38,6 +38,26 @@ export class CartService {
     return false;
   }
 
+  removeFromCart(book: Book): void {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i]._id == book._id) {
+        this.items.splice(i, 1);
+        window.localStorage.setItem("cart", JSON.stringify(this.items));
+        break;
+      }
+    }
+  }
+
+  getQuantity(book: Book): number {
+    let count = 0;
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i]._id == book._id) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   getItemsInCart(): Book[] {
     return JSON.parse(localStorage.getItem("cart") || "[]");
   }

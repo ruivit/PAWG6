@@ -20,7 +20,7 @@
 
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/newbooks']"
-          (click)="getNewBooks()">New Books
+          (click)="getNewBooks()" *ngIf="loggedIn">New Books
             <div class="icon-sample">
               <igx-icon>auto_stories</igx-icon>
             </div>
@@ -28,7 +28,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/usedbooks']"
-          (click)="getUsedBooks()">Used Books
+          (click)="getUsedBooks()" *ngIf="loggedIn">Used Books
             <div class="icon-sample">
               <igx-icon>auto_stories</igx-icon>
             </div>
@@ -36,21 +36,24 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/myprofile']">My Profile
+          <a class="nav-link" *ngIf="loggedIn"
+          [routerLink]="['/myprofile']">My Profile
             <div class="icon-sample">
               <igx-icon>account_circle</igx-icon>
             </div>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/sellbook']">Sell Your Books
+          <a class="nav-link" *ngIf="loggedIn"
+          [routerLink]="['/sellbook']">Sell Your Books
             <div class="icon-sample">
               <igx-icon>currency_exchange</igx-icon>
             </div>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/cart']">Cart
+          <a class="nav-link" *ngIf="loggedIn"
+          [routerLink]="['/cart']">Cart
             <div class="icon-sample">
               <mat-icon matBadge={{itemsInCart}} matBadgeColor="warn">shopping_basket</mat-icon>
             </div>
