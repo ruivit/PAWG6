@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators} from '@angular/forms';
-
-import { ConfirmedValidator } from './confirmed.validator';
 
 import { Sale } from '../../Models/Sale';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,7 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RestService } from 'src/app/services/rest/rest.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-myprofile',
@@ -22,10 +19,12 @@ export class MyprofileComponent implements OnInit {
   clientSoldBooks = Array<any>();
   isCollapsed = false;
   clientData = {
-    name: JSON.stringify(localStorage.getItem('name')),
-    email: JSON.stringify(localStorage.getItem('email')),
-    phone: JSON.stringify(localStorage.getItem('phone')),
-    address: JSON.stringify(localStorage.getItem('address')),
+    name: JSON.stringify(localStorage.getItem('name')).toString().replace(/\"/g, ""),
+    email: JSON.stringify(localStorage.getItem('email')).toString().replace(/\"/g, ""),
+    phone: JSON.stringify(localStorage.getItem('phone')).toString().replace(/\"/g, ""),
+    address: JSON.stringify(localStorage.getItem('address')).toString().replace(/\"/g, ""),
+    totalBuys: JSON.stringify(localStorage.getItem('totalBuys')).toString().replace(/\"/g, ""),
+    points: JSON.stringify(localStorage.getItem('clientPoints')).toString().replace(/\"/g, ""),
   }
 
   form: FormGroup = new FormGroup({});
@@ -37,12 +36,9 @@ export class MyprofileComponent implements OnInit {
     private fb: FormBuilder) {
 
     this.form = fb.group({
-      password: ['', [Validators.required]],
-      confirm_password: ['', [Validators.required]],
-      username: localStorage.getItem('username'),
-    }, { 
-      validator: ConfirmedValidator('password', 'confirm_password')
-    })
+      password: [''],
+      password2: [''],
+    });
   }
     
   get f(){
@@ -50,6 +46,15 @@ export class MyprofileComponent implements OnInit {
   }
    
   submit(){
+    // check if new password is equal to confirm password
+    if ( this.form.value.password != this.form.value.password2 ) {
+      this.snackBar.open('Passwords do not match', '', {
+        duration: 3000,
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
     this.rest.updatePassword(this.form.value).subscribe(
       (data: any) => { },
       (err: HttpErrorResponse) => {

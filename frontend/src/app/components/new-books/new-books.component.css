@@ -1,21 +1,27 @@
+
 mat-toolbar {
   justify-content: space-between;
 }
 
 .content {
-  padding: 16px;
+  padding: 5px;
 }
 
-.content > mat-card {
-  margin-bottom: 16px;
+mat-card {
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
 }
 
 .main-image{
-  margin: 10px;
+  margin: 0 auto;
   width: calc(85% - 50px);
-  height: calc(85% - 50px);
+  height: calc(75% - 50px);
   object-fit: cover;
   justify-content: center;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .info {
