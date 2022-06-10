@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TempBook } from '../../Models/temp-book';
-import { SellBookService } from 'src/app/services/sell-book/sell-book.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RestService } from 'src/app/services/rest/rest.service';
 
 @Component({
   selector: 'app-sell-book',
@@ -14,8 +14,8 @@ export class SellBookComponent {
 
   // Inject SellBookService
   constructor(
-    private sellBookService: SellBookService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private restService: RestService
   ) { }
 
   genres = ['Fiction', 'Non-Fiction', 'Children', 'Others', 'Biography', 'Poetry', 'Fantasy', 'Thriller', 'Horror', 'Mystery', 'Romance', 'Self-Help', 'Health', 'Travel', 'Science', 'History', 'Religion', 'Philosophy', 'Psychology', 'Business', 'Comics', 'Art', 'Cooking', 'Drama', 'Education', 'Engineering', 'Finance', 'Health', 'Law', 'Medicine', 'Music', 'Science', 'Sports', 'Technology', 'Travel', 'Youth'];
@@ -42,7 +42,13 @@ export class SellBookComponent {
 
   onSubmit(){
     this.loading = true;
-    this.sellBookService.onSubmit(this.tempBookModel, this.selectedFile);
+    this.restService.sellBook(this.tempBookModel, this.selectedFile).subscribe(
+      (data) => {
+        this.loading = false;
+        this.snackBar.open('Book sold successfully!', '', {
+          duration: 2000,
+        });
+      });
     this.snackBar.open("Your proposal was submited.", '', { duration: 3000 });
   }
 
