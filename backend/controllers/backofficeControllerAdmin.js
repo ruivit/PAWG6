@@ -556,6 +556,9 @@ exports.backoffice_admin_book_create_post = function (req, res) {
                 // resise the cover 500x500
                 sharp("./public/images/books/tempImage.jpg").
                 resize(750, 1000).toFile("./public/images/books/" + book._id + ".jpg");
+                // Delete tempImage.jpg
+                fs.unlinkSync("./public/images/books/tempImage.jpg");
+                
 
             }
         }); // Book save end
