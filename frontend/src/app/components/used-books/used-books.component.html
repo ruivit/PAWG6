@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="content">
     <div fxLayout="row wrap" fxLayoutGap="16px grid" fxLayoutAlign="start center">
         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="50%" *ngFor="let book of books">
@@ -14,20 +15,18 @@
                     <p><strong>{{book.sellPrice}} €</strong></p>
                 </mat-card-content>
                 <mat-card-actions *ngIf="isLogged">
-                    <button mat-button class="btn btn-primary" 
-                    (click)="addToCart(book)"><mat-icon>shopping_cart</mat-icon></button>
+                    <button mat-button class="btn btn-primary" (click)="addToCart(book)">
+                        <mat-icon>shopping_cart</mat-icon>
+                    </button>
 
-                    <button mat-button class="btn btn-secondary" 
-                    (click)="openDialog(book)">
+                    <button mat-button class="btn btn-secondary" (click)="openDialog(book)">
                         <mat-icon>dehaze</mat-icon>
                     </button>
 
-                    <button mat-button class="btn btn-success" 
-                    (click)="rateBook(true, book)">
+                    <button mat-button class="btn btn-success" (click)="rateBook(true, book)">
                         <mat-icon>thumb_up</mat-icon>
                     </button>
-                    <button mat-button class="btn btn-danger" 
-                    (click)="rateBook(false, book)">
+                    <button mat-button class="btn btn-danger" (click)="rateBook(false, book)">
                         <mat-icon>thumb_down</mat-icon>
                     </button>
 

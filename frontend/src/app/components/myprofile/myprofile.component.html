@@ -4,38 +4,29 @@
 <section class="layout">
     <div class="col-md-6 header">
         <div id="card-client-date">
-            <div class="row">
-                <div class="col-md-3">
-                    <strong>Name:</strong>
-                </div>
-                <div class="col-md-9">
-                    <span>{{clientData.name}}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <strong>Email:</strong>
-                </div>
-                <div class="col-md-9">
-                    <span>{{clientData.email}}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <strong>Phone:</strong>
-                </div>
-                <div class="col-md-9">
-                    <span>{{clientData.phone}}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <strong>Address:</strong>
-                </div>
-                <div class="col-md-9">
-                    <span>{{clientData.address}}</span>
-                </div>
-            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">My Points</th>
+                        <th scope="col">Number of Purschases</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="data">{{ clientData.name }}</th>
+                        <th class="data">{{ clientData.email }}</th>
+                        <th class="data">{{ clientData.phone }}</th>
+                        <th class="data">{{ clientData.address }}</th>
+                        <th class="data">{{ clientData.points }}</th>
+                        <th class="data">{{ clientData.totalBuys }}</th>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
 
             <!-- updatepassword -->
 
@@ -48,12 +39,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm_password">Confirm Password</label>
-                        <input formControlName="confirm_password" id="confirm_password" type="password"
+                        <label for="password2">Confirm Password</label>
+                        <input formControlName="password2" id="password2" type="password"
                             class="form-control">
                     </div>
 
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button class="btn btn-primary" type="submit">Change Password</button>
                 </form>
             </div>
         </div>

@@ -66,9 +66,9 @@ export class CartComponent implements OnInit {
 
   calculateTotal() {
     this.total = 0;
-    this.books.forEach(book => {
+    for (let book of this.books) {
       this.total += book.sellPrice;
-    });
+    }
 
     let discountTable = JSON.parse(localStorage.getItem('discountTable') || '{}');
 
@@ -102,9 +102,10 @@ export class CartComponent implements OnInit {
     this.total -= this.calculateShipping();
     this.total -= discountAge;
 
-    if ( this.total <= 0 ) {
+    if (this.total <= 0) {
       this.total = 0;
     }
+
     return this.total;
   }
 
@@ -161,6 +162,19 @@ export class CartComponent implements OnInit {
     this.cartService.removeFromCart(book);
     this.books = this.cartService.getItemsInCart();
     this.calculateTotal();
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
+    this.books = this.cartService.getItemsInCart();
+    this.calculateTotal();
+    
+    this.snackBar.open('Cleared Cart', '', { duration: 2000 });
+    
+    // sleep for 2s then go to home page
+    setTimeout(() => { 
+      this.router.navigate(['/']);
+    }, 2000);
   }
 
   checkout() {
