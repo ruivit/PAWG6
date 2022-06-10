@@ -10,9 +10,16 @@
   bottom: 0;
 }
 
-.mat-signup {
-  background-color: rgb(228, 228, 228);
-  color: rgb(0, 0, 0);
+.mat-sell {
+  background-color: forestgreen;
+  color: white;
+}
+
+.mat-back {
+  float: inline-end;
+  background-color: rgba(45, 45, 45, 0.852);
+  color: rgb(255, 255, 255);
+  justify-content: center;
 }
 
 

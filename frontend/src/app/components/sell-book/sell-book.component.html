@@ -95,14 +95,6 @@
                             [(ngModel)]="tempBookModel.sellPrice">
                     </div>
 
-                    <!-- <div class="custom-file input-container ic2">
-                        <input name="cover" class="custom-file-input" type="file" required>
-                        <label>Choose Book Cover Image</label>
-                    </div> -->
-
-                    <!-- <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-                    <button (click)="fileInput.click()">Select File</button> -->
-
                     <div class="container">
                         <div class="row mt-5">
                             <div class="col-md-4">
@@ -114,9 +106,13 @@
                             </div>
                         </div>
                     </div>
+                    <mat-card-actions class="buttons">
+                        <button mat-raised-button color="sell"
+                        type="submit">Sell !</button>
 
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                    <button class="btn btn-danger" type="button" [routerLink]="['../']">Cancel</button>
+                        <button mat-raised-button color="back" 
+                        [routerLink]="['../']">Back</button>
+                    </mat-card-actions>
                 </form>
             </mat-card>
         </mat-grid-tile>

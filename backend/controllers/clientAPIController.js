@@ -514,14 +514,15 @@ exports.client_search_get = function (req, res) {
 
 
 exports.client_rate_book = async function (req, res) {   
+    console.log(req.query);
     var book = await Book.findOne({ _id: req.query.bookId });
 
     if (req.query.like == 1) {
         currentAvaliation = book.avaliation;
-        currentAvaliation += 0.25 * (1 / book.avaliation);    
+        currentAvaliation += 0.25 * (book.avaliation /2 );
     } else {
         currentAvaliation = book.avaliation;
-        currentAvaliation -= 0.25 * (1 / book.avaliation);
+        currentAvaliation -= 0.25 * (book.avaliation /2 );
     } 
 
 

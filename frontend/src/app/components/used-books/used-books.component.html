@@ -8,11 +8,10 @@
                 </mat-card-header>
                 <img class="main-image" mat-card-image src="https://localhost:3000/images/books/{{book._id}}.jpg"
                     crossorigin="anonymous" fxLayoutAlign="center" fxLayout="row" />
-                <mat-card-content>
-                    <p>
-                        {{book.stock}} Available
-                        {{convertAvaliationToStars(book)}}
-                    </p>
+                <mat-card-content class="info">
+                    <p>{{book.stock}} Available</p>
+                    <p>{{convertAvaliationToStars(book)}}</p>
+                    <p><strong>{{book.sellPrice}} €</strong></p>
                 </mat-card-content>
                 <mat-card-actions *ngIf="isLogged">
                     <button mat-button class="btn btn-primary" 

@@ -17,3 +17,11 @@ mat-toolbar {
   object-fit: cover;
   justify-content: center;
 }
+
+.info {
+  padding: 10px;
+  width: 350px;
+
+  display: flex;
+  justify-content: space-between;
+}

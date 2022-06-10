@@ -67,7 +67,7 @@ export class NewBooksComponent implements OnInit {
 
     if (like) {
       this.restService.rateBook(book._id, 1).subscribe( data => {} );
-    } else {
+    } else {      
       this.restService.rateBook(book._id, 0).subscribe( data => {} );
     }
     this.snackBar.open('Thanks for your opinion', '', { duration: 2000 });
