@@ -26,6 +26,7 @@ export class NewBooksComponent implements OnInit {
   rate = 0;
   isLogged = false;  
   
+  
   selectedBook?: Book;
   dataSource = new MatTableDataSource(this.books);
   @Inject(MAT_DIALOG_DATA) public data: any

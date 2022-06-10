@@ -1,4 +1,4 @@
-<body>
+<div class="back">
     <mat-grid-list cols="3">
         <mat-grid-tile colspan="3">
             <mat-card>
@@ -17,11 +17,15 @@
                         <input type="password" formControlName="password" matInput>
                     </mat-form-field>
                     <br>
-                    <button mat-raised-button color="primary">Submit</button>
-                    <button mat-raised-button color="basic"
-                    [routerLink]="['/signup']">Register</button>
+                    <mat-card-actions class="buttons">
+                        <button mat-raised-button color="login">Login</button>
+                        <button mat-raised-button color="signup" [routerLink]="['/signup']">Register</button>
+                        <a [routerLink]="['/']">
+                            <igx-icon [style.color]="'#ffffff'">home</igx-icon>
+                        </a>
+                    </mat-card-actions>
                 </form>
             </mat-card>
         </mat-grid-tile>
     </mat-grid-list>
-</body>
+</div>
