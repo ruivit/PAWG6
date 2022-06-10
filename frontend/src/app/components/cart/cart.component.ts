@@ -18,6 +18,7 @@ export class CartComponent implements OnInit {
 
   books = Array<Book>();
   total = 0;
+  booksInfo = Array<Book>();
 
   constructor(
     private cartService: CartService,
@@ -47,6 +48,18 @@ export class CartComponent implements OnInit {
     this.restService.getDiscountTable().subscribe(data => {
       localStorage.setItem('discountTable', JSON.stringify(data));
     });
+
+    this.booksInfo = this.books;
+    var size = this.booksInfo.length;
+    for ( var i = 0; i < size; i++ ) {
+      for ( var j = i + 1; j < size; j++ ) {
+        if ( this.booksInfo[i]._id === this.booksInfo[j]._id ) {
+          this.booksInfo.splice(j, 1);
+          size--;
+          j--;
+        }
+      }
+    }
 
     this.calculateTotal();
   }
@@ -151,6 +164,11 @@ export class CartComponent implements OnInit {
   }
 
   checkout() {
+    if ( this.books.length === 0 ) {
+      this.snackBar.open('Your cart is empty', '', { duration: 5000 });
+      return;
+    }
+
     this.snackBar.open('Checkout Successful', '', {
       duration: 2000,
       verticalPosition: 'top'
