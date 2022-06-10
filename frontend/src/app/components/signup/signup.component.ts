@@ -13,7 +13,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  constructor(private User: UserService, private router: Router, private snackBar: MatSnackBar) { }
+
+  constructor(
+    private User: UserService, 
+    private router: Router, 
+    private snackBar: MatSnackBar) { }
+
   signupForm = new FormGroup({
     username: new FormControl(''),
     name: new FormControl(''),
@@ -25,10 +30,10 @@ export class SignupComponent implements OnInit {
     ageType: new FormControl(''),
     recommendedBy: new FormControl('')
   });
+
   ngOnInit() { }
 
-// Calculate age type based on birth date
-
+  // Calculate age type based on birth date
   calculateAgeType(birthDate: string) {
     const today = new Date();
     const birthDateDate = new Date(birthDate);

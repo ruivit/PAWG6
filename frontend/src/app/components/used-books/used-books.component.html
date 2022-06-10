@@ -6,13 +6,33 @@
                 <mat-card-header>
                     <mat-card-title>{{book.title}}</mat-card-title>
                 </mat-card-header>
-                <img class="main-image" mat-card-image src="https://localhost:3000/images/books/{{book._id}}.jpg" crossorigin="anonymous" fxLayoutAlign="center" fxLayout="row"/>
+                <img class="main-image" mat-card-image src="https://localhost:3000/images/books/{{book._id}}.jpg"
+                    crossorigin="anonymous" fxLayoutAlign="center" fxLayout="row" />
                 <mat-card-content>
-                    <p>{{book.stock}} Available</p>
+                    <p>
+                        {{book.stock}} Available
+                        {{convertAvaliationToStars(book)}}
+                    </p>
                 </mat-card-content>
                 <mat-card-actions *ngIf="isLogged">
-                    <button mat-button (click)="addToCart(book)">Add</button>
-                    <button type="button" class="btn btn-primary" (click)="openDialog(book)">Details</button>
+                    <button mat-button class="btn btn-primary" 
+                    (click)="addToCart(book)"><mat-icon>shopping_cart</mat-icon></button>
+
+                    <button mat-button class="btn btn-secondary" 
+                    (click)="openDialog(book)">
+                        <mat-icon>dehaze</mat-icon>
+                    </button>
+
+                    <button mat-button class="btn btn-success" 
+                    (click)="rateBook(true, book)">
+                        <mat-icon>thumb_up</mat-icon>
+                    </button>
+                    <button mat-button class="btn btn-danger" 
+                    (click)="rateBook(false, book)">
+                        <mat-icon>thumb_down</mat-icon>
+                    </button>
+
+                    <rating (ngModel)="rate" (max)="max"></rating>
                 </mat-card-actions>
             </mat-card>
         </div>

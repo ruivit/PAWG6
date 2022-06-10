@@ -10,6 +10,8 @@ import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import { BookDetailComponent } from '../book-detail/book-detail.component';
 
+import { NavbarService } from 'src/app/services/navbar/navbar.service';
+
 @Component({
   selector: 'app-used-books',
   templateUrl: './used-books.component.html',
@@ -18,6 +20,8 @@ import { BookDetailComponent } from '../book-detail/book-detail.component';
 export class UsedBooksComponent implements OnInit {
 
   books = new Array<Book>();
+  max = 5;
+  rate = 0;
   isLogged = false;
 
   selectedBook?: Book;
@@ -28,6 +32,7 @@ export class UsedBooksComponent implements OnInit {
     private snackBar: MatSnackBar,
     private cartService: CartService,
     private restService: RestService,
+    private navbarService: NavbarService,
     public dialog: MatDialog,
   ) { }
 
@@ -46,6 +51,32 @@ export class UsedBooksComponent implements OnInit {
     } else {
       this.snackBar.open('Out of stock...', '', { duration: 5000 });
     }
+    this.navbarService.notify();
+  }
+
+  rateBook(like: boolean, book: Book) {
+    // If the book is at maximum rate, just show the pop up but do nothing
+    if (book.avaliation >= 5 && like) {
+      this.snackBar.open('An amazing book indeed', '', { duration: 2000 });
+      return;
+    }
+
+    if (like) {
+      this.restService.rateBook(book._id, 1).subscribe( data => {} );
+    } else {
+      this.restService.rateBook(book._id, 0).subscribe( data => {} );
+    }
+    this.snackBar.open('Thanks for your opinion', '', { duration: 2000 });
+  }
+
+  convertAvaliationToStars(book: Book) {
+    let stars = '';
+
+    let avaliation = Math.ceil(book.avaliation);
+    for (let i = 0; i < avaliation; i++) {
+      stars += '★';
+    }
+    return stars;
   }
 
   openDialog(book: Book) {
