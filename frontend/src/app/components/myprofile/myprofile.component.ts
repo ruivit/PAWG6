@@ -51,16 +51,10 @@ export class MyprofileComponent implements OnInit {
    
   submit(){
     this.rest.updatePassword(this.form.value).subscribe(
-      (data: any) => { 
-        console.log(data);
-      },
+      (data: any) => { },
       (err: HttpErrorResponse) => {
         if (err.error.msg) {
           this.snackBar.open(err.error.msg, 'Ups');
-        } else {
-          this.snackBar.open(err.error.msg, 'Ok', {
-            duration: 2000,
-          });
         }
       }
     );
@@ -82,13 +76,11 @@ export class MyprofileComponent implements OnInit {
     this.rest.getClientSales().subscribe(
       (data: any) => {
         this.clientSales = data;
-        //console.log(this.clientSales);
       }
     );
     this.rest.getClientSoldBooks().subscribe(
       (data: any) => {
         this.clientSoldBooks = data;
-        //console.log(this.clientSoldBooks);
       }
     );
   }

@@ -289,7 +289,7 @@ exports.client_update_password = function (req, res) {
         { salt: salt, passwordHash: newPasswordHash }, { new: true },
         function (err, client) {
             if (err) {
-                res.status(500).json(err);
+                res.status(500).json({ msg: err });
             } else {
                 res.status(200).json({ msg: 'Password Updated' });
             }
@@ -429,8 +429,6 @@ exports.client_sell_tempbook_post = function (req, res) {
 exports.client_sales_get = async function (req, res) {
     var sales = await Sale.find({ clientUsername: req.query.username });
 
-    console.log(sales);
-
     res.status(200).json(sales);
 }; // Get all the sales made by the client           
 
@@ -455,7 +453,6 @@ exports.client_soldbooks_get = function (req, res) {
         if (err) {
             res.render('error/error', { error: err });
         } else {
-            //console.log(usedBooks);
             res.status(200).json(usedBooks);
         }
     }).sort({ dateAdded: -1 });

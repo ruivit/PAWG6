@@ -34,6 +34,14 @@
             </div>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/searchbooks']"
+          (click)="searchBooks()" *ngIf="loggedIn">Search Books
+            <div class="icon-sample">
+              <igx-icon>search</igx-icon>
+            </div>
+          </a>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link" *ngIf="loggedIn"
